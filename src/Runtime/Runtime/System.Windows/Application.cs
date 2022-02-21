@@ -77,7 +77,7 @@ namespace Windows.UI.Xaml
 
             // In case of a redirection from Microsoft AAD, when running in the Simulator, we re-instantiate the application. We need to reload the JavaScript files because they are no longer in the HTML DOM due to the AAD redirection:
             INTERNAL_InteropImplementation.ResetLoadedFilesDictionaries();
-
+            INTERNAL_SimulatorExecuteJavaScript.DisableAsyncJavaScriptExecution = true;
 #if CSHTML5BLAZOR
             // we change the resource manager for every resource registered
             ClientSideResourceRegister.Startup();
@@ -129,9 +129,9 @@ namespace Windows.UI.Xaml
 
                 // Listen to clicks anywhere in the window (this is used to close the popups that are not supposed to stay open):
 #if MIGRATION
-                _mainWindow.AddHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(INTERNAL_PopupsManager.OnClickOnPopupOrWindow), true);
+                _mainWindow.AddHandler(UIElement.MouseLeftButtonDownEvent, new MouseButtonEventHandler(INTERNAL_PopupsManager.OnClickOnWindow), true);
 #else
-                _mainWindow.AddHandler(UIElement.PointerPressedEvent, new PointerEventHandler(INTERNAL_PopupsManager.OnClickOnPopupOrWindow), true);
+                _mainWindow.AddHandler(UIElement.PointerPressedEvent, new PointerEventHandler(INTERNAL_PopupsManager.OnClickOnWindow), true);
 #endif
 
 #if !CSHTML5NETSTANDARD
