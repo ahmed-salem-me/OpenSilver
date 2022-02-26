@@ -50,11 +50,13 @@ namespace Windows.UI.Xaml.Controls.Primitives
         static int _currentZIndex = 0; //This int is to be able to put newly created popups in front of the former ones, as well as allowing to click on a Modal ChildWindow to put it in front of the others.
 
         ContentPresenter _childWrapper; // Used for positioning and alignment.
+        object _childWrapperDomElement;
 
         bool _isVisible;
         Point _referencePosition = new Point(); // This is the (X,Y) position of the reference point defined in the "Note for proper placement of the popup" above.
 
         internal bool _isOrphan;
+        private double _left, _top;
 
         ControlToWatch _controlToWatch; //Note: this is set when the popup is attached to an UIElement, so that we can remove it from the timer for refreshing the position of the popup when needed.
 
@@ -170,17 +172,6 @@ namespace Windows.UI.Xaml.Controls.Primitives
             this.HidePopupIfVisible();
         }
 
-        //private async void ProgressivelyAttachChild()
-        //{
-        //    await Task.Delay(1);
-        //    if (!INTERNAL_VisualTreeManager.IsElementInVisualTree(this))
-        //    {
-        //        //this can happen if the Panel is detached during the delay.
-        //        return;
-        //    }
-        //    INTERNAL_VisualTreeManager.AttachVisualChildIfNotAlreadyAttached(Child, this);
-        //}
-
         #region Dependency Properties
 
         //-----------------------
@@ -220,14 +211,12 @@ namespace Windows.UI.Xaml.Controls.Primitives
             {
                 popup._childWrapper = new ContentPresenter();
                 popup.AddVisualChild(popup._childWrapper);
-                popup._childWrapper.Loaded += _childWrapper_Loaded;
+                popup.Loaded += Popup_Loaded;
             }
-
-            var childWrapper = popup._childWrapper;
 
             if (popup._isVisible)
             {
-                childWrapper.Content = newContent;
+                popup._childWrapper.Content = newContent;
             }
             else
             {
@@ -240,14 +229,13 @@ namespace Windows.UI.Xaml.Controls.Primitives
             }
         }
 
-        private static void _childWrapper_Loaded(object sender, RoutedEventArgs e)
+        private static void Popup_Loaded(object sender, RoutedEventArgs e)
         {
-            var childWrapper = sender as FrameworkElement;
-            INTERNAL_HtmlDomManager.GetDomElementStyleForModification(childWrapper.INTERNAL_OuterDomElement).position = "fixed";
-            INTERNAL_HtmlDomManager.GetDomElementStyleForModification(childWrapper.INTERNAL_OuterDomElement).left = "0px";
-            INTERNAL_HtmlDomManager.GetDomElementStyleForModification(childWrapper.INTERNAL_OuterDomElement).top = "0px";
+            var popup = sender as Popup;
+            popup._childWrapperDomElement = popup._childWrapper.INTERNAL_AdditionalOutsideDivForMargins;
+            INTERNAL_HtmlDomManager.GetDomElementStyleForModification(popup._childWrapperDomElement).position = "fixed";
+            popup.PositionChildWrapperDiv(popup._left, popup._top);
         }
-
 
         //-----------------------
         // ISOPEN
@@ -279,6 +267,7 @@ namespace Windows.UI.Xaml.Controls.Primitives
         {
             var popup = (Popup)d;
             bool isOpen = (bool)e.NewValue;
+            Diagnostics.Debug.WriteLine($"popup opened changed {isOpen}");
             if (popup.PlacementTarget == null)
             {
                 //------------------------
@@ -463,7 +452,6 @@ namespace Windows.UI.Xaml.Controls.Primitives
         {
             if (_childWrapper != null)
             {
-                //_childWrapper.Margin = new Thickness(_referencePosition.X + horizontalOffset + _positionFixing.X, _referencePosition.Y + verticalOffset + _positionFixing.Y, 0d, 0d);
                 PositionChildWrapperDiv(_referencePosition.X + horizontalOffset + _positionFixing.X, _referencePosition.Y + verticalOffset + _positionFixing.Y);
             }
         }
@@ -604,7 +592,7 @@ namespace Windows.UI.Xaml.Controls.Primitives
                 UpdatePopupParent();
 
                 // Calculate the position of the parent of the popup, in case that the popup is in the Visual Tree:
-                // the whole purpose of isOrphan is that the calculation here is quite wrong when it's orphan, while it needs to start in position 0,0
+                // TransformToVisual is wrong when the element is hangin to main window (left and top of div should be zero but are not)
                 if (_isOrphan)
                     _referencePosition = new Point(0, 0);
                 else
@@ -786,11 +774,15 @@ namespace Windows.UI.Xaml.Controls.Primitives
         {
             INTERNAL_PopupsManager.EnsurePopupStaysWithinScreenBounds(this, forcedWidth, forcedHeight);
         }
-        
+
         private void PositionChildWrapperDiv(double x, double y)
         {
-            INTERNAL_HtmlDomManager.GetDomElementStyleForModification(_childWrapper.INTERNAL_OuterDomElement).left = $"{x}px";
-            INTERNAL_HtmlDomManager.GetDomElementStyleForModification(_childWrapper.INTERNAL_OuterDomElement).top = $"{y}px";
+            _left = x; _top = y;
+            if (_childWrapperDomElement != null)
+            {
+                INTERNAL_HtmlDomManager.GetDomElementStyleForModification(_childWrapperDomElement).left = $"{x}px";
+                INTERNAL_HtmlDomManager.GetDomElementStyleForModification(_childWrapperDomElement).top = $"{y}px";
+            }
         }
     }
 }

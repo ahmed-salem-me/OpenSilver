@@ -134,7 +134,7 @@ namespace DotNetForHtml5.Core // Important: do not rename this class without upd
                     && popupActualHeight > 0)
                 {
                     Point popupPosition = new Point(0, 0);
-                    if (popup.IsConnectedToLiveTree)
+                    if (!popup._isOrphan)
                     {
                         popupPosition = popup.TransformToVisual(Application.Current.RootVisual).Transform(popupPosition);
                     }
