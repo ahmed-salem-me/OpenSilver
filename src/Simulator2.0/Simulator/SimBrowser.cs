@@ -58,7 +58,7 @@ namespace OpenSilver.Simulator
             var coreWebView = CoreWebView2;
 
             coreWebView.AddWebResourceRequestedFilter("*.js", CoreWebView2WebResourceContext.Script);
-            //coreWebView.AddWebResourceRequestedFilter("*.css", CoreWebView2WebResourceContext.Stylesheet);
+            coreWebView.AddWebResourceRequestedFilter("*.css", CoreWebView2WebResourceContext.Stylesheet);
 
             coreWebView.WebResourceRequested += CoreWebView_WebResourceRequested;
             coreWebView.NavigationStarting += CoreWebView_NavigationStarting;
@@ -76,7 +76,7 @@ namespace OpenSilver.Simulator
             await helper.Runtime.EnableAsync();
             helper.Runtime.ConsoleAPICalled += OnConsoleMessage;
 
-            coreWebView.OpenDevToolsWindow();
+            //coreWebView.OpenDevToolsWindow();
 
             if (OnInitialized != null)
                 OnInitialized();
@@ -93,6 +93,9 @@ namespace OpenSilver.Simulator
                     contentType = "application/javascript";
                 else if (uri.EndsWith(".css"))
                     contentType = "text/css";
+
+                if (contentType == null)
+                    throw new Exception("unexpected resource in simulator-root");
 
                 FileStream fs = File.OpenRead(uri);
                 e.Response = CoreWebView2.Environment.CreateWebResourceResponse(fs, 200, "OK", $"Content-Type: {contentType}");
@@ -201,15 +204,21 @@ namespace OpenSilver.Simulator
 
             if ((this as DispatcherObject).CheckAccess())
                 jsonResult = Await(ExecuteScriptAsync(javaScript), javaScript);
-            //Dispatcher.InvokeAsync(async () => jsonResult = Await(ExecuteScriptAsync(javaScript), javaScript));
             else
                 jsonResult = Dispatcher.InvokeAsync(async () => await ExecuteScriptAsync(javaScript)).Result.Result;
 
             var result = JsonDocument.Parse(jsonResult);
 
-            if (result != null && result.RootElement.ValueKind == JsonValueKind.String)
-                return result.RootElement.GetString();
-
+            if (result != null)
+            {
+                switch (result.RootElement.ValueKind)
+                {
+                    case JsonValueKind.String:
+                        return result.RootElement.GetString();
+                    case JsonValueKind.Null:
+                        return null;
+                }
+            }
             return jsonResult;
         }
 

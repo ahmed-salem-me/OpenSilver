@@ -62,7 +62,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
         public JavaScriptExecutionHandler _javaScriptExecutionHandler;
         bool _htmlHasBeenLoaded = false;
         Assembly _entryPointAssembly;
-        Action _appCreationDelegate;
+        Action _clientAppStartup;
         SimulatorLaunchParameters _simulatorLaunchParameters;
         CompilationState _compilationState = CompilationState.Initializing;
         string _compilationLog;
@@ -75,6 +75,8 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
         Assembly _coreAssembly;
         Assembly _typeForwardingAssembly;
         string _browserUserDataDir;
+        OpenSilverRuntime _openSilverRuntime;
+
         //ResourceInterceptor _resourceInterceptor = new ResourceInterceptor("http://cshtml5-simulator/");
 
         const bool IS_LICENSE_CHECKER_ENABLED = false;
@@ -84,7 +86,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
         //LicenseChecker LicenseChecker = null;
 
 #if OPENSILVER
-        public MainWindow(Action appCreationDelegate, Assembly appAssembly, SimulatorLaunchParameters simulatorLaunchParameters)
+        public MainWindow(Action entryAppCreator, Assembly appAssembly, SimulatorLaunchParameters simulatorLaunchParameters)
 #elif BRIDGE
         public MainWindow()
 #endif
@@ -125,7 +127,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
 #endif
 
 #if OPENSILVER
-            _appCreationDelegate = appCreationDelegate ?? throw new ArgumentNullException(nameof(appCreationDelegate));
+            _clientAppStartup = entryAppCreator ?? throw new ArgumentNullException(nameof(entryAppCreator));
             _simulatorLaunchParameters = simulatorLaunchParameters;
             ReflectionInUserAssembliesHelper.TryGetCoreAssembly(out _coreAssembly);
             _entryPointAssembly = appAssembly;
@@ -532,8 +534,6 @@ ends with "".Browser"" in your solution.";
 
         private void ButtonRestart_Click(object sender, RoutedEventArgs e)
         {
-            //this.StartApplication();
-            OnSimBrowserInitialized();
         }
 
         private void ButtonViewJavaScriptLog_Click(object sender, RoutedEventArgs e)
@@ -848,7 +848,7 @@ Click OK to continue.";
 
         #endregion
 
-        void LoadIndexFile(string urlFragment = null)
+        void LoadIndexPage(string urlFragment = null)
         {
             _rootPage = new RootPage(_entryPointAssembly);
             _rootPage.Create(_simulatorLaunchParameters);
@@ -860,7 +860,7 @@ Click OK to continue.";
             //MainWebBrowser.Browser.LoadHTML(new LoadHTMLParams(simulatorRootHtml, "UTF-8", baseURL + "/" + ARBITRARY_FILE_NAME_WHEN_RUNNING_FROM_SIMULATOR + urlFragment)); // Note: we set the URL so that the simulator browser can find the JS files.
         }
 
-        void OnLoaded()
+        void OnIndexPageLoaded()
         {
             if (!_htmlHasBeenLoaded)
             {
@@ -878,23 +878,15 @@ Click OK to continue.";
                 //ams>I don't think we'll need this while using the NavigationCompleted event
                 //WaitForDocumentToBeFullyLoaded(); // Note: without this, we got errors when running rokjs (with localhost as base url) without any breakpoints.
 
-                var worker = new BackgroundWorker();
+                bool success = _openSilverRuntime.Start(_clientAppStartup);
 
-                worker.DoWork += (s, e) =>
+                if (success)
                 {
-                    bool success = StartApplication();
-                    
-                    if (success)
-                    {
-                        _simulatorLaunchParameters?.AppStartedCallback?.Invoke();
-                    }
-
+                    _simulatorLaunchParameters?.AppStartedCallback?.Invoke();
                     HideLoadingMessage();
 
                     UpdateWebBrowserAndWebPageSizeBasedOnCurrentState();
-                }; // We do so in order to give the time to the rendering engine to display the "Loading..." message.
-
-                worker.RunWorkerAsync();
+                }
             }
         }
 
@@ -1113,50 +1105,6 @@ Click OK to continue.";
 
 
 #if OPENSILVER
-        bool InitializeApplication()
-        {
-            // In OpenSilver we already have the user application type passed to the constructor, so we do not need to retrieve it here
-            try
-            {
-                // Create the JavaScriptExecutionHandler that will be called by the "Core" project to interact with the Emulator:
-                _javaScriptExecutionHandler = new JavaScriptExecutionHandler(MainWebBrowser);
-
-                // Create the HTML DOM MANAGER proxy and pass it to the "Core" project:
-                //JSValue htmlDocument = (JSObject)MainWebBrowser.Browser.ExecuteJavaScriptAndReturnValue("document");
-
-                //InteropHelpers.InjectDOMDocument(MainWebBrowser.Browser.GetDocument(), _coreAssembly);
-                //InteropHelpers.InjectHtmlDocument(htmlDocument, _coreAssembly);//no need for this line right ?
-                InteropHelpers.InjectWebControlDispatcherBeginInvoke(MainWebBrowser, _coreAssembly);
-                InteropHelpers.InjectWebControlDispatcherInvoke(MainWebBrowser, _coreAssembly);
-                InteropHelpers.InjectWebControlDispatcherCheckAccess(MainWebBrowser, _coreAssembly);
-                InteropHelpers.InjectConvertBrowserResult(BrowserResultConverter.CastFromJsValue, _coreAssembly);
-                InteropHelpers.InjectJavaScriptExecutionHandler(_javaScriptExecutionHandler, _coreAssembly);
-                InteropHelpers.InjectWpfMediaElementFactory(_coreAssembly);
-                InteropHelpers.InjectWebClientFactory(_coreAssembly);
-                InteropHelpers.InjectClipboardHandler(_coreAssembly);
-                InteropHelpers.InjectSimulatorProxy(new SimulatorProxy(MainWebBrowser, Console, SynchronizationContext.Current), _coreAssembly);
-
-                // In the OpenSilver Version, we use this work-around to know if we're in the simulator
-                InteropHelpers.InjectIsRunningInTheSimulator_WorkAround(_coreAssembly);
-
-                WpfMediaElementFactory._gridWhereToPlaceMediaElements = GridForAudioMediaElements;
-
-                // Inject the code to display the message box in the simulator:
-                InteropHelpers.InjectCodeToDisplayTheMessageBox(
-                    (message, title, showCancelButton) => { return MessageBox.Show(message, title, showCancelButton ? MessageBoxButton.OKCancel : MessageBoxButton.OK) == MessageBoxResult.OK; },
-                    _coreAssembly);
-
-                // Ensure the static constructor of all common types is called so that the type converters are initialized:
-                StaticConstructorsCaller.EnsureStaticConstructorOfCommonTypesIsCalled(_coreAssembly);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error while loading the application: " + Environment.NewLine + Environment.NewLine + ex.Message);
-                HideLoadingMessage();
-                return false;
-            }
-        }
 #elif BRIDGE
         bool InitializeApplication()
         {
@@ -1246,34 +1194,18 @@ Click OK to continue.";
 
             // We will need to wait for the page to finish loading before executing the app:
             //ams>fix-rethink
-            MainWebBrowser.CoreWebView2.DOMContentLoaded += (s1, e1) =>
-                    {
-                        Dispatcher.BeginInvoke((Action)(async () =>
-                        {
-                            InteropHelpers.RaiseReloadedEvent(_coreAssembly); // to reset some static fields
-                            await Task.Delay(3000); //Note: this is to ensure all the js and css files of simulator_root.html have been loaded (client_fb).
-                            StartApplication();
-                        }));
-                    };
+            //MainWebBrowser.CoreWebView2.DOMContentLoaded += (s1, e1) =>
+            //        {
+            //            Dispatcher.BeginInvoke((Action)(async () =>
+            //            {
+            //                InteropHelpers.RaiseReloadedEvent(_coreAssembly); // to reset some static fields
+            //                await Task.Delay(3000); //Note: this is to ensure all the js and css files of simulator_root.html have been loaded (client_fb).
+            //                StartApplication();
+            //            }));
+            //        };
 
             // Load the page:
             //LoadIndexFile(urlFragment);
-        }
-
-        bool StartApplication()
-        {
-            // Create a new instance of the application:
-            _appCreationDelegate();
-            return true;
-            try
-            {
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Unable to start the application.\r\n\r\n" + ex.ToString());
-                HideLoadingMessage();
-                return false;
-            }
         }
 
 
@@ -1282,7 +1214,7 @@ Click OK to continue.";
             ContainerOfLoadingMessage.Visibility = Visibility.Visible;
         }
 
-        void HideLoadingMessage()
+        public void HideLoadingMessage()
         {
             ContainerOfLoadingMessage.Visibility = Visibility.Collapsed;
         }
@@ -1419,7 +1351,7 @@ Click OK to continue.";
             }
         }
 
-        void UpdateWebBrowserAndWebPageSizeBasedOnCurrentState()
+        public void UpdateWebBrowserAndWebPageSizeBasedOnCurrentState()
         {
             if (DisplaySize_Phone.IsChecked == true)
             {
@@ -2058,8 +1990,8 @@ Click OK to continue.";
 
         private SimBrowser CreateSimBrowser()
         {
-            Delegate addHostObj = (object o) => doit("", 0);
-            SynchronizationContext.Current.Post(o => doit("", 0), null);
+            //Delegate addHostObj = (object o) => doit("", 0);
+            //SynchronizationContext.Current.Post(o => doit("", 0), null);
             var simBrowser = new SimBrowser();
             simBrowser.Width = 150;
             simBrowser.Height = 200;
@@ -2073,19 +2005,14 @@ Click OK to continue.";
             //    StartApplication();
             //}));
 
-            simBrowser.OnInitialized = OnSimBrowserInitialized;
-            simBrowser.OnNavigationCompleted = OnLoaded;
+            simBrowser.OnInitialized = () =>
+            {
+                _openSilverRuntime = new OpenSilverRuntime(MainWebBrowser, this, SynchronizationContext.Current);
+                LoadIndexPage();
+            };
+            simBrowser.OnNavigationCompleted = OnIndexPageLoaded;
 
             return simBrowser;
-        }
-
-        private void doit(string x, int y) { }
-
-        private async void OnSimBrowserInitialized()
-        {
-            if (!InitializeApplication()) throw new Exception("Could not initialize opensilver app from browser object");
-            //_javaScriptExecutionHandler.StartJSLoggin();
-            LoadIndexFile();
         }
 
         private void ResizeWindowToScreenSize()
