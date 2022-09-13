@@ -46,6 +46,13 @@ namespace CSHTML5.Internal
 
         }
 
+            if (INTERNAL_Simulator.SimulatorProxy.UseSimBrowser)
+            {
+                INTERNAL_Simulator.SimulatorProxy.AddHostObject("onCallBack", this);
+                INTERNAL_HtmlDomManager.ExecuteJavaScriptWithResult("window.onCallBack = chrome.webview.hostObjects.onCallBack;");
+                _Dispatcher = Dispatcher.INTERNAL_GetCurrentDispatcher();
+            }
+        }
         public void OnCallbackFromJavaScriptError(string idWhereCallbackArgsAreStored)
         {
             Action callBack = () => OnCallBackImpl.Instance.OnCallbackFromJavaScriptError(idWhereCallbackArgsAreStored);
