@@ -48,7 +48,7 @@ namespace CSHTML5.Internal
                 int indexOfNextUnmodifiedJSCallInList = Convert.ToInt32(OpenSilver.Interop.ExecuteJavaScript("document.jsObjRef[$0][1]", idWhereCallbackArgsAreStored));
                 INTERNAL_InteropImplementation.ShowErrorMessage(errorMessage, indexOfNextUnmodifiedJSCallInList);
             };
-
+            //ams> re-think
             if (OpenSilver.Interop.IsRunningInTheSimulator)
             {
                 // Go back to the UI thread because DotNetBrowser calls the callback from the socket background thread:

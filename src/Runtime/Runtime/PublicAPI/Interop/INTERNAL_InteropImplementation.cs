@@ -57,8 +57,13 @@ namespace CSHTML5
             if (OpenSilver.Interop.IsRunningInTheSimulator)
             {
                 // Adding a property to the JavaScript "window" object:
-                dynamic jsWindow = INTERNAL_HtmlDomManager.ExecuteJavaScriptWithResult("window");
-                jsWindow.SetProperty("onCallBack", new OnCallbackSimulator());
+                //ams> re-write
+                if (!DotNetForHtml5.Core.INTERNAL_Simulator.SimulatorProxy.UseSimBrowser)
+                {
+                    dynamic jsWindow = INTERNAL_HtmlDomManager.ExecuteJavaScriptWithResult("window");
+                    jsWindow.SetProperty("onCallBack", OnCallbackSimulator.Instance);
+                }
+                _ = OnCallbackSimulator.Instance;
             }
 
             _isInitialized = true;
@@ -143,15 +148,28 @@ namespace CSHTML5
                     var isVoid = callback.Method.ReturnType == typeof(void);
 
                     // Change the JS code to point to that callback:
-                    javascript = javascript.Replace("$" + i.ToString(), string.Format(
-                                       @"(function() {{ return document.eventCallback({0}, {1}, {2});}})", callbackId,
+                    //ams> skip simulator check and do as in browser
+                    if (OpenSilver.Interop.IsRunningInTheSimulator && DotNetForHtml5.Core.INTERNAL_Simulator.SimulatorProxy.UseSimBrowser)
+                        javascript = javascript.Replace("$" + i.ToString(), string.Format(
+                           @"(function() {{ return document.eventCallback({0}, {1}, {2});}})", callbackId,
 #if OPENSILVER
-                                       Interop.IsRunningInTheSimulator_WorkAround ? "arguments" : "Array.prototype.slice.call(arguments)",
+                           "Array.prototype.slice.call(arguments)",
+#elif BRIDGE
+
+                                       "Array.prototype.slice.call(arguments)",
+#endif
+                           (!isVoid).ToString().ToLower()
+                           ));
+                    else
+                        javascript = javascript.Replace("$" + i.ToString(), string.Format(
+                                   @"(function() {{ return document.eventCallback({0}, {1}, {2});}})", callbackId,
+#if OPENSILVER
+                                   Interop.IsRunningInTheSimulator_WorkAround ? "arguments" : "Array.prototype.slice.call(arguments)",
 #elif BRIDGE
                                        "Array.prototype.slice.call(arguments)",
 #endif
-                                       (!isVoid).ToString().ToLower()
-                                       ));
+                                   (!isVoid).ToString().ToLower()
+                                   ));
 
                     // Note: generating the random number in JS rather than C# is important in order
                     // to be able to put this code inside a JavaScript "for" statement (cf.
@@ -205,7 +223,7 @@ namespace CSHTML5
             {
                 INTERNAL_HtmlDomManager.ExecuteJavaScript(javascript);
             }
-
+            //System.Diagnostics.Debug.WriteLine(value == null ? "null" : value.ToString());
             return new INTERNAL_JSObjectReference(value, referenceId);
         }
 

@@ -230,20 +230,21 @@ namespace CSHTML5.Internal // IMPORTANT: if you change this namespace, make sure
                     return;
                 }
 
-#if CSHTML5BLAZOR
+                //ams> skip simulator check and do as in browser
+                //#if CSHTML5BLAZOR
                 // In the OpenSilver we can never be running in javascript but we may not be in the simulator
                 // todo: find a way to use a more generic method (see: IsRunningInTheSimulator)
-                if (!Interop.IsRunningInTheSimulator_WorkAround)
-#else
-                if (IsRunningInJavaScript())
-#endif
-                {
-                    CSHTML5.Interop.ExecuteJavaScriptAsync("setTimeout(function() { $0.focus(); }, 1)", domElementRefConcernedByFocus);
-                }
-                else
-                {
-                    SetFocus_SimulatorOnly(domElementRefConcernedByFocus);
-                }
+                //                if (!Interop.IsRunningInTheSimulator_WorkAround)
+                //#else
+                //                if (IsRunningInJavaScript())
+                //#endif
+                //                {
+                CSHTML5.Interop.ExecuteJavaScriptAsync("setTimeout(function() { $0.focus(); }, 1)", domElementRefConcernedByFocus);
+                //}
+                //else
+                //{
+                //    SetFocus_SimulatorOnly(domElementRefConcernedByFocus);
+                //}
             }
         }
 
@@ -332,7 +333,7 @@ else
             {
                 // Note: this is intended to be called by the simulator only:
                 string uniqueIdentifier = ((INTERNAL_HtmlDomElementReference)domElement).UniqueIdentifier;
-                string javaScriptCodeToExecute = $@"document.setContentString(""{ uniqueIdentifier}"",""{EscapeStringForUseInJavaScript(content)}"",{removeTextWrapping.ToString().ToLower()})";
+                string javaScriptCodeToExecute = $@"document.setContentString(""{uniqueIdentifier}"",""{EscapeStringForUseInJavaScript(content)}"",{removeTextWrapping.ToString().ToLower()})";
                 INTERNAL_SimulatorExecuteJavaScript.ExecuteJavaScriptAsync(javaScriptCodeToExecute);
             }
 
@@ -394,11 +395,11 @@ setTimeout(function(){{ var element2 = document.getElementByIdSafe(""{uniqueIden
             else
             {
 #endif
-                string uniqueIdentifier = ((INTERNAL_HtmlDomElementReference)domElementRef).UniqueIdentifier;
-                object domElement = Interop.ExecuteJavaScriptAsync(@"document.getElementByIdSafe($0)", uniqueIdentifier);
-                //todo-perfs: replace the code above with a call to the faster "ExecuteJavaScript" method instead of "ExecuteJavaScriptWithResult". To do so, see other methods in this class, or see the class "INTERNAL_HtmlDomStyleReference.cs".
+            string uniqueIdentifier = ((INTERNAL_HtmlDomElementReference)domElementRef).UniqueIdentifier;
+            object domElement = Interop.ExecuteJavaScriptAsync(@"document.getElementByIdSafe($0)", uniqueIdentifier);
+            //todo-perfs: replace the code above with a call to the faster "ExecuteJavaScript" method instead of "ExecuteJavaScriptWithResult". To do so, see other methods in this class, or see the class "INTERNAL_HtmlDomStyleReference.cs".
 
-                return Interop.ExecuteJavaScript("getTextAreaInnerText($0)", domElement).ToString();
+            return Interop.ExecuteJavaScript("getTextAreaInnerText($0)", domElement).ToString();
 #if !CSHTML5NETSTANDARD
             }
 #endif
@@ -1142,7 +1143,7 @@ function(){
             {
                 Interop.ExecuteJavaScriptAsync(@"document.createElementSafe($0, $1, $2, $3)", domElementTag, uniqueIdentifier, parentRef, index);
             }
-            
+
             _store.Add(uniqueIdentifier, associatedUIElement);
 
             return new INTERNAL_HtmlDomElementReference(uniqueIdentifier, parent); //todo: when parent is null this breaks for the root control, but the whole logic will be replaced with simple "ExecuteJavaScript" calls in the future, so it will not be a problem.
@@ -1193,10 +1194,10 @@ var parentElement = document.getElementByIdSafe(""{parentUniqueIdentifier}"");
             else
             {
 #endif
-                string uniqueIdentifier = NewId();
-                string parentUniqueIdentifier = ((INTERNAL_HtmlDomElementReference)parentRef).UniqueIdentifier;
-                // Create a temporary parent div to which we can write the innerHTML, then extract the contents:
-                string javaScriptToExecute = $@"
+            string uniqueIdentifier = NewId();
+            string parentUniqueIdentifier = ((INTERNAL_HtmlDomElementReference)parentRef).UniqueIdentifier;
+            // Create a temporary parent div to which we can write the innerHTML, then extract the contents:
+            string javaScriptToExecute = $@"
 var tempDiv = document.createElement(""div"");
 tempDiv.innerHTML = ""{domAsString.Replace('\"', '\'').Replace("\r", "").Replace("\n", "")}"";
 var newElement = tempDiv.firstChild;
@@ -1204,10 +1205,10 @@ newElement.setAttribute(""id"", ""{uniqueIdentifier}"");
 var parentElement = document.getElementByIdSafe(""{parentUniqueIdentifier}"");
 parentElement.appendChild(newElement);";
 
-                ExecuteJavaScript(javaScriptToExecute);
-                _store.Add(uniqueIdentifier, associatedUIElement);
-                return new INTERNAL_HtmlDomElementReference(uniqueIdentifier, ((INTERNAL_HtmlDomElementReference)parentRef).Parent);
-                //todo-perfs: check if there is a better solution in terms of performance (while still remaining compatible with all browsers).
+            ExecuteJavaScript(javaScriptToExecute);
+            _store.Add(uniqueIdentifier, associatedUIElement);
+            return new INTERNAL_HtmlDomElementReference(uniqueIdentifier, ((INTERNAL_HtmlDomElementReference)parentRef).Parent);
+            //todo-perfs: check if there is a better solution in terms of performance (while still remaining compatible with all browsers).
 #if !CSHTML5NETSTANDARD
             }
 #endif
@@ -1384,7 +1385,7 @@ parentElement.appendChild(child);";
         {
             INTERNAL_SimulatorExecuteJavaScript.ExecuteJavaScriptAsync(
                 javaScriptToExecute,
-                INTERNAL_SimulatorExecuteJavaScript.EnableInteropLogging ? "(Called from HtmlDomManager.ExecuteJavaScript)" + (commentForDebugging != null ? commentForDebugging : "") : "" );
+                INTERNAL_SimulatorExecuteJavaScript.EnableInteropLogging ? "(Called from HtmlDomManager.ExecuteJavaScript)" + (commentForDebugging != null ? commentForDebugging : "") : "");
         }
 
 #if !BRIDGE
@@ -1396,7 +1397,7 @@ parentElement.appendChild(child);";
         {
             return INTERNAL_SimulatorExecuteJavaScript.ExecuteJavaScriptSync(
                 javaScriptToExecute,
-                INTERNAL_SimulatorExecuteJavaScript.EnableInteropLogging ? "(Called from HtmlDomManager.ExecuteJavaScriptWithResult)" + (commentForDebugging != null ? commentForDebugging : "") : "", 
+                INTERNAL_SimulatorExecuteJavaScript.EnableInteropLogging ? "(Called from HtmlDomManager.ExecuteJavaScriptWithResult)" + (commentForDebugging != null ? commentForDebugging : "") : "",
                 noImpactOnPendingJSCode);
         }
 
@@ -1562,7 +1563,7 @@ parentElement.appendChild(child);";
             string width = $"{visualBounds.Width.ToInvariantString("0.##")}";
             string height = $"{visualBounds.Height.ToInvariantString("0.##")}";
 
-            string javaScriptCodeToExecute = $@"document.setVisualBounds(""{style.Uid}"",{left},{top},{width},{height},{(bSetPositionAbsolute ? "1": "0")},{(bSetZeroMargin ? "1" : "0")},{(bSetZeroPadding ? "1" : "0")})";
+            string javaScriptCodeToExecute = $@"document.setVisualBounds(""{style.Uid}"",{left},{top},{width},{height},{(bSetPositionAbsolute ? "1" : "0")},{(bSetZeroMargin ? "1" : "0")},{(bSetZeroPadding ? "1" : "0")})";
 
             INTERNAL_SimulatorExecuteJavaScript.ExecuteJavaScriptAsync(javaScriptCodeToExecute);
         }

@@ -89,7 +89,7 @@ namespace CSHTML5.Types
         internal static object CastFromJsValue(object obj)
         {
 #if OPENSILVER
-            if (!Interop.IsRunningInTheSimulator_WorkAround)
+            if (!Interop.IsRunningInTheSimulator_WorkAround || DotNetForHtml5.Core.INTERNAL_Simulator.SimulatorProxy.UseSimBrowser)
             {
                 if (obj != null && (obj is string || obj.GetType().IsPrimitive))
                 {
@@ -140,7 +140,7 @@ namespace CSHTML5.Types
         {
 #if !BUILDINGDOCUMENTATION // We don't have the references to the "DotNetBrowser" web browser control when building the documentation.
             object result;
-
+            if (Value == null) return null;
             if (IsArray)
             {
                 var fullName = Value.GetType().FullName;
@@ -152,7 +152,7 @@ namespace CSHTML5.Types
                 {
                     result = array[ArrayIndex];
                 }
-                else if(Value != null && (fullName == "DotNetBrowser.JSObject" || fullName == "System.Text.Json.JsonElement"))
+                else if (Value != null && (fullName == "DotNetBrowser.JSObject" || fullName == "System.Text.Json.JsonElement"))
                 {
                     result = ((dynamic)Value).GetProperty(ArrayIndex.ToString());
                 }
@@ -193,10 +193,11 @@ namespace CSHTML5.Types
         {
             var actualValue = GetActualValue();
 #if CSHTML5NETSTANDARD
-            if (Interop.IsRunningInTheSimulator_WorkAround)
-                return (actualValue == null || actualValue.GetType().FullName == "DotNetBrowser.JSUndefined");
-            else
-                return actualValue == null || actualValue.ToString() == "[UNDEFINED]";
+            //ams> skip simulator check and do as in browser
+            //if (Interop.IsRunningInTheSimulator_WorkAround)
+            //    return (actualValue == null || actualValue.GetType().FullName == "DotNetBrowser.JSUndefined");
+            //else
+            return actualValue == null || actualValue.ToString() == "[UNDEFINED]";
 #else
             if (actualValue ==  null || !(actualValue is JSValue))
                 return false;
@@ -299,7 +300,7 @@ namespace CSHTML5.Types
             return (actualValue != null ? actualValue.ToString() : null);
         }
 
-#region IConvertible implementation
+        #region IConvertible implementation
 
         //  Note: in the methods below, we use "Convert.*" rather than  casting, in order to prevent issues related to unboxing values. cf. http://stackoverflow.com/questions/4113056/whats-wrong-with-casting-0-0-to-double
 
@@ -393,6 +394,6 @@ namespace CSHTML5.Types
 
             throw new NotImplementedException();
         }
-#endregion
+        #endregion
     }
 }

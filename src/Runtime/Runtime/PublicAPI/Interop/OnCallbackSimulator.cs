@@ -13,7 +13,11 @@
 \*====================================================================================*/
 
 using CSHTML5.Types;
+using DotNetForHtml5.Core;
 using System;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System.Windows.Threading;
 
 #if BRIDGE
 using Bridge;
@@ -25,36 +29,55 @@ using DotNetBrowser;
 
 namespace CSHTML5.Internal
 {
-    internal class OnCallbackSimulator
+    [ClassInterface(ClassInterfaceType.AutoDual)]
+    [ComVisible(true)]
+    public class OnCallbackSimulator
     {
-        public OnCallbackSimulator()
+        private Dispatcher _Dispatcher;
+        public static OnCallbackSimulator Instance { get; }
+
+        static OnCallbackSimulator() { Instance = new OnCallbackSimulator(); }
+        private OnCallbackSimulator()
         {
             CheckIsRunningInTheSimulator();
-        }
 
+            if (INTERNAL_Simulator.SimulatorProxy.UseSimBrowser)
+            {
+                INTERNAL_Simulator.SimulatorProxy.AddHostObject("onCallBack", this);
+                INTERNAL_HtmlDomManager.ExecuteJavaScriptWithResult("window.onCallBack = chrome.webview.hostObjects.onCallBack;");
+                _Dispatcher = Dispatcher.INTERNAL_GetCurrentDispatcher();
+            }
+        }
         public void OnCallbackFromJavaScriptError(string idWhereCallbackArgsAreStored)
         {
             OnCallBackImpl.Instance.OnCallbackFromJavaScriptError(idWhereCallbackArgsAreStored);
         }
 
         // This method can be removed later. Now it is used for easier migration from old cshtml5.js to new one
-        public object OnCallbackFromJavaScript(
+        public void OnCallbackFromJavaScriptOld(
             int callbackId,
             string idWhereCallbackArgsAreStored,
             object callbackArgsObject)
         {
-            return OnCallbackFromJavaScript(callbackId, idWhereCallbackArgsAreStored, callbackArgsObject,
-                false);
+            throw new NotImplementedException();
         }
 
-        public object OnCallbackFromJavaScript(
+        public void OnCallbackFromJavaScript(
             int callbackId,
             string idWhereCallbackArgsAreStored,
             object callbackArgsObject,
             bool returnValue)
         {
-            return OnCallBackImpl.Instance.OnCallbackFromJavaScript(callbackId, idWhereCallbackArgsAreStored, callbackArgsObject,
-                MakeArgumentsForCallbackSimulator, true, returnValue);
+            if (INTERNAL_Simulator.SimulatorProxy.UseSimBrowser)
+            {
+                Action callBack = () => OnCallBackImpl.Instance.OnCallbackFromJavaScript(callbackId, idWhereCallbackArgsAreStored, callbackArgsObject,
+                            MakeArgumentsForCallbackSimulator, true, returnValue);
+                INTERNAL_Simulator.SimulatorProxy.InvokeAsync(callBack);
+                //_Dispatcher.InvokeAsync(callBack, DispatcherPriority.Normal);
+            }
+            else
+                OnCallBackImpl.Instance.OnCallbackFromJavaScript(callbackId, idWhereCallbackArgsAreStored, callbackArgsObject,
+                    MakeArgumentsForCallbackSimulator, true, returnValue);
         }
 
         private static object[] MakeArgumentsForCallbackSimulator(
@@ -69,6 +92,12 @@ namespace CSHTML5.Internal
             for (int i = 0; i < count; i++)
             {
                 var arg = new INTERNAL_JSObjectReference(callbackArgs, idWhereCallbackArgsAreStored, i);
+                //if (Interop.IsRunningInTheSimulator)
+                //    if (DotNetForHtml5.Core.INTERNAL_Simulator.SimulatorProxy.UseSimBrowser)
+                //    {
+                //        result[i] = arg;
+                //        continue;
+                //    }
                 if (callbackGenericArgs != null
                     && i < callbackGenericArgs.Length
                     && callbackGenericArgs[i] != typeof(object)
