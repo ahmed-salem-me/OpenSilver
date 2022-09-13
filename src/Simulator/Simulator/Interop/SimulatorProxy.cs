@@ -31,6 +31,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
     {
         WPFBrowserView _webControl;
         ConsoleControl _console;
+        public bool UseSimBrowser = false;
 
         public SimulatorProxy(WPFBrowserView webControl, ConsoleControl console)
         {
