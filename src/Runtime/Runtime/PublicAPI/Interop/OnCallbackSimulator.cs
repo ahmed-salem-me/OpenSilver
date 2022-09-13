@@ -43,6 +43,13 @@ namespace CSHTML5.Internal
             INTERNAL_HtmlDomManager.ExecuteJavaScriptWithResult("window.onCallBack = chrome.webview.hostObjects.onCallBack;");
         }
 
+            if (INTERNAL_Simulator.SimulatorProxy.UseSimBrowser)
+            {
+                INTERNAL_Simulator.SimulatorProxy.AddHostObject("onCallBack", this);
+                INTERNAL_HtmlDomManager.ExecuteJavaScriptWithResult("window.onCallBack = chrome.webview.hostObjects.onCallBack;");
+                _Dispatcher = Dispatcher.INTERNAL_GetCurrentDispatcher();
+            }
+        }
         public void OnCallbackFromJavaScriptError(string idWhereCallbackArgsAreStored)
         {
             Action callBack = () => OnCallBackImpl.Instance.OnCallbackFromJavaScriptError(idWhereCallbackArgsAreStored);
@@ -82,6 +89,12 @@ namespace CSHTML5.Internal
             for (int i = 0; i < count; i++)
             {
                 var arg = new INTERNAL_JSObjectReference(callbackArgs, idWhereCallbackArgsAreStored, i);
+                //if (Interop.IsRunningInTheSimulator)
+                //    if (DotNetForHtml5.Core.INTERNAL_Simulator.SimulatorProxy.UseSimBrowser)
+                //    {
+                //        result[i] = arg;
+                //        continue;
+                //    }
                 if (callbackGenericArgs != null
                     && i < callbackGenericArgs.Length
                     && callbackGenericArgs[i] != typeof(object)

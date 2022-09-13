@@ -235,7 +235,8 @@ namespace CSHTML5.Internal // IMPORTANT: if you change this namespace, make sure
                     return;
                 }
 
-#if CSHTML5BLAZOR
+                //ams> skip simulator check and do as in browser
+                //#if CSHTML5BLAZOR
                 // In the OpenSilver we can never be running in javascript but we may not be in the simulator
                 // todo: find a way to use a more generic method(see: IsRunningInTheSimulator)
 #else
