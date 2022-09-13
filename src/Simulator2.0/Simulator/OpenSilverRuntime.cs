@@ -21,24 +21,24 @@ namespace OpenSilver.Simulator
         public OpenSilverRuntime(SimBrowser simBrowser, MainWindow simMainWindow, SynchronizationContext uiSynchronizationContext)
         {
             _simBrowser = simBrowser;
-            this._simMainWindow = simMainWindow;
-            this._uiSynchronizationContext = uiSynchronizationContext;
+            _simMainWindow = simMainWindow;
+            _uiSynchronizationContext = uiSynchronizationContext;
             ReflectionInUserAssembliesHelper.TryGetCoreAssembly(out _OSRuntimeAssembly);
         }
 
-        public bool Start(Action entryAppCreator)
+        public bool Start(Action clientAppStartup)
         {
             try
             {
-                var worker = new BackgroundWorker();
-                worker.DoWork += (s, e) =>
-                {
+                //var worker = new BackgroundWorker();
+                //worker.DoWork += (s, e) =>
+                //{
                     if (!Initialize())
-                        return;
+                        return false;
 
-                    entryAppCreator();
-                };
-                worker.RunWorkerAsync();
+                    clientAppStartup();
+                //};
+                //worker.RunWorkerAsync();
                 return true;
             }
             catch (Exception ex)

@@ -169,5 +169,10 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
         {
             _UISyncContext.Post(o => _webControl.CoreWebView2.AddHostObjectToScript(objectName, objectInstance), null);
         }
+
+        public void InvokeAsync(Action action)
+        {
+            _UISyncContext.Post(o => action(), null);
+        }
     }
 }

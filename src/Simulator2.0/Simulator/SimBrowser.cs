@@ -203,7 +203,7 @@ namespace OpenSilver.Simulator
             string jsonResult = null;
 
             if ((this as DispatcherObject).CheckAccess())
-                jsonResult = Await(ExecuteScriptAsync(javaScript), javaScript);
+                jsonResult = Await(ExecuteScriptAsync(javaScript));
             else
                 jsonResult = Dispatcher.InvokeAsync(async () => await ExecuteScriptAsync(javaScript)).Result.Result;
 
@@ -222,7 +222,7 @@ namespace OpenSilver.Simulator
             return jsonResult;
         }
 
-        private static string Await(Task<string> task, string javaScript)
+        private  string Await(Task<string> task)
         {
             //We use this hack to be able to await an async call from a non async method, has to be called from non webview2 event hence the class timer
 
@@ -232,22 +232,17 @@ namespace OpenSilver.Simulator
 
             DispatcherFrame frame = new DispatcherFrame();
 
-            string result = "";
 
-            task.ContinueWith(
-                _ =>
-                {
-                    if (task.IsFaulted)
-                        result = task.Exception.Message;
-                    else
-                        result = task.Result;
+            string result = null;
 
-                    frame.Continue = false;
-                });
+            task.ContinueWith(_ =>
+            {
+                result = !task.IsFaulted ? task.Result : task.Exception.Message;
+                frame.Continue = false;
+            });
 
-            //timeOutTimer.Start();
-            frame.Continue = true;
             Dispatcher.PushFrame(frame);
+            //timeOutTimer.Start();
             //timeOutTimer.Stop();
 
             return result;
