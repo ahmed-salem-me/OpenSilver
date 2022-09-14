@@ -246,6 +246,7 @@ namespace OpenSilver.Simulator
             //timeOutTimer.Stop();
 
             return result;
+
         }
     }
 }

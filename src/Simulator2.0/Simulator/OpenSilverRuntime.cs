@@ -30,15 +30,34 @@ namespace OpenSilver.Simulator
         {
             try
             {
-                //var worker = new BackgroundWorker();
-                //worker.DoWork += (s, e) =>
-                //{
+                if (!Initialize())
+                    return false;
+
+                clientAppStartup();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to start the application.\r\n\r\n" + ex.ToString());
+                //_simMainWindow.HideLoadingMessage();
+                return false;
+            }
+
+        }
+
+        public bool StartInABackground(Action clientAppStartup)
+        {
+            try
+            {
+                var worker = new BackgroundWorker();
+                worker.DoWork += (s, e) =>
+                {
                     if (!Initialize())
-                        return false;
+                        return;
 
                     clientAppStartup();
-                //};
-                //worker.RunWorkerAsync();
+                };
+                worker.RunWorkerAsync();
                 return true;
             }
             catch (Exception ex)

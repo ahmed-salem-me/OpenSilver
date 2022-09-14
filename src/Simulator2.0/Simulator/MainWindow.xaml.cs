@@ -878,7 +878,7 @@ Click OK to continue.";
                 //ams>I don't think we'll need this while using the NavigationCompleted event
                 //WaitForDocumentToBeFullyLoaded(); // Note: without this, we got errors when running rokjs (with localhost as base url) without any breakpoints.
 
-                bool success = _openSilverRuntime.Start(_clientAppStartup);
+                bool success = _openSilverRuntime.StartInABackground(_clientAppStartup);
 
                 if (success)
                 {
