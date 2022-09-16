@@ -16,7 +16,6 @@ using CSHTML5.Types;
 using DotNetForHtml5.Core;
 using System;
 using System.Runtime.InteropServices;
-using System.Windows.Threading;
 
 #if BRIDGE
 using Bridge;
@@ -47,9 +46,10 @@ namespace CSHTML5.Internal
             {
                 INTERNAL_Simulator.SimulatorProxy.AddHostObject("onCallBack", this);
                 INTERNAL_HtmlDomManager.ExecuteJavaScriptWithResult("window.onCallBack = chrome.webview.hostObjects.onCallBack;");
-                _Dispatcher = Dispatcher.INTERNAL_GetCurrentDispatcher();
             }
+
         }
+
         public void OnCallbackFromJavaScriptError(string idWhereCallbackArgsAreStored)
         {
             Action callBack = () => OnCallBackImpl.Instance.OnCallbackFromJavaScriptError(idWhereCallbackArgsAreStored);
@@ -62,7 +62,7 @@ namespace CSHTML5.Internal
             string idWhereCallbackArgsAreStored,
             object callbackArgsObject)
         {
-            throw new NotImplementedException();
+            OnCallbackFromJavaScript(callbackId, idWhereCallbackArgsAreStored, callbackArgsObject, false);
         }
 
         public void OnCallbackFromJavaScript(
