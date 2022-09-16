@@ -23,6 +23,7 @@ using CSHTML5.Internal;
 using DotNetForHtml5.Core;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 #if !MIGRATION
 using Windows.Foundation;
 #endif
@@ -150,11 +151,14 @@ namespace Windows.UI.Core
             else
             {
 #endif
-            //Simulator only. We call the JavaScript "setTimeout" to queue the action on the thread, and then we call Dispatcher.BeginInvoke(...) to ensure that it runs in the UI thread.
-            //CSHTML5.Interop.ExecuteJavaScriptAsync("setTimeout($0, 1)",
-            //    (Action)(() =>
-            //    {
-            INTERNAL_Simulator.WebControlDispatcherBeginInvoke(method);
+                //Simulator only. We call the JavaScript "setTimeout" to queue the action on the thread, and then we call Dispatcher.BeginInvoke(...) to ensure that it runs in the UI thread.
+                //CSHTML5.Interop.ExecuteJavaScriptAsync("setTimeout($0, 1)",
+                //    (Action)(() =>
+                //    {
+                //ams> double check , with webView2 I don't want to use the wpf UI thread
+                //INTERNAL_Simulator.WebControlDispatcherBeginInvoke(method);
+                //Task.Run(method);
+                INTERNAL_Simulator.SimulatorProxy.OSDispatcherInvokeAsync(method);
             //}));
 #if CSHTML5NETSTANDARD
             }
@@ -270,7 +274,9 @@ namespace Windows.UI.Core
         public bool CheckAccess()
         {
 #if OPENSILVER
-            return INTERNAL_Simulator.IsRunningInTheSimulator_WorkAround ? INTERNAL_Simulator.WebControlDispatcherCheckAccess() : true; 
+            //ams> skip simulator check
+            return true;
+            //return INTERNAL_Simulator.IsRunningInTheSimulator_WorkAround ? INTERNAL_Simulator.WebControlDispatcherCheckAccess() : true; 
 #else
             return CSHTML5.Interop.IsRunningInTheSimulator ? INTERNAL_Simulator.WebControlDispatcherCheckAccess() : true;
 #endif

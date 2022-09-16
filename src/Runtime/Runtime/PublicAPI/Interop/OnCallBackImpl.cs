@@ -49,12 +49,12 @@ namespace CSHTML5.Internal
                 INTERNAL_InteropImplementation.ShowErrorMessage(errorMessage, indexOfNextUnmodifiedJSCallInList);
             };
             //ams> re-think
-            if (OpenSilver.Interop.IsRunningInTheSimulator)
-            {
-                // Go back to the UI thread because DotNetBrowser calls the callback from the socket background thread:
-                INTERNAL_Simulator.WebControlDispatcherBeginInvoke(action);
-            }
-            else
+            //if (OpenSilver.Interop.IsRunningInTheSimulator)
+            //{
+            //    // Go back to the UI thread because DotNetBrowser calls the callback from the socket background thread:
+            //    INTERNAL_Simulator.WebControlDispatcherBeginInvoke(action);
+            //}
+            //else
             {
                 action();
             }
@@ -192,24 +192,25 @@ namespace CSHTML5.Internal
                         }
                     });
             };
-            if (isInSimulator)
-            {
-                // Go back to the UI thread because DotNetBrowser calls the callback from the socket background thread:
-                if (returnValue)
-                {
-                    var timeout = TimeSpan.FromSeconds(30);
-                    INTERNAL_Simulator.WebControlDispatcherInvoke(action, timeout);
-                    if (!actionExecuted)
-                    {
-                        throw GenerateDeadlockException(timeout);
-                    }
-                }
-                else
-                {
-                    INTERNAL_Simulator.WebControlDispatcherBeginInvoke(action);
-                }
-            }
-            else
+            //ams> with webView we want to always talk to it from another thread so we can wait on result
+            //if (isInSimulator)
+            //{
+            //    // Go back to the UI thread because DotNetBrowser calls the callback from the socket background thread:
+            //    if (returnValue)
+            //    {
+            //        var timeout = TimeSpan.FromSeconds(30);
+            //        INTERNAL_Simulator.WebControlDispatcherInvoke(action, timeout);
+            //        if (!actionExecuted)
+            //        {
+            //            throw GenerateDeadlockException(timeout);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        INTERNAL_Simulator.WebControlDispatcherBeginInvoke(action);
+            //    }
+            //}
+            //else
             {
                 action();
             }
