@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace OpenSilver.Simulator
 {
@@ -12,17 +13,18 @@ namespace OpenSilver.Simulator
         private JavaScriptExecutionHandler _javaScriptExecutionHandler;
         private SimBrowser _simBrowser;
         private readonly MainWindow _simMainWindow;
-        private readonly SynchronizationContext _uiSynchronizationContext;
+        private Dispatcher _WpfDispatcher;
+        private Dispatcher _OSDispatcher;
         private Assembly _OSRuntimeAssembly;
 
         public Action OnInitialized { get; set; }
 
 
-        public OpenSilverRuntime(SimBrowser simBrowser, MainWindow simMainWindow, SynchronizationContext uiSynchronizationContext)
+        public OpenSilverRuntime(SimBrowser simBrowser, MainWindow simMainWindow, Dispatcher wpfDispatcher)
         {
             _simBrowser = simBrowser;
             _simMainWindow = simMainWindow;
-            _uiSynchronizationContext = uiSynchronizationContext;
+            _WpfDispatcher = wpfDispatcher;
             ReflectionInUserAssembliesHelper.TryGetCoreAssembly(out _OSRuntimeAssembly);
         }
 
@@ -30,34 +32,22 @@ namespace OpenSilver.Simulator
         {
             try
             {
-                if (!Initialize())
-                    return false;
-
-                clientAppStartup();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Unable to start the application.\r\n\r\n" + ex.ToString());
-                //_simMainWindow.HideLoadingMessage();
-                return false;
-            }
-
-        }
-
-        public bool StartInABackground(Action clientAppStartup)
-        {
-            try
-            {
-                var worker = new BackgroundWorker();
-                worker.DoWork += (s, e) =>
+                Thread osThread = new Thread(new ThreadStart(() =>
                 {
+                    _OSDispatcher = Dispatcher.CurrentDispatcher;
+
                     if (!Initialize())
                         return;
 
                     clientAppStartup();
-                };
-                worker.RunWorkerAsync();
+
+                    Dispatcher.Run();
+                }));
+
+                osThread.SetApartmentState(ApartmentState.STA);
+                osThread.IsBackground = true;
+                osThread.Start();
+
                 return true;
             }
             catch (Exception ex)
@@ -90,7 +80,7 @@ namespace OpenSilver.Simulator
                 InteropHelpers.InjectWpfMediaElementFactory(_OSRuntimeAssembly);
                 InteropHelpers.InjectWebClientFactory(_OSRuntimeAssembly);
                 InteropHelpers.InjectClipboardHandler(_OSRuntimeAssembly);
-                InteropHelpers.InjectSimulatorProxy(new SimulatorProxy(_simBrowser, _simMainWindow.Console, _uiSynchronizationContext), _OSRuntimeAssembly);
+                InteropHelpers.InjectSimulatorProxy(new SimulatorProxy(_simBrowser, _simMainWindow.Console, _WpfDispatcher, _OSDispatcher), _OSRuntimeAssembly);
 
                 // In the OpenSilver Version, we use this work-around to know if we're in the simulator
                 InteropHelpers.InjectIsRunningInTheSimulator_WorkAround(_OSRuntimeAssembly);

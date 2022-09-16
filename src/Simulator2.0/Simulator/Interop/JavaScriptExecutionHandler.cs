@@ -37,7 +37,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
 
         public JavaScriptExecutionHandler(SimBrowser webControl)
         {
-            _webControl = webControl;
+            _webControl = webControl; 
             //ams>could/should be replaced
             //webControl.DisposeEvent += WebControl_DisposeEvent;
             //webControl.Browser.DisposeEvent += WebControl_DisposeEvent;

@@ -34,14 +34,15 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
         public WebView2 _webControl;
         ConsoleControl _console;
         public bool UseSimBrowser = true;
-        private SynchronizationContext _UISyncContext { get; }
-        private SynchronizationContext _OSRuntimeSyncContext { get; }
+        private Dispatcher _WpfDispatcher;
+        private Dispatcher _OSDispatcher;
 
-        public SimulatorProxy(WebView2 webControl, ConsoleControl console, SynchronizationContext uiSyncContext)//, Dispatcher OSRuntimDispatcher)
+        public SimulatorProxy(WebView2 webControl, ConsoleControl console, Dispatcher wpfDispatcher, Dispatcher oSDispatcher)
         {
             _webControl = webControl;
             _console = console;
-            _UISyncContext = uiSyncContext;
+            _WpfDispatcher = wpfDispatcher;
+            _OSDispatcher = oSDispatcher;
         }
 
         //Do not remove this method: called via reflection.
@@ -167,12 +168,17 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
 
         public void AddHostObject(string objectName, object objectInstance)
         {
-            _UISyncContext.Post(o => _webControl.CoreWebView2.AddHostObjectToScript(objectName, objectInstance), null);
+            _WpfDispatcher.InvokeAsync(() => _webControl.CoreWebView2.AddHostObjectToScript(objectName, objectInstance));
         }
 
-        public void InvokeAsync(Action action)
+        public void OSDispatcherInvokeAsync(Action action)
         {
-            _UISyncContext.Post(o => action(), null);
+            _OSDispatcher.InvokeAsync(action);
         }
+
+        //public void InvokeAsync(Action action)
+        //{
+        //    _WpfDispatcher.Post(o => action(), null);
+        //}
     }
 }

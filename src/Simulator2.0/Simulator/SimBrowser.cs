@@ -4,8 +4,6 @@ using Microsoft.Web.WebView2.Wpf;
 using System;
 using System.IO;
 using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 using System.Windows.Threading;
 
 namespace OpenSilver.Simulator
@@ -23,16 +21,16 @@ namespace OpenSilver.Simulator
             Loaded += SimBrowser_Loaded;
             CoreWebView2InitializationCompleted += SimBrowser_CoreWebView2InitializationCompleted;
 
-            _NavigationCompletedCheckTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(10) };
-            _NavigationCompletedCheckTimer.Tick += (s, e) =>
-            {
-                if (_IsNavigationCompleted)
-                {
-                    _NavigationCompletedCheckTimer.Stop();
-                    OnNavigationCompleted();
-                }
-            };
-            _NavigationCompletedCheckTimer.Start();
+            //_NavigationCompletedCheckTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(10) };
+            //_NavigationCompletedCheckTimer.Tick += (s, e) =>
+            //{
+            //    if (_IsNavigationCompleted)
+            //    {
+            //        _NavigationCompletedCheckTimer.Stop();
+            //        OnNavigationCompleted();
+            //    }
+            //};
+            //_NavigationCompletedCheckTimer.Start();
         }
 
         private async void SimBrowser_Loaded(object sender, System.Windows.RoutedEventArgs e)
@@ -66,10 +64,6 @@ namespace OpenSilver.Simulator
             coreWebView.DOMContentLoaded += CoreWebView_DOMContentLoaded;
 
             await coreWebView.CallDevToolsProtocolMethodAsync("Network.clearBrowserCache", "{}");
-
-            //the following 2 lines don't work
-            //await coreWebView.CallDevToolsProtocolMethodAsync("Log.enable", "{}");
-            //coreWebView.GetDevToolsProtocolEventReceiver("Log.entryAdded").DevToolsProtocolEventReceived += OnConsoleMessage;
 
             //Attach to browser console logging
             DevToolsProtocolHelper helper = coreWebView.GetDevToolsProtocolHelper();
@@ -112,6 +106,7 @@ namespace OpenSilver.Simulator
                 if (hashIndex != -1)
                     urlFragment = e.Uri.Substring(hashIndex);
 
+                //ams> rethink-rewrite
                 // We use a dispatcher to go back to the main thread so that the CurrentCulture remains the same (otherwise, for example on French systems we get an exception during Double.Parse when processing the <Path Data="..."/> control).
                 Dispatcher.BeginInvoke((Action)(() =>
                 {
@@ -122,7 +117,7 @@ namespace OpenSilver.Simulator
 
         private void CoreWebView_NavigationCompleted(object? sender, CoreWebView2NavigationCompletedEventArgs e)
         {
-            _IsNavigationCompleted = true;
+            OnNavigationCompleted();
             if (_ReloadApp && OnNavigationCompleted != null) ;
             else
             {
@@ -203,7 +198,7 @@ namespace OpenSilver.Simulator
             string jsonResult = null;
 
             if ((this as DispatcherObject).CheckAccess())
-                jsonResult = Await(ExecuteScriptAsync(javaScript));
+                throw new NotSupportedException("Should not call ExecuteScript on the WebView2 thread");
             else
                 jsonResult = Dispatcher.InvokeAsync(async () => await ExecuteScriptAsync(javaScript)).Result.Result;
 
@@ -220,33 +215,6 @@ namespace OpenSilver.Simulator
                 }
             }
             return jsonResult;
-        }
-
-        private  string Await(Task<string> task)
-        {
-            //We use this hack to be able to await an async call from a non async method, has to be called from non webview2 event hence the class timer
-
-            //DispatcherTimer timeOutTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(55000) };
-            // Timeout if task takes too long
-            //timeOutTimer.Tick += (s, e) => throw new TimeoutException(javaScript);
-
-            DispatcherFrame frame = new DispatcherFrame();
-
-
-            string result = null;
-
-            task.ContinueWith(_ =>
-            {
-                result = !task.IsFaulted ? task.Result : task.Exception.Message;
-                frame.Continue = false;
-            });
-
-            Dispatcher.PushFrame(frame);
-            //timeOutTimer.Start();
-            //timeOutTimer.Stop();
-
-            return result;
-
         }
     }
 }

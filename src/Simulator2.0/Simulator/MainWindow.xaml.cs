@@ -878,7 +878,9 @@ Click OK to continue.";
                 //ams>I don't think we'll need this while using the NavigationCompleted event
                 //WaitForDocumentToBeFullyLoaded(); // Note: without this, we got errors when running rokjs (with localhost as base url) without any breakpoints.
 
-                bool success = _openSilverRuntime.StartInABackground(_clientAppStartup);
+                //bool success = _openSilverRuntime.StartInABackground(_clientAppStartup);
+                //bool success = _openSilverRuntime.Start(_clientAppStartup);
+                bool success = _openSilverRuntime.Start(_clientAppStartup);
 
                 if (success)
                 {
@@ -2007,7 +2009,7 @@ Click OK to continue.";
 
             simBrowser.OnInitialized = () =>
             {
-                _openSilverRuntime = new OpenSilverRuntime(MainWebBrowser, this, SynchronizationContext.Current);
+                _openSilverRuntime = new OpenSilverRuntime(MainWebBrowser, this, Dispatcher.CurrentDispatcher);
                 LoadIndexPage();
             };
             simBrowser.OnNavigationCompleted = OnIndexPageLoaded;
