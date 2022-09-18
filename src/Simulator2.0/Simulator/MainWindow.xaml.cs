@@ -43,6 +43,7 @@ using OpenSilver.Simulator;
 #else
 using CSHTML5.Simulator;
 #endif
+
 namespace DotNetForHtml5.EmulatorWithoutJavascript
 {
     /// <summary>
@@ -61,7 +62,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
         string _pathOfAssemblyThatContainsEntryPoint;
         public JavaScriptExecutionHandler _javaScriptExecutionHandler;
         bool _htmlHasBeenLoaded = false;
-        Assembly _entryPointAssembly;
+        Assembly _clientAppAssembly;
         Action _clientAppStartup;
         SimulatorLaunchParameters _simulatorLaunchParameters;
         CompilationState _compilationState = CompilationState.Initializing;
@@ -130,8 +131,8 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             _clientAppStartup = entryAppCreator ?? throw new ArgumentNullException(nameof(entryAppCreator));
             _simulatorLaunchParameters = simulatorLaunchParameters;
             ReflectionInUserAssembliesHelper.TryGetCoreAssembly(out _coreAssembly);
-            _entryPointAssembly = appAssembly;
-            _pathOfAssemblyThatContainsEntryPoint = _entryPointAssembly.Location;
+            _clientAppAssembly = appAssembly;
+            _pathOfAssemblyThatContainsEntryPoint = _clientAppAssembly.Location;
 #endif
 
 #if BRIDGE
@@ -209,12 +210,9 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             ButtonTestOnDevice.Visibility = Visibility.Collapsed;
             ButtonDebuggingTips.Visibility = Visibility.Collapsed;
             MenuButtonViewCompilationLog.Visibility = Visibility.Collapsed;
-            WelcomeTextBlock.Text = @"The Simulator below lets you debug in C# using Visual Studio.
-To view the final web version instead, run the project that
-ends with "".Browser"" in your solution.";
+            WelcomeTextBlock.Text = "The Simulator below lets you debug in C# using Visual Studio. To view the final web version instead, run the project that ends with .Browser in your solution.";
             WelcomeTextBlock.Visibility = Visibility.Visible;
 #endif
-
         }
 
         void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
@@ -534,11 +532,14 @@ ends with "".Browser"" in your solution.";
 
         private void ButtonRestart_Click(object sender, RoutedEventArgs e)
         {
+            _htmlHasBeenLoaded = false;
+            _openSilverRuntime.Stop();
+            LoadIndexPage();
         }
 
         private void ButtonViewJavaScriptLog_Click(object sender, RoutedEventArgs e)
         {
-            string fullLog = _javaScriptExecutionHandler.FullLogOfExecutedJavaScriptCode;
+            string fullLog = _javaScriptExecutionHandler.InteropLog;
             var msgBox = new MessageBoxScrollable()
             {
                 Value = fullLog,
@@ -547,6 +548,7 @@ ends with "".Browser"" in your solution.";
             msgBox.Show();
         }
 
+        //ams> should delete unless wanted!
         private void ButtonDebugJavaScriptLog_Click(object sender, RoutedEventArgs e)
         {
 #if BRIDGE
@@ -590,7 +592,7 @@ Click OK to continue.";
                     File.Copy(Path.Combine(simulatorJsCssPath, "ResizeSensor.js"), Path.Combine(destinationPath, "ResizeSensor.js"), true);
 
                     // Create "interopcalls.js" which contains all the JS executed by the Simulator so far:
-                    string fullLog = _javaScriptExecutionHandler.FullLogOfExecutedJavaScriptCode;
+                    string fullLog = _javaScriptExecutionHandler.InteropLog;
                     File.WriteAllText(Path.Combine(destinationPath, "interopcalls.js"), fullLog);
                 }
                 catch (Exception ex)
@@ -704,8 +706,8 @@ Click OK to continue.";
 
         private void ButtonViewXamlTree_Click(object sender, RoutedEventArgs e)
         {
-            if (_entryPointAssembly != null
-                && XamlInspectionTreeViewInstance.TryRefresh(_entryPointAssembly, XamlPropertiesPaneInstance, MainWebBrowser, HighlightElement))
+            if (_clientAppAssembly != null
+                && XamlInspectionTreeViewInstance.TryRefresh(_clientAppAssembly, XamlPropertiesPaneInstance, MainWebBrowser, HighlightElement))
             {
                 MainGridSplitter.Visibility = Visibility.Visible;
                 BorderForXamlInspection.Visibility = Visibility.Visible;
@@ -838,6 +840,20 @@ Click OK to continue.";
             UpdateWebBrowserAndWebPageSizeBasedOnCurrentState();
         }
 
+        private void LogInterop_Click(object sender, RoutedEventArgs e)
+        {
+            _openSilverRuntime.JavaScriptExecutionHandler.IsJSLoggingEnabled = (bool)LogInterop.IsChecked;
+            if ((bool)LogInterop.IsChecked)
+                _openSilverRuntime.JavaScriptExecutionHandler.ClearInteropLog();
+        }
+
+        private void ViewInteropLog_Click(object sender, RoutedEventArgs e)
+        {
+            var logWin = new Window() { Title = "Interop Log", WindowStartupLocation = WindowStartupLocation.CenterScreen };
+            logWin.Content = new TextBox() { Text = _openSilverRuntime.JavaScriptExecutionHandler.InteropLog, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
+            logWin.Show();
+        }
+
         void TimerToInformTheUserIfTheCompilationIsTakingTooLong_Tick(object sender, EventArgs e)
         {
             if (this._compilationState == CompilationState.Compiling)
@@ -850,7 +866,7 @@ Click OK to continue.";
 
         void LoadIndexPage(string urlFragment = null)
         {
-            _rootPage = new RootPage(_entryPointAssembly);
+            _rootPage = new RootPage(_clientAppAssembly);
             _rootPage.Create(_simulatorLaunchParameters);
             MainWebBrowser.CoreWebView2.Navigate($"file:///{_rootPage.ToHtmlPath().Replace('\\', '/')}");
 
@@ -1441,22 +1457,22 @@ Click OK to continue.";
             switch (_compilationState)
             {
                 case CompilationState.Initializing:
-                    ToolbarAfterSuccessfulJavaScriptCompilation.Visibility = Visibility.Collapsed;
+                    TopToolbar.Visibility = Visibility.Collapsed;
                     ToolbarDuringJavaScriptCompilation.Visibility = Visibility.Collapsed;
                     ToolbarWhenCompilationError.Visibility = Visibility.Collapsed;
                     break;
                 case CompilationState.Compiling:
-                    ToolbarAfterSuccessfulJavaScriptCompilation.Visibility = Visibility.Collapsed;
+                    TopToolbar.Visibility = Visibility.Collapsed;
                     ToolbarDuringJavaScriptCompilation.Visibility = Visibility.Visible;
                     ToolbarWhenCompilationError.Visibility = Visibility.Collapsed;
                     break;
                 case CompilationState.AlreadyCompiled:
-                    ToolbarAfterSuccessfulJavaScriptCompilation.Visibility = Visibility.Visible;
+                    TopToolbar.Visibility = Visibility.Visible;
                     ToolbarDuringJavaScriptCompilation.Visibility = Visibility.Collapsed;
                     ToolbarWhenCompilationError.Visibility = Visibility.Collapsed;
                     break;
                 case CompilationState.CompilationError:
-                    ToolbarAfterSuccessfulJavaScriptCompilation.Visibility = Visibility.Collapsed;
+                    TopToolbar.Visibility = Visibility.Collapsed;
                     ToolbarDuringJavaScriptCompilation.Visibility = Visibility.Collapsed;
                     ToolbarWhenCompilationError.Visibility = Visibility.Visible;
                     break;
@@ -1978,16 +1994,6 @@ Click OK to continue.";
                 Directory.CreateDirectory(debuggingFolder);
 
             File.WriteAllText(Path.Combine(debuggingFolder, fileName), Instance.getHtmlSnapshot(osRootOnly, htmlElementId, xamlElementName));
-        }
-
-        private void ClearJSCallsLog_Click(object sender, RoutedEventArgs e)
-        {
-            _javaScriptExecutionHandler.ClearJSCallsLog();
-        }
-
-        private void ISJSLogginEnabledCheck_CheckedChanged(object sender, RoutedEventArgs e)
-        {
-            _javaScriptExecutionHandler.IsJSLoggingEnabled = (bool)(sender as CheckBox).IsChecked;
         }
 
         private SimBrowser CreateSimBrowser()
