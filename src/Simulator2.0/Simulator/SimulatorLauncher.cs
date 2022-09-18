@@ -12,31 +12,30 @@ namespace CSHTML5.Simulator
     public static class SimulatorLauncher
     {
 #if OPENSILVER
-        public static int Start(Type userApplicationType, SimulatorLaunchParameters parameters = null)
+        public static int Start(Type clientAppType, SimulatorLaunchParameters parameters = null)
         {
-            if (userApplicationType == null)
+            if (clientAppType == null)
             {
-                throw new ArgumentNullException(nameof(userApplicationType));
+                throw new ArgumentNullException(nameof(clientAppType));
             }
 
-            return Start(() => Activator.CreateInstance(userApplicationType), userApplicationType.Assembly, parameters);
+            return Start(() => Activator.CreateInstance(clientAppType), clientAppType.Assembly, parameters);
         }
 
-        public static int Start(Action appCreationDelegate, Assembly appAssembly, SimulatorLaunchParameters parameters = null)
+        public static int Start(Action clientAppStarup, Assembly clientAppAssembly, SimulatorLaunchParameters parameters = null)
         {
-            if (appCreationDelegate == null)
+            if (clientAppStarup == null)
             {
-                throw new ArgumentNullException(nameof(appCreationDelegate));
+                throw new ArgumentNullException(nameof(clientAppStarup));
             }
 
-            if (appAssembly == null)
+            if (clientAppAssembly == null)
             {
-                throw new ArgumentNullException(nameof(appAssembly));
+                throw new ArgumentNullException(nameof(clientAppAssembly));
             }
 
             var app = new System.Windows.Application();
-            //app.InitializeComponent();
-            return app.Run(new MainWindow(appCreationDelegate, appAssembly, parameters));
+            return app.Run(new MainWindow(clientAppStarup, clientAppAssembly, parameters));
         }
 #elif BRIDGE
         [STAThread]

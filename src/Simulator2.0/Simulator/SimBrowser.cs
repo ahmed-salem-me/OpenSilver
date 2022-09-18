@@ -2,8 +2,11 @@
 using Microsoft.Web.WebView2.Core.DevToolsProtocolExtension;
 using Microsoft.Web.WebView2.Wpf;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
+using System.Windows.Controls;
 using System.Windows.Threading;
 
 namespace OpenSilver.Simulator
@@ -11,8 +14,6 @@ namespace OpenSilver.Simulator
     public class SimBrowser : WebView2
     {
         private bool _ReloadApp;
-        private bool _IsNavigationCompleted;
-        private DispatcherTimer _NavigationCompletedCheckTimer;
         public Action OnNavigationCompleted { get; set; }
         public Action OnInitialized { get; set; }
 
@@ -61,7 +62,7 @@ namespace OpenSilver.Simulator
             coreWebView.WebResourceRequested += CoreWebView_WebResourceRequested;
             coreWebView.NavigationStarting += CoreWebView_NavigationStarting;
             coreWebView.NavigationCompleted += CoreWebView_NavigationCompleted;
-            coreWebView.DOMContentLoaded += CoreWebView_DOMContentLoaded;
+            coreWebView.ContextMenuRequested += CoreWebView_ContextMenuRequested;
 
             await coreWebView.CallDevToolsProtocolMethodAsync("Network.clearBrowserCache", "{}");
 
@@ -140,10 +141,6 @@ namespace OpenSilver.Simulator
             }
         }
 
-        private void CoreWebView_DOMContentLoaded(object? sender, CoreWebView2DOMContentLoadedEventArgs e)
-        {
-        }
-
         private void OnConsoleMessage(object sender, Runtime.ConsoleAPICalledEventArgs e)
         {
 
@@ -193,28 +190,37 @@ namespace OpenSilver.Simulator
 
         }
 
+        private void CoreWebView_ContextMenuRequested(object? sender, CoreWebView2ContextMenuRequestedEventArgs e)
+        {
+            var validItems = new List<string> { "inspectElement" };
+
+            for (int i = e.MenuItems.Count - 1; i > -1; i--)
+                if (!validItems.Contains(e.MenuItems[i].Name))
+                    e.MenuItems.RemoveAt(i);
+        }
+
         public object ExecuteScriptWithResult(string javaScript)
         {
-            string jsonResult = null;
+            string jsonString = null;
 
             if ((this as DispatcherObject).CheckAccess())
                 throw new NotSupportedException("Should not call ExecuteScript on the WebView2 thread");
             else
-                jsonResult = Dispatcher.InvokeAsync(async () => await ExecuteScriptAsync(javaScript)).Result.Result;
+                jsonString = Dispatcher.InvokeAsync(async () => await ExecuteScriptAsync(javaScript)).Result.Result;
 
-            var result = JsonDocument.Parse(jsonResult);
+            var jsonDoc = JsonDocument.Parse(jsonString);
 
-            if (result != null)
+            if (jsonDoc != null)
             {
-                switch (result.RootElement.ValueKind)
+                switch (jsonDoc.RootElement.ValueKind)
                 {
                     case JsonValueKind.String:
-                        return result.RootElement.GetString();
+                        return jsonDoc.RootElement.GetString();
                     case JsonValueKind.Null:
                         return null;
                 }
             }
-            return jsonResult;
+            return jsonString;
         }
     }
 }

@@ -14,14 +14,14 @@ namespace OpenSilver.Simulator
     {
         private string _outputRootPath;
         private string _outputResourcesPath;
-        private string _entryPointAssemblyPath;
-        private Assembly _entryPointAssembly;
+        private string _clientAppAssemblyPath;
+        private Assembly _clientAppAssembly;
         private string _absolutePath;
         private string _rootPageHtml;
-        public RootPage(Assembly entryPointAssembly)
+        public RootPage(Assembly clientAppAssembly)
         {
-            _entryPointAssembly = entryPointAssembly;
-            _entryPointAssemblyPath = _entryPointAssembly.Location;
+            _clientAppAssembly = clientAppAssembly;
+            _clientAppAssemblyPath = _clientAppAssembly.Location;
         }
 
         public void Create(SimulatorLaunchParameters simulatorLaunchParameters)
@@ -35,7 +35,7 @@ namespace OpenSilver.Simulator
             //string outputPathAbsolute = PathsHelper.GetOutputPathAbsolute(pathOfAssemblyThatContainsEntryPoint, outputRootPath);
 
             // Read the "App.Config" file for future use by the ClientBase.
-            string relativePathToAppConfigFolder = PathsHelper.CombinePathsWhileEnsuringEndingBackslashAndMore(_outputResourcesPath, _entryPointAssembly.GetName().Name);
+            string relativePathToAppConfigFolder = PathsHelper.CombinePathsWhileEnsuringEndingBackslashAndMore(_outputResourcesPath, _clientAppAssembly.GetName().Name);
             string relativePathToAppConfig = Path.Combine(relativePathToAppConfigFolder, "app.config.g.js");
             if (File.Exists(Path.Combine(outputPathAbsolute, relativePathToAppConfig)))
             {
@@ -112,7 +112,7 @@ namespace OpenSilver.Simulator
             if (_outputRootPath == null)
             {
                 string outputRootPath, outputAppFilesPath, outputLibrariesPath, outputResourcesPath, intermediateOutputAbsolutePath;
-                ReflectionInUserAssembliesHelper.GetOutputPathsByReadingAssemblyAttributes(_entryPointAssembly, out outputRootPath, out outputAppFilesPath, out outputLibrariesPath, out _outputResourcesPath, out intermediateOutputAbsolutePath);
+                ReflectionInUserAssembliesHelper.GetOutputPathsByReadingAssemblyAttributes(_clientAppAssembly, out outputRootPath, out outputAppFilesPath, out outputLibrariesPath, out _outputResourcesPath, out intermediateOutputAbsolutePath);
                 _outputRootPath = outputRootPath;
             }
 
@@ -128,7 +128,7 @@ namespace OpenSilver.Simulator
             }
             else
             {
-                outputPathAbsolute = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(_entryPointAssemblyPath)), outputRootPathFixed);
+                outputPathAbsolute = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(_clientAppAssemblyPath)), outputRootPathFixed);
 
                 outputPathAbsolute = outputPathAbsolute.Replace('/', '\\');
 
