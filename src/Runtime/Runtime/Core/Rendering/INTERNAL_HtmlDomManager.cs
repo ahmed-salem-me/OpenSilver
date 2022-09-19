@@ -1142,7 +1142,7 @@ function(){
             {
                 Interop.ExecuteJavaScriptAsync(@"document.createElementSafe($0, $1, $2, $3)", domElementTag, uniqueIdentifier, parentRef, index);
             }
-
+            
             _store.Add(uniqueIdentifier, new WeakReference<UIElement>(associatedUIElement));
 
             return new INTERNAL_HtmlDomElementReference(uniqueIdentifier, parent); //todo: when parent is null this breaks for the root control, but the whole logic will be replaced with simple "ExecuteJavaScript" calls in the future, so it will not be a problem.
@@ -1204,10 +1204,10 @@ newElement.setAttribute(""id"", ""{uniqueIdentifier}"");
 var parentElement = document.getElementByIdSafe(""{parentUniqueIdentifier}"");
 parentElement.appendChild(newElement);";
 
-            ExecuteJavaScript(javaScriptToExecute);
-            _store.Add(uniqueIdentifier, new WeakReference<UIElement>(associatedUIElement));
-            return new INTERNAL_HtmlDomElementReference(uniqueIdentifier, ((INTERNAL_HtmlDomElementReference)parentRef).Parent);
-            //todo-perfs: check if there is a better solution in terms of performance (while still remaining compatible with all browsers).
+                ExecuteJavaScript(javaScriptToExecute);
+                _store.Add(uniqueIdentifier, new WeakReference<UIElement>(associatedUIElement));
+                return new INTERNAL_HtmlDomElementReference(uniqueIdentifier, ((INTERNAL_HtmlDomElementReference)parentRef).Parent);
+                //todo-perfs: check if there is a better solution in terms of performance (while still remaining compatible with all browsers).
 #if !CSHTML5NETSTANDARD
             }
 #endif
