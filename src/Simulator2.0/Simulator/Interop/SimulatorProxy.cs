@@ -15,7 +15,7 @@
 
 
 
-
+extern alias OS;
 using DotNetForHtml5.EmulatorWithoutJavascript.Console;
 using System;
 using System.Diagnostics;
@@ -24,24 +24,25 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Microsoft.Web.WebView2.Wpf;
-using System.Threading;
+using OS::OpenSilver.Internal;
 
 namespace DotNetForHtml5.EmulatorWithoutJavascript
 {
     //Do not remove this class: called via reflection.
-    public class SimulatorProxy
+    public class SimulatorProxy : ISimulatorProxy
     {
         public WebView2 _webControl;
         ConsoleControl _console;
-        public bool UseSimBrowser = true;
-        private Dispatcher _WpfDispatcher;
+        private Dispatcher _SimDispatcher;
         private Dispatcher _OSDispatcher;
+        public bool UseSimBrowser { get; set; } = true;
+        public bool IsOSRuntimeRunning { get; set; } = true;
 
-        public SimulatorProxy(WebView2 webControl, ConsoleControl console, Dispatcher wpfDispatcher, Dispatcher oSDispatcher)
+        public SimulatorProxy(WebView2 webControl, ConsoleControl console, Dispatcher simDispatcher, Dispatcher oSDispatcher)
         {
             _webControl = webControl;
             _console = console;
-            _WpfDispatcher = wpfDispatcher;
+            _SimDispatcher = simDispatcher;
             _OSDispatcher = oSDispatcher;
         }
 
@@ -168,17 +169,25 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
 
         public void AddHostObject(string objectName, object objectInstance)
         {
-            _WpfDispatcher.InvokeAsync(() => _webControl.CoreWebView2.AddHostObjectToScript(objectName, objectInstance));
+            _SimDispatcher.InvokeAsync(() => _webControl.CoreWebView2.AddHostObjectToScript(objectName, objectInstance));
         }
 
-        public void OSDispatcherInvokeAsync(Action action)
+        public void OSInvokeAsync(Action action)
         {
             _OSDispatcher.InvokeAsync(action);
         }
 
-        //public void InvokeAsync(Action action)
-        //{
-        //    _WpfDispatcher.Post(o => action(), null);
-        //}
+        public void SimInvokeAsync(Action action)
+        {
+            _SimDispatcher.InvokeAsync(action);
+        }
+
+        public dynamic CreateOSDispatcherTimer(Action tickAction)
+        {
+            var timer = _OSDispatcher.Invoke(() => { return new DispatcherTimer(); });
+            timer.Tick += (s, e) => tickAction();
+            return timer;
+        }
+
     }
 }

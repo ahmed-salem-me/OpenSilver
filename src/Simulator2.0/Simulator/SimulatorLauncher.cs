@@ -35,6 +35,7 @@ namespace CSHTML5.Simulator
             }
 
             var app = new System.Windows.Application();
+
             return app.Run(new MainWindow(clientAppStarup, clientAppAssembly, parameters));
         }
 #elif BRIDGE

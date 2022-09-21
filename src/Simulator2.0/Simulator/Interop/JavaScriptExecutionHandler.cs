@@ -15,24 +15,19 @@
 
 
 
-
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Web.WebView2.Wpf;
+extern alias OS;
 using System.Collections.Concurrent;
-using System;
 using OpenSilver.Simulator;
+using OS::DotNetForHtml5;
 
 namespace DotNetForHtml5.EmulatorWithoutJavascript
 {
-    public class JavaScriptExecutionHandler
+    public class JavaScriptExecutionHandler : IJavaScriptExecutionHandler
     {
         private bool _webControlDisposed = false;
         private SimBrowser _webControl;
         private string _lastExecutedJavaScriptCode;
-        private ConcurrentQueue<string> _fullLogOfExecutedJavaScriptCode = new ConcurrentQueue<string>();
+        private ConcurrentQueue<string> _InteropLog = new ConcurrentQueue<string>();
         public bool IsJSLoggingEnabled { get; set; }
 
         public JavaScriptExecutionHandler(SimBrowser webControl)
@@ -56,7 +51,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
                 return;
             _lastExecutedJavaScriptCode = javaScriptToExecute;
             if (IsJSLoggingEnabled)
-                _fullLogOfExecutedJavaScriptCode.Enqueue(javaScriptToExecute + ";");
+                _InteropLog.Enqueue(javaScriptToExecute + ";");
             _webControl.ExecuteScriptAsync(javaScriptToExecute);
         }
 
@@ -68,7 +63,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
                 return null;
             _lastExecutedJavaScriptCode = javaScriptToExecute;
             if (IsJSLoggingEnabled)
-                _fullLogOfExecutedJavaScriptCode.Enqueue(javaScriptToExecute + ";");
+                _InteropLog.Enqueue(javaScriptToExecute + ";");
             return _webControl.ExecuteScriptWithResult(javaScriptToExecute);
         }
 
@@ -77,38 +72,26 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             return _lastExecutedJavaScriptCode;
         }
 
-        public string FullLogOfExecutedJavaScriptCode
+        public string InteropLog
         {
             get
             {
-                return
-@"window.onCallBack = {
-    OnCallbackFromJavaScript: function(callbackId, idWhereCallbackArgsAreStored, callbackArgsObject)
-    {
-        // dummy function
-    },
-    OnCallbackFromJavaScriptError: function(idWhereCallbackArgsAreStored)
-    {
-        // dummy function
-    }
-};
-"
-                + string.Join("\n\n", _fullLogOfExecutedJavaScriptCode);
+                return string.Join("\n\n", _InteropLog);
             }
         }
 
-        public void ClearJSCallsLog()
+        public void ClearInteropLog()
         {
-            _fullLogOfExecutedJavaScriptCode = new ConcurrentQueue<string>();
+            _InteropLog = new ConcurrentQueue<string>();
         }
 
-        public void StartJSLoggin()
+        public void StartInteropLogging()
         {
-            ClearJSCallsLog();
+            ClearInteropLog();
             IsJSLoggingEnabled = true;
         }
 
-        public void StopJSLoggin()
+        public void StopInteropLoggin()
         {
             IsJSLoggingEnabled = false;
         }

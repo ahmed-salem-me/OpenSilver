@@ -54,6 +54,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Runtime\Runtime\Runtime.OpenSilver.csproj">
+      <Aliases>OS</Aliases>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="OpenSilverIcon.ico">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
