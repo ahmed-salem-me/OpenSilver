@@ -127,7 +127,9 @@ namespace CSHTML5.Types
             else
 #endif
             {
-                return DotNetForHtml5.Core.INTERNAL_Simulator.ConvertBrowserResult(obj);
+                //ams> Exception until I know if it will ever be needed with webview2
+                //return DotNetForHtml5.Core.INTERNAL_Simulator.ConvertBrowserResult(obj);
+                throw new NotSupportedException("JS value type unrecognized");
             }
         }
 

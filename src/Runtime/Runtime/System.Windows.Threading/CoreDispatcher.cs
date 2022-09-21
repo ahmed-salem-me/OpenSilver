@@ -155,10 +155,9 @@ namespace Windows.UI.Core
                 //CSHTML5.Interop.ExecuteJavaScriptAsync("setTimeout($0, 1)",
                 //    (Action)(() =>
                 //    {
-                //ams> double check , with webView2 I don't want to use the wpf UI thread
+                //ams> double check , with webView2 I don't want to use the simulator UI thread
                 //INTERNAL_Simulator.WebControlDispatcherBeginInvoke(method);
-                //Task.Run(method);
-                INTERNAL_Simulator.SimulatorProxy.OSDispatcherInvokeAsync(method);
+                INTERNAL_Simulator.SimulatorProxy.OSInvokeAsync(method);
             //}));
 #if CSHTML5NETSTANDARD
             }

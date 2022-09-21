@@ -16,6 +16,7 @@ using CSHTML5.Types;
 using DotNetForHtml5.Core;
 using System;
 using System.Runtime.InteropServices;
+using System.Windows.Threading;
 
 #if BRIDGE
 using Bridge;
@@ -56,7 +57,7 @@ namespace CSHTML5.Internal
         public void OnCallbackFromJavaScriptError(string idWhereCallbackArgsAreStored)
         {
             Action callBack = () => OnCallBackImpl.Instance.OnCallbackFromJavaScriptError(idWhereCallbackArgsAreStored);
-            INTERNAL_Simulator.SimulatorProxy.OSDispatcherInvokeAsync(callBack);
+            INTERNAL_Simulator.SimulatorProxy.OSInvokeAsync(callBack);
 
         }
 
@@ -77,10 +78,13 @@ namespace CSHTML5.Internal
         {
             if (INTERNAL_Simulator.SimulatorProxy.UseSimBrowser)
             {
-                Action callBack = () => OnCallBackImpl.Instance.OnCallbackFromJavaScript(callbackId, idWhereCallbackArgsAreStored, callbackArgsObject,
-                        MakeArgumentsForCallbackSimulator, true, false);
+                if (INTERNAL_Simulator.SimulatorProxy.IsOSRuntimeRunning)
+                {
+                    Action callBack = () => OnCallBackImpl.Instance.OnCallbackFromJavaScript(callbackId, idWhereCallbackArgsAreStored, callbackArgsObject,
+                            MakeArgumentsForCallbackSimulator, true, false);
 
-                INTERNAL_Simulator.SimulatorProxy.OSDispatcherInvokeAsync(callBack);
+                    INTERNAL_Simulator.SimulatorProxy.OSInvokeAsync(callBack);
+                }
             }
             else
                 OnCallBackImpl.Instance.OnCallbackFromJavaScript(callbackId, idWhereCallbackArgsAreStored, callbackArgsObject,
