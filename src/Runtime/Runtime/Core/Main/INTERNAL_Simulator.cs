@@ -87,35 +87,35 @@ namespace DotNetForHtml5.Core
 
 #endif
 
-        //#if CSHTML5NETSTANDARD
-        //        static dynamic dynamicJavaScriptExecutionHandler;
-        //#else
-        //        static dynamic javaScriptExecutionHandler;
-        //#endif
+#if CSHTML5NETSTANDARD
+        static dynamic dynamicJavaScriptExecutionHandler;
+#else
+                static dynamic javaScriptExecutionHandler;
+#endif
 
-        //#if CSHTML5NETSTANDARD
-        //        public static dynamic DynamicJavaScriptExecutionHandler
-        //#else
-        //        public static dynamic JavaScriptExecutionHandler
-        //#endif
-        //        {
-        //            set // Intended to be called by the "Emulator" project to inject the JavaScriptExecutionHandler.
-        //            {
-        //#if CSHTML5NETSTANDARD
-        //                dynamicJavaScriptExecutionHandler = value;
-        //#else
-        //                javaScriptExecutionHandler = value;
-        //#endif
-        //            }
-        //            internal get
-        //            {
-        //#if CSHTML5NETSTANDARD
-        //                return dynamicJavaScriptExecutionHandler;
-        //#else
-        //                return javaScriptExecutionHandler;
-        //#endif
-        //            }
-        //        }
+#if CSHTML5NETSTANDARD
+        public static dynamic DynamicJavaScriptExecutionHandler
+#else
+                public static dynamic JavaScriptExecutionHandler
+#endif
+        {
+            set // Intended to be called by the "Emulator" project to inject the JavaScriptExecutionHandler.
+            {
+#if CSHTML5NETSTANDARD
+                dynamicJavaScriptExecutionHandler = value;
+#else
+                        javaScriptExecutionHandler = value;
+#endif
+            }
+            internal get
+            {
+#if CSHTML5NETSTANDARD
+                return dynamicJavaScriptExecutionHandler;
+#else
+                        return javaScriptExecutionHandler;
+#endif
+            }
+        }
 
         //static dynamic wpfMediaElementFactory;
         //public static dynamic WpfMediaElementFactory
@@ -150,8 +150,8 @@ namespace DotNetForHtml5.Core
             }
         }
 
-        static ISimulatorProxy simulatorProxy;
-        internal static ISimulatorProxy SimulatorProxy
+        static dynamic simulatorProxy;
+        public static dynamic SimulatorProxy
         {
             set // Intended to be called by the "Emulator" project to inject the SimulatorProxy.
             {
