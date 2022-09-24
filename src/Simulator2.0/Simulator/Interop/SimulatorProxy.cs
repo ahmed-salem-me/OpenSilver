@@ -15,7 +15,6 @@
 
 
 
-extern alias OS;
 using DotNetForHtml5.EmulatorWithoutJavascript.Console;
 using System;
 using System.Diagnostics;
@@ -24,12 +23,11 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Microsoft.Web.WebView2.Wpf;
-using OS::OpenSilver.Internal;
 
 namespace DotNetForHtml5.EmulatorWithoutJavascript
 {
     //Do not remove this class: called via reflection.
-    public class SimulatorProxy : ISimulatorProxy
+    public class SimulatorProxy 
     {
         public WebView2 _webControl;
         ConsoleControl _console;
@@ -182,12 +180,10 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             _SimDispatcher.InvokeAsync(action);
         }
 
-        public dynamic CreateOSDispatcherTimer(Action tickAction)
+        public OSDispatcherTimer CreateOSDispatcherTimer(Action tickAction, TimeSpan interval)
         {
-            var timer = _OSDispatcher.Invoke(() => { return new DispatcherTimer(); });
-            timer.Tick += (s, e) => tickAction();
+            var timer = _OSDispatcher.Invoke(() => { return new OSDispatcherTimer(tickAction, interval); });
             return timer;
         }
-
     }
 }

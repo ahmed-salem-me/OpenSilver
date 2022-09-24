@@ -203,7 +203,7 @@
                                     <Canvas x:Name="ContainerForElementPickerHighlight">
                                         <Rectangle x:Name="ElementPickerHighlight" Visibility="Collapsed" Stroke="Blue" StrokeDashArray="4 2" StrokeThickness="2"/>
                                     </Canvas>
-                                    <Rectangle x:Name="ElementPickerForInspection" Visibility="Collapsed" Fill="Transparent" MouseMove="ElementPickerForInspection_MouseMove" MouseDown="ElementPickerForInspection_MouseDown"/>
+                                    <Rectangle x:Name="ElementPickerForInspection" Visibility="Collapsed" Fill="Ivory" MouseMove="ElementPickerForInspection_MouseMove" MouseDown="ElementPickerForInspection_MouseDown"/>
                                 </Grid>
                                 <Border x:Name="ContainerOfLoadingMessage" CornerRadius="5" Background="#88000000" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
                                     <TextBlock Text="Launching the application Please wait..."  Width="200" Foreground="White" FontSize="16" Margin="15,10" TextWrapping="Wrap" TextAlignment="Center"/>

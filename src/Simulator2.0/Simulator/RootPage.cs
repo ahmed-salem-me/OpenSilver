@@ -18,6 +18,11 @@ namespace OpenSilver.Simulator
         private Assembly _clientAppAssembly;
         private string _absolutePath;
         private string _rootPageHtml;
+        private const string RootPageName = "simulator_root.html";
+        private const string TempRootPageName = "simulator_root.tmp.html";
+
+        public const string SimulatorHostName = "opensilver-simulator";
+
         public RootPage(Assembly clientAppAssembly)
         {
             _clientAppAssembly = clientAppAssembly;
@@ -26,7 +31,7 @@ namespace OpenSilver.Simulator
 
         public void Create(SimulatorLaunchParameters simulatorLaunchParameters)
         {
-            _absolutePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "simulator_root.html");
+            _absolutePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), RootPageName);
 
             _rootPageHtml = File.ReadAllText(_absolutePath);
 
@@ -94,11 +99,11 @@ namespace OpenSilver.Simulator
             return _rootPageHtml;
         }
 
-        public string ToHtmlPath()
+        public string ToUrl()
         {
-            var tmpPath = _absolutePath.Replace(".html", ".tmp.html");
+            var tmpPath = _absolutePath.Replace(RootPageName, TempRootPageName);
             File.WriteAllText(tmpPath, _rootPageHtml);
-            return tmpPath;
+            return $"http://{SimulatorHostName}/{TempRootPageName}";
         }
 
         public string GetOutputPathAbsoluteAndReadAssemblyAttributes()

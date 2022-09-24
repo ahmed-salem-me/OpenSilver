@@ -1,8 +1,7 @@
-﻿extern alias OS;
+﻿//extern alias OS;
 using DotNetForHtml5.EmulatorWithoutJavascript;
 using System;
 using System.Reflection;
-using System.Runtime.Loader;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
@@ -31,19 +30,6 @@ namespace OpenSilver.Simulator
             ReflectionInUserAssembliesHelper.TryGetCoreAssembly(out _OSRuntimeAssembly);
         }
 
-        //public static void Start(SimBrowser simBrowser, MainWindow simMainWindow, Dispatcher wpfDispatcher)
-        //{
-        //    AppDomainSetup ads = new AppDomainSetup();
-        //    ads.ApplicationBase = AppDomain.CurrentDomain.BaseDirectory;
-
-        //    ads.DisallowBindingRedirects = false;
-        //    ads.DisallowCodeDownload = true;
-        //    ads.ConfigurationFile =
-        //        AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
-
-        //    var osAppDomain = AppDomain.CreateDomain("OS App Domain");
-        //}
-
         public bool Start(Action clientAppStartup)
         {
             _ClientAppStartup = clientAppStartup;
@@ -53,7 +39,7 @@ namespace OpenSilver.Simulator
                 {
                     _OSDispatcher = Dispatcher.CurrentDispatcher;
 
-                    if (!Initialize())
+                    if (!Initialize0())
                         return;
 
                     _ClientAppStartup();
@@ -63,6 +49,7 @@ namespace OpenSilver.Simulator
 
                 osThread.SetApartmentState(ApartmentState.STA);
                 osThread.IsBackground = true;
+                osThread.Priority = ThreadPriority.Highest;
                 osThread.Start();
 
                 return true;
@@ -81,12 +68,12 @@ namespace OpenSilver.Simulator
             try
             {
                 JavaScriptExecutionHandler = new JavaScriptExecutionHandler(_simBrowser);
-                OS::DotNetForHtml5.Core.INTERNAL_Simulator.JavaScriptExecutionHandler = JavaScriptExecutionHandler;
-                OS::DotNetForHtml5.Core.INTERNAL_Simulator.ClipboardHandler = new ClipboardHandler();
-                OS::DotNetForHtml5.Core.INTERNAL_Simulator.IsRunningInTheSimulator_WorkAround = true;
-                OS::DotNetForHtml5.Core.INTERNAL_Simulator.SimulatorProxy =
-                    new SimulatorProxy(_simBrowser, _simMainWindow.Console, _SimDispatcher, _OSDispatcher);
-                OS::DotNetForHtml5.Core.INTERNAL_Simulator.SimulatorProxy.IsOSRuntimeRunning = true;
+                //OS::DotNetForHtml5.Core.INTERNAL_Simulator.JavaScriptExecutionHandler = JavaScriptExecutionHandler;
+                //OS::DotNetForHtml5.Core.INTERNAL_Simulator.ClipboardHandler = new ClipboardHandler();
+                //OS::DotNetForHtml5.Core.INTERNAL_Simulator.IsRunningInTheSimulator_WorkAround = true;
+                //OS::DotNetForHtml5.Core.INTERNAL_Simulator.SimulatorProxy =
+                //    new SimulatorProxy(_simBrowser, _simMainWindow.Console, _SimDispatcher, _OSDispatcher);
+                //OS::DotNetForHtml5.Core.INTERNAL_Simulator.SimulatorProxy.IsOSRuntimeRunning = true;
                 return true;
             }
             catch (Exception ex)
@@ -118,7 +105,8 @@ namespace OpenSilver.Simulator
                 //InteropHelpers.InjectWpfMediaElementFactory(_OSRuntimeAssembly);
                 //InteropHelpers.InjectWebClientFactory(_OSRuntimeAssembly);
                 InteropHelpers.InjectClipboardHandler(_OSRuntimeAssembly);
-                InteropHelpers.InjectSimulatorProxy(new SimulatorProxy(_simBrowser, _simMainWindow.Console, _SimDispatcher, _OSDispatcher), _OSRuntimeAssembly);
+                InteropHelpers.InjectSimulatorProxy(
+                        new SimulatorProxy(_simBrowser, _simMainWindow.Console, _SimDispatcher, _OSDispatcher), _OSRuntimeAssembly);
 
                 // In the OpenSilver Version, we use this work-around to know if we're in the simulator
                 InteropHelpers.InjectIsRunningInTheSimulator_WorkAround(_OSRuntimeAssembly);
@@ -145,7 +133,7 @@ namespace OpenSilver.Simulator
 
         public void Stop()
         {
-            OS::DotNetForHtml5.Core.INTERNAL_Simulator.SimulatorProxy.IsOSRuntimeRunning = false;
+            //OS::DotNetForHtml5.Core.INTERNAL_Simulator.SimulatorProxy.IsOSRuntimeRunning = false;
         }
     }
 }

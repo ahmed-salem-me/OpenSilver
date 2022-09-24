@@ -15,33 +15,24 @@
 
 
 
-extern alias OS;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using OpenSilver.Simulator;
-using OS::DotNetForHtml5;
 
 namespace DotNetForHtml5.EmulatorWithoutJavascript
 {
-    public class JavaScriptExecutionHandler : IJavaScriptExecutionHandler
+    public class JavaScriptExecutionHandler 
     {
         private bool _webControlDisposed = false;
         private SimBrowser _webControl;
         private string _lastExecutedJavaScriptCode;
-        private ConcurrentQueue<string> _InteropLog = new ConcurrentQueue<string>();
+        private List<string> _InteropLog = new List<string>();
         public bool IsJSLoggingEnabled { get; set; }
 
         public JavaScriptExecutionHandler(SimBrowser webControl)
         {
             _webControl = webControl; 
-            //ams>could/should be replaced
-            //webControl.DisposeEvent += WebControl_DisposeEvent;
-            //webControl.Browser.DisposeEvent += WebControl_DisposeEvent;
         }
-
-        //private void WebControl_DisposeEvent(object sender, DotNetBrowser.Events.DisposeEventArgs e)
-        //{
-        //    _webControlDisposed = true;
-        //}
 
         // Called via reflection by the "INTERNAL_HtmlDomManager" class of the "Core" project.
         public void ExecuteJavaScript(string javaScriptToExecute)
@@ -51,7 +42,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
                 return;
             _lastExecutedJavaScriptCode = javaScriptToExecute;
             if (IsJSLoggingEnabled)
-                _InteropLog.Enqueue(javaScriptToExecute + ";");
+                _InteropLog.Add(javaScriptToExecute + ";");
             _webControl.ExecuteScriptAsync(javaScriptToExecute);
         }
 
@@ -63,7 +54,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
                 return null;
             _lastExecutedJavaScriptCode = javaScriptToExecute;
             if (IsJSLoggingEnabled)
-                _InteropLog.Enqueue(javaScriptToExecute + ";");
+                _InteropLog.Add(javaScriptToExecute + ";");
             return _webControl.ExecuteScriptWithResult(javaScriptToExecute);
         }
 
@@ -82,7 +73,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
 
         public void ClearInteropLog()
         {
-            _InteropLog = new ConcurrentQueue<string>();
+            _InteropLog.Clear();
         }
 
         public void StartInteropLogging()

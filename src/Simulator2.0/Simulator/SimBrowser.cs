@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
@@ -52,7 +54,7 @@ namespace OpenSilver.Simulator
             return environment;
         }
 
-        private async void SimBrowser_CoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)
+        private async void SimBrowser_CoreWebView2InitializationCompleted(object sender, CoreWebView2InitializationCompletedEventArgs e)
         {
             var coreWebView = CoreWebView2;
 
@@ -66,6 +68,8 @@ namespace OpenSilver.Simulator
 
             await coreWebView.CallDevToolsProtocolMethodAsync("Network.clearBrowserCache", "{}");
 
+            coreWebView.SetVirtualHostNameToFolderMapping(RootPage.SimulatorHostName, Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), CoreWebView2HostResourceAccessKind.Allow);
+
             //Attach to browser console logging
             DevToolsProtocolHelper helper = coreWebView.GetDevToolsProtocolHelper();
             await helper.Runtime.EnableAsync();
@@ -77,7 +81,7 @@ namespace OpenSilver.Simulator
                 OnInitialized();
         }
 
-        private void CoreWebView_WebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
+        private void CoreWebView_WebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e)
         {
             var uri = e.Request.Uri.Replace("file:///", "").Replace("[PARENT]", "..").Replace("%20", " ").Replace('/', '\\');
 
@@ -97,7 +101,7 @@ namespace OpenSilver.Simulator
             }
         }
 
-        private void CoreWebView_NavigationStarting(object? sender, CoreWebView2NavigationStartingEventArgs e)
+        private void CoreWebView_NavigationStarting(object sender, CoreWebView2NavigationStartingEventArgs e)
         {
             if (e.Uri.Contains(@"http://cshtml5-fbc-mm2-preview.azurewebsites.net"))
             {
@@ -116,7 +120,7 @@ namespace OpenSilver.Simulator
             }
         }
 
-        private void CoreWebView_NavigationCompleted(object? sender, CoreWebView2NavigationCompletedEventArgs e)
+        private void CoreWebView_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
         {
             OnNavigationCompleted();
             if (_ReloadApp && OnNavigationCompleted != null) ;
@@ -190,7 +194,7 @@ namespace OpenSilver.Simulator
 
         }
 
-        private void CoreWebView_ContextMenuRequested(object? sender, CoreWebView2ContextMenuRequestedEventArgs e)
+        private void CoreWebView_ContextMenuRequested(object sender, CoreWebView2ContextMenuRequestedEventArgs e)
         {
             var validItems = new List<string> { "inspectElement" };
 
@@ -201,6 +205,9 @@ namespace OpenSilver.Simulator
 
         public object ExecuteScriptWithResult(string javaScript)
         {
+            if (Dispatcher.HasShutdownStarted)
+                return null;
+
             string jsonString = null;
 
             if ((this as DispatcherObject).CheckAccess())
@@ -220,6 +227,7 @@ namespace OpenSilver.Simulator
                         return null;
                 }
             }
+
             return jsonString;
         }
     }

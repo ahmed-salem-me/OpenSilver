@@ -34,8 +34,8 @@ namespace CSHTML5.Simulator
                 throw new ArgumentNullException(nameof(clientAppAssembly));
             }
 
-            var app = new System.Windows.Application();
-
+            App app = new App();
+            app.InitializeComponent();
             return app.Run(new MainWindow(clientAppStarup, clientAppAssembly, parameters));
         }
 #elif BRIDGE

@@ -171,6 +171,9 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             //Note: The following line was an attempt to persist the Microsoft login cookies (for use by user applications that required AAD login), but it is no longer necessary because we changed the DotNetBrowser "StorageType" from "MEMORY" to "DISK", so cookies are now automatically persisted.
             //CookiesHelper.LoadMicrosoftCookies(MainWebBrowser, NAME_FOR_STORING_COOKIES);
 
+            MainWebBrowser = CreateSimBrowser();
+            BrowserContainer.Child = MainWebBrowser;
+
             if (IS_LICENSE_CHECKER_ENABLED)
             {
                 //LicenseChecker = new LicenseChecker();
@@ -441,8 +444,6 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
         #region Events
         async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            MainWebBrowser = CreateSimBrowser();
-            BrowserContainer.Child = MainWebBrowser;
         }
 
         async void MainWebBrowser_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -868,7 +869,8 @@ Click OK to continue.";
         {
             _rootPage = new RootPage(_clientAppAssembly);
             _rootPage.Create(_simulatorLaunchParameters);
-            MainWebBrowser.CoreWebView2.Navigate($"file:///{_rootPage.ToHtmlPath().Replace('\\', '/')}");
+            MainWebBrowser.Source = new Uri(_rootPage.ToUrl());
+            //MainWebBrowser.CoreWebView2.Navigate($"file:///{_rootPage.ToHtmlPath().Replace('\\', '/')}");
 
             //MainWebBrowser.Browser.LoadHTML(new LoadHTMLParams(simulatorRootHtml, "UTF-8", "http://cshtml5-simulator/" + ARBITRARY_FILE_NAME_WHEN_RUNNING_FROM_SIMULATOR + urlFragment)); // Note: we set the URL so that the simulator browser can find the JS files.
             //Note: (see commit c1f98763) the following line of commented code was in a #else (and the one above in a #if OPENSILVER) to fix an issue in FBC MM2 where Interop calls would return null or undefined when they shouldn't. It is probably a case where we are redirected to another context (for example when signing in a Microsoft account before being brought back).
@@ -894,8 +896,6 @@ Click OK to continue.";
                 //ams>I don't think we'll need this while using the NavigationCompleted event
                 //WaitForDocumentToBeFullyLoaded(); // Note: without this, we got errors when running rokjs (with localhost as base url) without any breakpoints.
 
-                //bool success = _openSilverRuntime.StartInABackground(_clientAppStartup);
-                //bool success = _openSilverRuntime.Start(_clientAppStartup);
                 bool success = _openSilverRuntime.Start(_clientAppStartup);
 
                 if (success)
@@ -1998,8 +1998,6 @@ Click OK to continue.";
 
         private SimBrowser CreateSimBrowser()
         {
-            //Delegate addHostObj = (object o) => doit("", 0);
-            //SynchronizationContext.Current.Post(o => doit("", 0), null);
             var simBrowser = new SimBrowser();
             simBrowser.Width = 150;
             simBrowser.Height = 200;
@@ -2018,6 +2016,7 @@ Click OK to continue.";
                 _openSilverRuntime = new OpenSilverRuntime(MainWebBrowser, this, Dispatcher.CurrentDispatcher);
                 LoadIndexPage();
             };
+
             simBrowser.OnNavigationCompleted = OnIndexPageLoaded;
 
             return simBrowser;
