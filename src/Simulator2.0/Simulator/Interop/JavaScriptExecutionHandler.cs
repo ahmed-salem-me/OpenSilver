@@ -27,7 +27,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
         private SimBrowser _webControl;
         private string _lastExecutedJavaScriptCode;
         private List<string> _InteropLog = new List<string>();
-        public bool IsJSLoggingEnabled { get; set; }
+        private bool _IsJSLoggingEnabled;
 
         public JavaScriptExecutionHandler(SimBrowser webControl)
         {
@@ -41,7 +41,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             if (_webControlDisposed)
                 return;
             _lastExecutedJavaScriptCode = javaScriptToExecute;
-            if (IsJSLoggingEnabled)
+            if (_IsJSLoggingEnabled)
                 _InteropLog.Add(javaScriptToExecute + ";");
             _webControl.ExecuteScriptAsync(javaScriptToExecute);
         }
@@ -53,7 +53,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             if (_webControlDisposed)
                 return null;
             _lastExecutedJavaScriptCode = javaScriptToExecute;
-            if (IsJSLoggingEnabled)
+            if (_IsJSLoggingEnabled)
                 _InteropLog.Add(javaScriptToExecute + ";");
             return _webControl.ExecuteScriptWithResult(javaScriptToExecute);
         }
@@ -79,12 +79,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
         public void StartInteropLogging()
         {
             ClearInteropLog();
-            IsJSLoggingEnabled = true;
+            _IsJSLoggingEnabled = true;
         }
 
         public void StopInteropLoggin()
         {
-            IsJSLoggingEnabled = false;
+            _IsJSLoggingEnabled = false;
         }
     }
 }
