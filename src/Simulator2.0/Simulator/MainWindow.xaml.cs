@@ -731,25 +731,8 @@ Click OK to continue.";
         }
 
         private void ButtonOpenDevTools_Click(object sender, RoutedEventArgs e)
-        {//ams>fix
-         //if (_devTools != null)
-         //{
-         //    _devTools.Focus();
-         //    return;
-         //}
-
-            //DevToolsScreencastInfoWindow infoWindow = new DevToolsScreencastInfoWindow(this);
-            //infoWindow.ShowDialog();
-
-            //_devTools = new ChromiumDevTools(MainWebBrowser.Browser.GetRemoteDebuggingURL());
-            //_devTools.Show();
-
-            //_devTools.Closing += ChromiumDevTools_Closing;
-        }
-
-        private void ChromiumDevTools_Closing(object sender, CancelEventArgs e)
         {
-            //_devTools = null;
+            MainWebBrowser.CoreWebView2.OpenDevToolsWindow();        
         }
 
         private void ButtonHideXamlTree_Click(object sender, RoutedEventArgs e)

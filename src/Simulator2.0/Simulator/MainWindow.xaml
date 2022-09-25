@@ -121,14 +121,14 @@
                                     <RadioButton x:Name="DisplaySize_Phone" Content="Phone" Click="DisplaySize_Click" Cursor="Hand" BorderBrush="{x:Null}" Focusable="False" Padding="12,8" Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="35"/>
                                     <RadioButton x:Name="DisplaySize_Tablet" Content="Tablet" Margin="5,0,0,0" Click="DisplaySize_Click" Cursor="Hand" BorderBrush="{x:Null}" Focusable="False" Padding="12,8" Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="35"/>
                                     <RadioButton x:Name="DisplaySize_Desktop" Content="Desktop" IsChecked="True" Margin="5,0,0,0" Click="DisplaySize_Click" Cursor="Hand" BorderBrush="{x:Null}" Focusable="False" Padding="12,8" Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="35"/>
-                                    <ToggleButton x:Name="LogInterop" Content="Log Interop" IsChecked="False" Margin="50,0,0,0" Click="LogInterop_Click" Cursor="Hand" BorderBrush="{x:Null}" Focusable="False" Padding="12,8" Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="35"/>
-                                    <Button x:Name="ViewInteropLog" Click="ViewInteropLog_Click" Padding="12,8" Margin="10,0,0,0" Cursor="Hand" BorderThickness="0" Focusable="False" HorizontalAlignment="Left"  Background="{DynamicResource AccentColorBrush}" Height="35">
+                                    <ToggleButton x:Name="LogInterop" Content="Log Interop" IsChecked="False" Margin="50,0,0,0" Click="LogInterop_Click" Cursor="Hand" BorderBrush="{x:Null}" Focusable="False" Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="35"/>
+                                    <Button x:Name="ViewInteropLog" Click="ViewInteropLog_Click" Margin="10,0,0,0" Cursor="Hand" BorderThickness="0" Focusable="False" HorizontalAlignment="Left"  Background="{DynamicResource AccentColorBrush}" Height="35">
                                         <Button.Content>
                                             <TextBlock Text="View Interop Log"/>
                                         </Button.Content>
                                     </Button>
-                                    <CheckBox x:Name="IsDevToolsOpened" Content="DevTools Opened" Margin="10,0,0,0" Click="IsDevToolsOpened_Click"/>
-                                    <Button x:Name="RestartSim" Click="RestartSim_Click" Padding="12,8" Margin="50,0,0,0" Cursor="Hand" BorderThickness="0" Focusable="False" HorizontalAlignment="Left"  Background="{DynamicResource AccentColorBrush3}" Height="35">
+                                    <CheckBox x:Name="IsDevToolsOpened" Content="DevTools Opened" Margin="10,0,0,0" Click="IsDevToolsOpened_Click" Cursor="Hand"/>
+                                    <Button x:Name="RestartSim" Click="RestartSim_Click" Margin="50,0,0,0" Cursor="Hand" BorderThickness="0" Focusable="False" HorizontalAlignment="Left"  Background="{DynamicResource AccentColorBrush3}" Height="35">
                                         <Button.Content>
                                             <TextBlock Text="Restart Sim"/>
                                         </Button.Content>
