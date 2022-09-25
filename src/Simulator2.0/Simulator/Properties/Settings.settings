@@ -17,7 +17,7 @@
     <Setting Name="IsBypassCORSErrors" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="IsDevToolsOpen" Type="System.Boolean" Scope="User">
+    <Setting Name="IsDevToolsOpened" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

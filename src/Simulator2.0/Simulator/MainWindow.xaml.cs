@@ -444,7 +444,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
         #region Events
         async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            IsDevToolsOpen.IsChecked = Properties.Settings.Default.IsDevToolsOpen;
+            IsDevToolsOpened.IsChecked = Properties.Settings.Default.IsDevToolsOpened;
         }
 
         async void MainWebBrowser_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -868,12 +868,17 @@ Click OK to continue.";
             }
         }
 
-        private void DevToolsOpenAfterRestart_Click(object sender, RoutedEventArgs e)
+        private void IsDevToolsOpened_Click(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.IsDevToolsOpen = (bool)IsDevToolsOpen.IsChecked;
+            Properties.Settings.Default.IsDevToolsOpened = (bool)IsDevToolsOpened.IsChecked;
             Properties.Settings.Default.Save();
         }
 
+        private void RestartSim_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(Application.ResourceAssembly.Location);
+            Application.Current.Shutdown();
+        }
 
         #endregion
 

@@ -86,12 +86,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IsDevToolsOpen {
+        public bool IsDevToolsOpened {
             get {
-                return ((bool)(this["IsDevToolsOpen"]));
+                return ((bool)(this["IsDevToolsOpened"]));
             }
             set {
-                this["IsDevToolsOpen"] = value;
+                this["IsDevToolsOpened"] = value;
             }
         }
     }
