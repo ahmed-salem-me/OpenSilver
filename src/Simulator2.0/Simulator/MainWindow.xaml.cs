@@ -444,6 +444,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
         #region Events
         async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            IsDevToolsOpen.IsChecked = Properties.Settings.Default.IsDevToolsOpen;
         }
 
         async void MainWebBrowser_SizeChanged(object sender, SizeChangedEventArgs e)
