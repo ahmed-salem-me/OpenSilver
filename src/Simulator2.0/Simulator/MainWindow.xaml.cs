@@ -844,9 +844,13 @@ Click OK to continue.";
 
         private void LogInterop_Click(object sender, RoutedEventArgs e)
         {
-            _openSilverRuntime.JavaScriptExecutionHandler.IsJSLoggingEnabled = (bool)LogInterop.IsChecked;
             if ((bool)LogInterop.IsChecked)
+            {
                 _openSilverRuntime.JavaScriptExecutionHandler.ClearInteropLog();
+                _openSilverRuntime.JavaScriptExecutionHandler.StartInteropLogging();
+            }
+            else
+                _openSilverRuntime.JavaScriptExecutionHandler.StopInteropLoggin();
         }
 
         private void ViewInteropLog_Click(object sender, RoutedEventArgs e)
