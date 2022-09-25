@@ -863,6 +863,13 @@ Click OK to continue.";
             }
         }
 
+        private void DevToolsOpenAfterRestart_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.IsDevToolsOpen = (bool)IsDevToolsOpen.IsChecked;
+            Properties.Settings.Default.Save();
+        }
+
+
         #endregion
 
         void LoadIndexPage(string urlFragment = null)

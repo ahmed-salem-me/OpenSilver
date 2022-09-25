@@ -82,5 +82,17 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.Properties {
                 this["IsBypassCORSErrors"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsDevToolsOpen {
+            get {
+                return ((bool)(this["IsDevToolsOpen"]));
+            }
+            set {
+                this["IsDevToolsOpen"] = value;
+            }
+        }
     }
 }

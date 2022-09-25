@@ -75,7 +75,8 @@ namespace OpenSilver.Simulator
             await helper.Runtime.EnableAsync();
             helper.Runtime.ConsoleAPICalled += OnConsoleMessage;
 
-            //coreWebView.OpenDevToolsWindow();
+            if (DotNetForHtml5.EmulatorWithoutJavascript.Properties.Settings.Default.IsDevToolsOpen)
+                coreWebView.OpenDevToolsWindow();
 
             if (OnInitialized != null)
                 OnInitialized();
