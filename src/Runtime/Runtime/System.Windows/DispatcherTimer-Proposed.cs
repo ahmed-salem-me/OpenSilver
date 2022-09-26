@@ -133,10 +133,8 @@ namespace Windows.UI.Xaml
                 if (intervalInMilliseconds == 0)
                     intervalInMilliseconds = 1; // Note: this appears to be the default bahavior of other XAML platforms.
 
-                Action tickAction = () => OnTick();
-
                 if (OpenSilver.Interop.IsRunningInTheSimulator)
-                    _timer = INTERNAL_Simulator.SimulatorProxy.CreateOSDispatcherTimer(tickAction, TimeSpan.FromMilliseconds(intervalInMilliseconds));
+                    _timer = INTERNAL_Simulator.SimulatorProxy.CreateOSDispatcherTimer((Action)OnTick, TimeSpan.FromMilliseconds(intervalInMilliseconds));
                 else
                     _timer = new global::System.Threading.Timer((e) => OnTick(), null, intervalInMilliseconds, intervalInMilliseconds);
             }
