@@ -21,8 +21,6 @@
     <Compile Include="Tests\AccordionTest.xaml.cs" />
     <Compile Include="Tests\Events\TextInputTest.xaml.cs">
       <SubType>Code</SubType>
-    <Compile Include="Tests\Events\TextInputTest.xaml.cs">
-      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tests\Events\KeyDownTest.xaml.cs" />
     <Compile Include="Tests\Events\XTextBox.cs" />
@@ -316,10 +314,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Content>
-    </Content>
     <Content Include="Tests\AccordionTest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Content>
     <Content Include="Tests\AutoCompleteBoxTest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
