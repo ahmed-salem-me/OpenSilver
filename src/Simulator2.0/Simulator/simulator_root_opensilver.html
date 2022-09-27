@@ -2,7 +2,8 @@
 <html style="margin: 0px; width: 100%; height: 100%;">
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <!--<link rel="stylesheet" type="text/css" href="E:\Projects\Test Projects\SimulatorTests\Simulator.Tests\Sim.Tests.Simulator\js_css\cshtml5.css" />-->
+  <link rel="shortcut icon" href="#" />
+
   <link rel="stylesheet" type="text/css" href="[PARENT]/Libraries/cshtml5.css" /> <!-- Path for production (JSIL-based version) -->
   <link rel="stylesheet" type="text/css" href="[PARENT]/[PARENT]/js_css/cshtml5.css" /> <!-- Path for production (NuGet-based version) of CSHTML5 -->
   <link rel="stylesheet" type="text/css" href="js_css/cshtml5.css" /> <!-- Path for production (NuGet-based version) of OpenSilver -->
@@ -14,7 +15,6 @@
   <link rel="stylesheet" type="text/css" href="js_css/flatpickr.css" /> <!-- Path for production (NuGet-based version) of OpenSilver -->
   <link rel="stylesheet" type="text/css" href="[PARENT]/[PARENT]/[PARENT]/OtherLibraries/flatpickr.css" /> <!-- Path for development -->
   <link rel="stylesheet" type="text/css" href="libs/flatpickr.css" /> <!-- Path for tests -->
-  <!--<script type="application/javascript" src="js_css/OpenSilver.js"></script>-->  <!--Path for production (NuGet-based version) of OpenSilver-->
 
   <script type="application/javascript" src="[PARENT]/Libraries/cshtml5.js"></script> <!-- Path for production (JSIL) -->
   <script type="application/javascript" src="[PARENT]/[PARENT]/js_css/cshtml5.js"></script> <!-- Path for production (NuGet-based version) of CSHTML5 -->
@@ -55,13 +55,13 @@
   <!--oncontextmenu="return false;">-->
   <div id="opensilver-root" style="position: relative; width: 100%; height: 100%; overflow-x: hidden; overflow-y: hidden">
     <div id="SimOverlay" style="position: absolute; width: 100%; height: 100%; overflow: hidden; z-index: 10000; display: none;">
-      <div id="SimOverlayC" style="position: absolute; width: 100%; height: 100%; overflow: hidden; background-color:yellow; opacity:10%; z-index: 10000; " />
+      <div id="SimOverlayC" style="position: absolute; width: 100%; height: 100%; overflow: hidden; z-index: 10000; " />
     </div>
-    <div id="SimElementHighlightBlueOuter" style="position: absolute; width: 100%; height: 100%; z-index: 10010;">
-      <div id="SimElementHighlightBlue" style="position: absolute; width: 0px; height: 0px; border-color: blue; border-style: dashed; border-width: 2px; z-index: 10010; display: auto;" />
+    <div id="SimElementHighlightBlueOuter" style="position: absolute; width: 100%; height: 100%; z-index: 10010; display: none;">
+      <div id="SimElementHighlightBlue" style="position: absolute; width: 0px; height: 0px; border-color: blue; border-style: dashed; border-width: 3px; z-index: 10010; " />
     </div>
-    <div id="SimElementHighlightRedOuter" style="position: absolute; width: 100%; height: 100%; z-index: 10011;">
-      <div id="SimElementHighlightRed" style="position: absolute; width: 0px; height: 0px; border-color: red; border-style: dashed; border-width: 2px; z-index: 10011; display: auto;" />
+    <div id="SimElementHighlightRedOuter" style="position: absolute; width: 100%; height: 100%; z-index: 10011; display: none;">
+      <div id="SimElementHighlightRed" style="position: absolute; width: 0px; height: 0px; border-color: red; border-style: dashed; border-width: 3px; z-index: 10011; " />
     </div>
   </div>
 
@@ -73,7 +73,7 @@
       e = e || event;
 
       if (e.type == "mousemove") {
-          chrome.webview.hostObjects.SimOverlayCallback.OnMouseMove(e.clientX, e.clientY);
+        chrome.webview.hostObjects.SimOverlayCallback.OnMouseMove(e.clientX, e.clientY);
       }
 
       if (e.type == "mousedown") {
@@ -116,8 +116,8 @@
       }
 
       highlightDivOuter.style.display = "";
-      highlightDiv.style.left = bounds.left + "px";
-      highlightDiv.style.top = bounds.top + "px";
+      highlightDiv.style.left = bounds.left - 3 + "px"; //we subtract the highlightDiv border width
+      highlightDiv.style.top = bounds.top - 3 + "px";
       highlightDiv.style.width = bounds.width + "px";
       highlightDiv.style.height = bounds.height + "px";
     }
