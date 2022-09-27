@@ -12,6 +12,7 @@
 \*====================================================================================*/
 
 using CSHTML5.Internal;
+using DotNetForHtml5.Core;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -344,5 +345,21 @@ namespace OpenSilver
             /// </summary>
             public string Url { get; set; }
         }
+
+        public static void StartInteropLoggin()
+        {
+            INTERNAL_Simulator.DynamicJavaScriptExecutionHandler.StartInteropLoggin();
+        }
+
+        public static void StopInteropLoggin()
+        {
+            INTERNAL_Simulator.DynamicJavaScriptExecutionHandler.StopInteropLoggin();
+        }
+
+        public static void ClearInteropLoggin()
+        {
+            INTERNAL_Simulator.DynamicJavaScriptExecutionHandler.ClearInteropLoggin();
+        }
+
     }
 }
