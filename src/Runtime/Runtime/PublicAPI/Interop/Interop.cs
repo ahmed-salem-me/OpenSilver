@@ -108,22 +108,22 @@ namespace OpenSilver
             //that is executed immediately after the one where the URI is defined! Be careful
             //when moving the following line of code.
 #if NETSTANDARD
-	        string callerAssemblyName = Assembly.GetCallingAssembly().GetName().Name;
+            string callerAssemblyName = Assembly.GetCallingAssembly().GetName().Name;
 #elif BRIDGE
             string callerAssemblyName = INTERNAL_UriHelper.GetJavaScriptCallingAssembly();
 #endif
 
             var t = new TaskCompletionSource<object>();
             CSHTML5.INTERNAL_InteropImplementation.LoadJavaScriptFile(
-                url, 
-                callerAssemblyName, 
+                url,
+                callerAssemblyName,
                 () => t.SetResult(null), () => t.SetException(new Exception("Could not load file: \"" + url + "\"."))
             );
             return t.Task;
         }
 
         private static HashSet<string> _jsScriptFileKeys = new HashSet<string>(); //todo: This is probably redundant with the _pendingJSFile and _loadedFiles in INTERNAL_InteropImplementation so remove this?
-        
+
         public static Task<object> LoadJavaScriptFile(ResourceFile resourceFile)
         {
             if (!_jsScriptFileKeys.Contains(resourceFile.Key))
@@ -133,7 +133,7 @@ namespace OpenSilver
                 // that is executed immediately after the one where the URI is defined! Be careful
                 // when moving the following line of code.
 #if NETSTANDARD
-	            string callerAssemblyName = Assembly.GetCallingAssembly().GetName().Name;
+                string callerAssemblyName = Assembly.GetCallingAssembly().GetName().Name;
 #elif BRIDGE
                 string callerAssemblyName = INTERNAL_UriHelper.GetJavaScriptCallingAssembly();
 #endif
@@ -169,7 +169,7 @@ namespace OpenSilver
             // that is executed immediately after the one where the URI is defined! Be careful
             // when moving the following line of code.
 #if NETSTANDARD
-	        string callerAssemblyName = Assembly.GetCallingAssembly().GetName().Name;
+            string callerAssemblyName = Assembly.GetCallingAssembly().GetName().Name;
 #else
             string callerAssemblyName = INTERNAL_UriHelper.GetJavaScriptCallingAssembly();
 #endif
@@ -184,7 +184,7 @@ namespace OpenSilver
             // that is executed immediately after the one where the URI is defined! Be careful
             // when moving the following line of code.
 #if NETSTANDARD
-	        string callerAssemblyName = Assembly.GetCallingAssembly().GetName().Name;
+            string callerAssemblyName = Assembly.GetCallingAssembly().GetName().Name;
 #elif BRIDGE
             string callerAssemblyName = INTERNAL_UriHelper.GetJavaScriptCallingAssembly();
 #endif
@@ -192,7 +192,7 @@ namespace OpenSilver
             foreach (var resourceFile in resourceFiles)
             {
                 //add the key to the dictionary and add the url to the list:
-                if(!_jsScriptFileKeys.Contains(resourceFile.Key))
+                if (!_jsScriptFileKeys.Contains(resourceFile.Key))
                 {
                     _jsScriptFileKeys.Add(resourceFile.Key);
                     urlsAsList.Add(resourceFile.Url);
@@ -283,7 +283,7 @@ namespace OpenSilver
             get
             {
 #if OPENSILVER
-	            return CSHTML5.INTERNAL_InteropImplementation.IsRunningInTheSimulator_WorkAround();
+                return CSHTML5.INTERNAL_InteropImplementation.IsRunningInTheSimulator_WorkAround();
 #elif BRIDGE
                 return CSHTML5.INTERNAL_InteropImplementation.IsRunningInTheSimulator();
 #endif
@@ -292,7 +292,7 @@ namespace OpenSilver
 
 #if CSHTML5BLAZOR
         // For backwards compatibility
-        
+
         /// <summary>
         /// Returns True is the app is running inside the Simulator, and False otherwise.
         /// </summary>
@@ -348,17 +348,20 @@ namespace OpenSilver
 
         public static void StartInteropLoggin()
         {
-            INTERNAL_Simulator.DynamicJavaScriptExecutionHandler.StartInteropLoggin();
+            if (OpenSilver.Interop.IsRunningInTheSimulator)
+                INTERNAL_Simulator.DynamicJavaScriptExecutionHandler.StartInteropLoggin();
         }
 
         public static void StopInteropLoggin()
         {
-            INTERNAL_Simulator.DynamicJavaScriptExecutionHandler.StopInteropLoggin();
+            if (OpenSilver.Interop.IsRunningInTheSimulator)
+                INTERNAL_Simulator.DynamicJavaScriptExecutionHandler.StopInteropLoggin();
         }
 
         public static void ClearInteropLoggin()
         {
-            INTERNAL_Simulator.DynamicJavaScriptExecutionHandler.ClearInteropLoggin();
+            if (OpenSilver.Interop.IsRunningInTheSimulator)
+                INTERNAL_Simulator.DynamicJavaScriptExecutionHandler.ClearInteropLoggin();
         }
 
     }
