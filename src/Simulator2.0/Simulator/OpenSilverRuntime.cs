@@ -10,7 +10,6 @@ namespace OpenSilver.Simulator
 {
     internal class OpenSilverRuntime
     {
-        private SimBrowser _simBrowser;
         private readonly MainWindow _simMainWindow;
         private Dispatcher _SimDispatcher;
         private Dispatcher _OSDispatcher;
@@ -22,9 +21,8 @@ namespace OpenSilver.Simulator
         public Action OnInitialized { get; set; }
 
 
-        public OpenSilverRuntime(SimBrowser simBrowser, MainWindow simMainWindow, Dispatcher simDispatcher)
+        public OpenSilverRuntime(MainWindow simMainWindow, Dispatcher simDispatcher)
         {
-            _simBrowser = simBrowser;
             _simMainWindow = simMainWindow;
             _SimDispatcher = simDispatcher;
             ReflectionInUserAssembliesHelper.TryGetCoreAssembly(out _OSRuntimeAssembly);
@@ -69,7 +67,7 @@ namespace OpenSilver.Simulator
             try
             {
                 // Create the JavaScriptExecutionHandler that will be called by the "Core" project to interact with the Emulator:
-                JavaScriptExecutionHandler = new JavaScriptExecutionHandler(_simBrowser);
+                JavaScriptExecutionHandler = new JavaScriptExecutionHandler(SimBrowser.Instance);
 
                 //InteropHelpers.InjectConvertBrowserResult(BrowserResultConverter.CastFromJsValue, _OSRuntimeAssembly);
                 InteropHelpers.InjectJavaScriptExecutionHandler(JavaScriptExecutionHandler, _OSRuntimeAssembly);

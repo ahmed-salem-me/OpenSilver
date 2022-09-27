@@ -127,7 +127,7 @@
                                             <TextBlock Text="View Interop Log"/>
                                         </Button.Content>
                                     </Button>
-                                    <CheckBox x:Name="IsDevToolsOpened" Content="DevTools Opened" Margin="10,0,0,0" Click="IsDevToolsOpened_Click" Cursor="Hand" ToolTip="Keep DevTools Opened After Restart"/>
+                                    <CheckBox x:Name="IsDevToolsOpened" Content="DevTools Opened" Margin="10,0,0,0" Click="IsDevToolsOpened_Click" Cursor="Hand" ToolTip="Have DevTools Opened After Restart"/>
                                     <Button x:Name="RestartSim" Click="RestartSim_Click" Margin="50,0,0,0" Cursor="Hand" BorderThickness="0" Focusable="False" HorizontalAlignment="Left"  Background="{DynamicResource AccentColorBrush3}" Height="35" ToolTip="Restarts The Simulator, currently not debugger attached">
                                         <Button.Content>
                                             <TextBlock Text="Restart Sim"/>

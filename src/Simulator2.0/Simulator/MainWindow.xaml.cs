@@ -38,6 +38,7 @@ using System.Windows.Media;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Net.NetworkInformation;
+using System.Windows.Input;
 #if OPENSILVER
 using OpenSilver.Simulator;
 #else
@@ -171,7 +172,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             //Note: The following line was an attempt to persist the Microsoft login cookies (for use by user applications that required AAD login), but it is no longer necessary because we changed the DotNetBrowser "StorageType" from "MEMORY" to "DISK", so cookies are now automatically persisted.
             //CookiesHelper.LoadMicrosoftCookies(MainWebBrowser, NAME_FOR_STORING_COOKIES);
 
-            MainWebBrowser = CreateSimBrowser();
+            MainWebBrowser = PrepareSimBrowser();
             BrowserContainer.Child = MainWebBrowser;
 
             if (IS_LICENSE_CHECKER_ENABLED)
@@ -200,11 +201,8 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             // Custom load handler to reload the app after redirection, for example in case of authentication scenarios (eg. Azure Active Directory login redirection):
             NetworkChange.NetworkAvailabilityChanged += MainWindow_NetworkAvailabilityChanged;
 
-            // Continue when the window is loaded:
             this.Loaded += MainWindow_Loaded;
-            //MainWebBrowser.AddHandler(UIElement.MouseMoveEvent, new System.Windows.Input.MouseEventHandler(MainWebBrowser_MouseMove), true);
-            //MainWebBrowser.PreviewMouseDown += MainWebBrowser_PreviewMouseDown;
-
+            KeyDown += (s, e) => { if (e.Key == Key.F12) MainWebBrowser.CoreWebView2.OpenDevToolsWindow(); };
 
 #if OPENSILVER
             ButtonRunInBrowser.Visibility = Visibility.Collapsed;
@@ -733,7 +731,7 @@ Click OK to continue.";
 
         private void ButtonOpenDevTools_Click(object sender, RoutedEventArgs e)
         {
-            MainWebBrowser.CoreWebView2.OpenDevToolsWindow();        
+            MainWebBrowser.CoreWebView2.OpenDevToolsWindow();
         }
 
         private void ButtonHideXamlTree_Click(object sender, RoutedEventArgs e)
@@ -2002,7 +2000,7 @@ Click OK to continue.";
             File.WriteAllText(Path.Combine(debuggingFolder, fileName), Instance.getHtmlSnapshot(osRootOnly, htmlElementId, xamlElementName));
         }
 
-        private SimBrowser CreateSimBrowser()
+        private SimBrowser PrepareSimBrowser()
         {
             var simBrowser = SimBrowser.Instance;
             simBrowser.Width = 150;
@@ -2019,7 +2017,7 @@ Click OK to continue.";
 
             simBrowser.OnInitialized = () =>
             {
-                _openSilverRuntime = new OpenSilverRuntime(MainWebBrowser, this, Dispatcher.CurrentDispatcher);
+                _openSilverRuntime = new OpenSilverRuntime( this, Dispatcher.CurrentDispatcher);
                 LoadIndexPage();
             };
 
