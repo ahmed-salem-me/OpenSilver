@@ -50,7 +50,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             else
                 return double.NaN;
 #else
-            return widthOrNaN / _dbiX;
+            return widthOrNaN * _dbiX;
 #endif
         }
 
@@ -69,7 +69,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             else
                 return double.NaN;
 #else
-            return heightOrNaN / _dbiY;
+            return heightOrNaN * _dbiY;
 #endif
         }
     }

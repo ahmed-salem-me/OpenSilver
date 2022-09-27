@@ -456,7 +456,8 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
                 ReflectBrowserSizeOnRootElementSize();
 
                 // Update the position of the highlight rectangle (the element picker) in case that the XAML inspector is open:
-                await RepositionHighlightElementIfNecessary();
+                //ams> should remove
+                //await RepositionHighlightElementIfNecessary();
             }
         }
 
@@ -709,7 +710,7 @@ Click OK to continue.";
         private void ButtonViewXamlTree_Click(object sender, RoutedEventArgs e)
         {
             if (_clientAppAssembly != null
-                && XamlInspectionTreeViewInstance.TryRefresh(_clientAppAssembly, XamlPropertiesPaneInstance, MainWebBrowser, HighlightElement))
+                && XamlInspectionTreeViewInstance.TryRefresh(_clientAppAssembly, XamlPropertiesPaneInstance))
             {
                 MainGridSplitter.Visibility = Visibility.Visible;
                 BorderForXamlInspection.Visibility = Visibility.Visible;
@@ -829,11 +830,15 @@ Click OK to continue.";
         {
             if ((bool)LogInterop.IsChecked)
             {
+                LogInterop.Content = "Loggin Interops...";
                 _openSilverRuntime.JavaScriptExecutionHandler.ClearInteropLog();
                 _openSilverRuntime.JavaScriptExecutionHandler.StartInteropLogging();
             }
             else
+            {
                 _openSilverRuntime.JavaScriptExecutionHandler.StopInteropLoggin();
+                LogInterop.Content = "Log Interops";
+            }
         }
 
         private void ViewInteropLog_Click(object sender, RoutedEventArgs e)
@@ -1849,13 +1854,15 @@ Click OK to continue.";
         void StartElementPickerForInspection()
         {
             // Show the area that is used to detect MouseMove:
-            ElementPickerForInspection.Visibility = Visibility.Visible;
+            //ElementPickerForInspection.Visibility = Visibility.Visible;
 
             if (ButtonViewHideElementPickerForInspector.IsChecked != true)
                 ButtonViewHideElementPickerForInspector.IsChecked = true;
 
             // Show the tutorial:
             InformationAboutHowThePickerWorks.Visibility = Visibility.Visible;
+
+            XamlInspectionHelper.StartInspection();
         }
 
         void StopElementPickerForInspection()
@@ -1867,11 +1874,10 @@ Click OK to continue.";
             if (ButtonViewHideElementPickerForInspector.IsChecked == true)
                 ButtonViewHideElementPickerForInspector.IsChecked = false;
 
-            // Remove the element picker highlight:
-            XamlInspectionHelper.HighlightElement(null, ElementPickerHighlight, MainWebBrowser);
-
             // Hide the tutorial:
             InformationAboutHowThePickerWorks.Visibility = Visibility.Collapsed;
+
+            XamlInspectionHelper.StopInspection();
         }
 
         void ElementPickerForInspection_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
@@ -1998,7 +2004,7 @@ Click OK to continue.";
 
         private SimBrowser CreateSimBrowser()
         {
-            var simBrowser = new SimBrowser();
+            var simBrowser = SimBrowser.Instance;
             simBrowser.Width = 150;
             simBrowser.Height = 200;
             simBrowser.SizeChanged += MainWebBrowser_SizeChanged;

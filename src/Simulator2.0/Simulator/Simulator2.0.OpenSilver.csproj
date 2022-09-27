@@ -125,6 +125,7 @@
     <Compile Include="Interop\JavaScriptExecutionHandler.cs" />
     <Compile Include="SupportClasses\ResourceInterceptor.cs" />
     <Compile Include="TrialHelpers_MoreMethods.cs" />
+    <Compile Include="XamlInspection\SimOverlayCallback.cs" />
     <Compile Include="XamlInspection\TreeViewDataTemplateSelector.cs" />
     <Compile Include="XamlInspection\TreeNode.cs" />
     <Compile Include="XamlInspection\XamlInspectionTreeView.xaml.cs">

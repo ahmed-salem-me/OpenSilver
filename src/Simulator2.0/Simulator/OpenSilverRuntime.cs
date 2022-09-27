@@ -22,7 +22,7 @@ namespace OpenSilver.Simulator
         public Action OnInitialized { get; set; }
 
 
-        public  OpenSilverRuntime(SimBrowser simBrowser, MainWindow simMainWindow, Dispatcher simDispatcher)
+        public OpenSilverRuntime(SimBrowser simBrowser, MainWindow simMainWindow, Dispatcher simDispatcher)
         {
             _simBrowser = simBrowser;
             _simMainWindow = simMainWindow;
@@ -39,7 +39,7 @@ namespace OpenSilver.Simulator
                 {
                     _OSDispatcher = Dispatcher.CurrentDispatcher;
 
-                    if (!Initialize0())
+                    if (!Initialize())
                         return;
 
                     _ClientAppStartup();
@@ -65,48 +65,18 @@ namespace OpenSilver.Simulator
 
         public bool Initialize()
         {
-            try
-            {
-                JavaScriptExecutionHandler = new JavaScriptExecutionHandler(_simBrowser);
-                //OS::DotNetForHtml5.Core.INTERNAL_Simulator.JavaScriptExecutionHandler = JavaScriptExecutionHandler;
-                //OS::DotNetForHtml5.Core.INTERNAL_Simulator.ClipboardHandler = new ClipboardHandler();
-                //OS::DotNetForHtml5.Core.INTERNAL_Simulator.IsRunningInTheSimulator_WorkAround = true;
-                //OS::DotNetForHtml5.Core.INTERNAL_Simulator.SimulatorProxy =
-                //    new SimulatorProxy(_simBrowser, _simMainWindow.Console, _SimDispatcher, _OSDispatcher);
-                //OS::DotNetForHtml5.Core.INTERNAL_Simulator.SimulatorProxy.IsOSRuntimeRunning = true;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error while loading the application: " + Environment.NewLine + Environment.NewLine + ex.Message);
-                //_simMainWindow.HideLoadingMessage();
-                return false;
-            }
-        }
-
-        public bool Initialize0()
-        {
             // In OpenSilver we already have the user application type passed to the constructor, so we do not need to retrieve it here
             try
             {
                 // Create the JavaScriptExecutionHandler that will be called by the "Core" project to interact with the Emulator:
                 JavaScriptExecutionHandler = new JavaScriptExecutionHandler(_simBrowser);
 
-                // Create the HTML DOM MANAGER proxy and pass it to the "Core" project:
-                //JSValue htmlDocument = (JSObject)_simBrowser.Browser.ExecuteJavaScriptAndReturnValue("document");
-
-                //InteropHelpers.InjectDOMDocument(_simBrowser.Browser.GetDocument(), _OSRuntimeAssembly);
-                //InteropHelpers.InjectHtmlDocument(htmlDocument, _OSRuntimeAssembly);//no need for this line right ?
-                //InteropHelpers.InjectWebControlDispatcherBeginInvoke(_simBrowser, _OSRuntimeAssembly);
-                //InteropHelpers.InjectWebControlDispatcherInvoke(_simBrowser, _OSRuntimeAssembly);
-                //InteropHelpers.InjectWebControlDispatcherCheckAccess(_simBrowser, _OSRuntimeAssembly);
                 //InteropHelpers.InjectConvertBrowserResult(BrowserResultConverter.CastFromJsValue, _OSRuntimeAssembly);
                 InteropHelpers.InjectJavaScriptExecutionHandler(JavaScriptExecutionHandler, _OSRuntimeAssembly);
                 //InteropHelpers.InjectWpfMediaElementFactory(_OSRuntimeAssembly);
                 //InteropHelpers.InjectWebClientFactory(_OSRuntimeAssembly);
                 InteropHelpers.InjectClipboardHandler(_OSRuntimeAssembly);
-                InteropHelpers.InjectSimulatorProxy(
-                        new SimulatorProxy(_simBrowser, _simMainWindow.Console, _SimDispatcher, _OSDispatcher), _OSRuntimeAssembly);
+                InteropHelpers.InjectSimulatorProxy(new SimulatorProxy(_simMainWindow.Console, _SimDispatcher, _OSDispatcher), _OSRuntimeAssembly);
 
                 // In the OpenSilver Version, we use this work-around to know if we're in the simulator
                 InteropHelpers.InjectIsRunningInTheSimulator_WorkAround(_OSRuntimeAssembly);
@@ -120,7 +90,6 @@ namespace OpenSilver.Simulator
 
                 // Ensure the static constructor of all common types is called so that the type converters are initialized:
                 StaticConstructorsCaller.EnsureStaticConstructorOfCommonTypesIsCalled(_OSRuntimeAssembly);
-                //OnInitialized();
                 return true;
             }
             catch (Exception ex)

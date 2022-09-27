@@ -161,6 +161,8 @@ namespace OpenSilver.Simulator
 
             head.Elements("link").Where(link =>
             {
+                if (link.Attribute("href").Value == "#") return false;
+
                 var path = Path.Combine(asmPath, link.Attribute("href").Value.Replace("[PARENT]", "..").Replace("%20", " ").Replace('/', '\\'));
                 return !File.Exists(path);
             }).Remove();

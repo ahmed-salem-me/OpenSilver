@@ -1,61 +1,127 @@
-﻿<!DOCTYPE html> 
+﻿<!DOCTYPE html>
 <html style="margin: 0px; width: 100%; height: 100%;">
 <head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!--<link rel="stylesheet" type="text/css" href="E:\Projects\Test Projects\SimulatorTests\Simulator.Tests\Sim.Tests.Simulator\js_css\cshtml5.css" />-->
+  <link rel="stylesheet" type="text/css" href="[PARENT]/Libraries/cshtml5.css" /> <!-- Path for production (JSIL-based version) -->
+  <link rel="stylesheet" type="text/css" href="[PARENT]/[PARENT]/js_css/cshtml5.css" /> <!-- Path for production (NuGet-based version) of CSHTML5 -->
+  <link rel="stylesheet" type="text/css" href="js_css/cshtml5.css" /> <!-- Path for production (NuGet-based version) of OpenSilver -->
+  <link rel="stylesheet" type="text/css" href="[PARENT]/[PARENT]/[PARENT]/OtherLibraries/cshtml5.css" /> <!-- Path for development -->
+  <link rel="stylesheet" type="text/css" href="libs/cshtml5.css" /> <!-- Path for tests -->
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="stylesheet" type="text/css" href="[PARENT]/Libraries/flatpickr.css" /> <!-- Path for production (JSIL) -->
+  <link rel="stylesheet" type="text/css" href="[PARENT]/[PARENT]/js_css/flatpickr.css" /> <!-- Path for production (NuGet-based version) of CSHTML5 -->
+  <link rel="stylesheet" type="text/css" href="js_css/flatpickr.css" /> <!-- Path for production (NuGet-based version) of OpenSilver -->
+  <link rel="stylesheet" type="text/css" href="[PARENT]/[PARENT]/[PARENT]/OtherLibraries/flatpickr.css" /> <!-- Path for development -->
+  <link rel="stylesheet" type="text/css" href="libs/flatpickr.css" /> <!-- Path for tests -->
+  <!--<script type="application/javascript" src="js_css/OpenSilver.js"></script>-->  <!--Path for production (NuGet-based version) of OpenSilver-->
 
-    <link rel="stylesheet" type="text/css" href="[PARENT]/Libraries/cshtml5.css" /> <!-- Path for production (JSIL-based version) -->
-    <link rel="stylesheet" type="text/css" href="[PARENT]/[PARENT]/js_css/cshtml5.css" /> <!-- Path for production (NuGet-based version) of CSHTML5 -->
-    <link rel="stylesheet" type="text/css" href="js_css/cshtml5.css" /> <!-- Path for production (NuGet-based version) of OpenSilver -->
-    <link rel="stylesheet" type="text/css" href="[PARENT]/[PARENT]/[PARENT]/OtherLibraries/cshtml5.css" /> <!-- Path for development -->
-    <link rel="stylesheet" type="text/css" href="libs/cshtml5.css" /> <!-- Path for tests -->
+  <script type="application/javascript" src="[PARENT]/Libraries/cshtml5.js"></script> <!-- Path for production (JSIL) -->
+  <script type="application/javascript" src="[PARENT]/[PARENT]/js_css/cshtml5.js"></script> <!-- Path for production (NuGet-based version) of CSHTML5 -->
+  <script type="application/javascript" src="js_css/cshtml5.js"></script> <!-- Path for production (NuGet-based version) of OpenSilver -->
+  <script type="application/javascript" src="[PARENT]/[PARENT]/[PARENT]/OtherLibraries/cshtml5.js"></script> <!-- Path for development -->
+  <script type="application/javascript" src="libs/cshtml5.js"></script> <!-- Path for tests -->
 
-    <link rel="stylesheet" type="text/css" href="[PARENT]/Libraries/flatpickr.css" /> <!-- Path for production (JSIL) -->
-    <link rel="stylesheet" type="text/css" href="[PARENT]/[PARENT]/js_css/flatpickr.css" /> <!-- Path for production (NuGet-based version) of CSHTML5 -->
-    <link rel="stylesheet" type="text/css" href="js_css/flatpickr.css" /> <!-- Path for production (NuGet-based version) of OpenSilver -->
-    <link rel="stylesheet" type="text/css" href="[PARENT]/[PARENT]/[PARENT]/OtherLibraries/flatpickr.css" /> <!-- Path for development -->
-    <link rel="stylesheet" type="text/css" href="libs/flatpickr.css" /> <!-- Path for tests -->
-
-
-    <script type="application/javascript" src="[PARENT]/Libraries/cshtml5.js"></script> <!-- Path for production (JSIL) -->
-    <script type="application/javascript" src="[PARENT]/[PARENT]/js_css/cshtml5.js"></script> <!-- Path for production (NuGet-based version) of CSHTML5 -->
-    <script type="application/javascript" src="js_css/cshtml5.js"></script> <!-- Path for production (NuGet-based version) of OpenSilver -->
-    <script type="application/javascript" src="[PARENT]/[PARENT]/[PARENT]/OtherLibraries/cshtml5.js"></script> <!-- Path for development -->
-    <script type="application/javascript" src="libs/cshtml5.js"></script> <!-- Path for tests -->
-
-    <script type="application/javascript" src="[PARENT]/Libraries/velocity.js"></script> <!-- Path for production (JSIL) -->
-    <script type="application/javascript" src="[PARENT]/[PARENT]/js_css/velocity.js"></script> <!-- Path for production (NuGet-based version) of CSHTML5 -->
-    <script type="application/javascript" src="js_css/velocity.js"></script> <!-- Path for production (NuGet-based version) of OpenSilver -->
-    <script type="application/javascript" src="[PARENT]/[PARENT]/[PARENT]/OtherLibraries/velocity.js"></script> <!-- Path for development -->
-    <script type="application/javascript" src="libs/velocity.js"></script> <!-- Path for tests -->
+  <script type="application/javascript" src="[PARENT]/Libraries/velocity.js"></script> <!-- Path for production (JSIL) -->
+  <script type="application/javascript" src="[PARENT]/[PARENT]/js_css/velocity.js"></script> <!-- Path for production (NuGet-based version) of CSHTML5 -->
+  <script type="application/javascript" src="js_css/velocity.js"></script> <!-- Path for production (NuGet-based version) of OpenSilver -->
+  <script type="application/javascript" src="[PARENT]/[PARENT]/[PARENT]/OtherLibraries/velocity.js"></script> <!-- Path for development -->
+  <script type="application/javascript" src="libs/velocity.js"></script> <!-- Path for tests -->
 
 
-    <script type="application/javascript" src="[PARENT]/Libraries/flatpickr.js"></script> <!-- Path for production (JSIL) -->
-    <script type="application/javascript" src="[PARENT]/[PARENT]/js_css/flatpickr.js"></script> <!-- Path for production (NuGet-based version) of CSHTML5 -->
-    <script type="application/javascript" src="js_css/flatpickr.js"></script> <!-- Path for production (NuGet-based version) of OpenSilver -->
-    <script type="application/javascript" src="[PARENT]/[PARENT]/[PARENT]/OtherLibraries/flatpickr.js"></script> <!-- Path for development -->
-    <script type="application/javascript" src="libs/flatpickr.js"></script> <!-- Path for tests -->
+  <script type="application/javascript" src="[PARENT]/Libraries/flatpickr.js"></script> <!-- Path for production (JSIL) -->
+  <script type="application/javascript" src="[PARENT]/[PARENT]/js_css/flatpickr.js"></script> <!-- Path for production (NuGet-based version) of CSHTML5 -->
+  <script type="application/javascript" src="js_css/flatpickr.js"></script> <!-- Path for production (NuGet-based version) of OpenSilver -->
+  <script type="application/javascript" src="[PARENT]/[PARENT]/[PARENT]/OtherLibraries/flatpickr.js"></script> <!-- Path for development -->
+  <script type="application/javascript" src="libs/flatpickr.js"></script> <!-- Path for tests -->
 
-    <script type="application/javascript" src="[PARENT]/Libraries/ResizeSensor.js"></script> <!-- Path for production (JSIL) -->
-    <script type="application/javascript" src="[PARENT]/[PARENT]/js_css/ResizeSensor.js"></script> <!-- Path for production (NuGet-based version) of CSHTML5 -->
-    <script type="application/javascript" src="js_css/ResizeSensor.js"></script> <!-- Path for production (NuGet-based version) of OpenSilver -->
-    <script type="application/javascript" src="[PARENT]/[PARENT]/[PARENT]/OtherLibraries/ResizeSensor.js"></script> <!-- Path for development -->
-    <script type="application/javascript" src="libs/ResizeSensor.js"></script> <!-- Path for tests -->
+  <script type="application/javascript" src="[PARENT]/Libraries/ResizeSensor.js"></script> <!-- Path for production (JSIL) -->
+  <script type="application/javascript" src="[PARENT]/[PARENT]/js_css/ResizeSensor.js"></script> <!-- Path for production (NuGet-based version) of CSHTML5 -->
+  <script type="application/javascript" src="js_css/ResizeSensor.js"></script> <!-- Path for production (NuGet-based version) of OpenSilver -->
+  <script type="application/javascript" src="[PARENT]/[PARENT]/[PARENT]/OtherLibraries/ResizeSensor.js"></script> <!-- Path for development -->
+  <script type="application/javascript" src="libs/ResizeSensor.js"></script> <!-- Path for tests -->
 
-    <script type="application/javascript" src="[PARENT]/Libraries/ResizeObserver.js"></script> <!-- Path for production (JSIL) -->
-    <script type="application/javascript" src="[PARENT]/[PARENT]/js_css/ResizeObserver.js"></script> <!-- Path for production (NuGet-based version) of CSHTML5 -->
-    <script type="application/javascript" src="js_css/ResizeObserver.js"></script> <!-- Path for production (NuGet-based version) of OpenSilver -->
-    <script type="application/javascript" src="[PARENT]/[PARENT]/[PARENT]/OtherLibraries/ResizeObserver.js"></script> <!-- Path for development -->
-    <script type="application/javascript" src="libs/ResizeObserver.js"></script> <!-- Path for tests -->    
-    [SCRIPT_TO_READ_APPCONFIG_GOES_HERE]
-    [SCRIPT_TO_READ_SERVICEREFERENCESCLIENTCONFIG_GOES_HERE]
+  <script type="application/javascript" src="[PARENT]/Libraries/ResizeObserver.js"></script> <!-- Path for production (JSIL) -->
+  <script type="application/javascript" src="[PARENT]/[PARENT]/js_css/ResizeObserver.js"></script> <!-- Path for production (NuGet-based version) of CSHTML5 -->
+  <script type="application/javascript" src="js_css/ResizeObserver.js"></script> <!-- Path for production (NuGet-based version) of OpenSilver -->
+  <script type="application/javascript" src="[PARENT]/[PARENT]/[PARENT]/OtherLibraries/ResizeObserver.js"></script> <!-- Path for development -->
+  <script type="application/javascript" src="libs/ResizeObserver.js"></script> <!-- Path for tests -->
+  [SCRIPT_TO_READ_APPCONFIG_GOES_HERE]
+  [SCRIPT_TO_READ_SERVICEREFERENCESCLIENTCONFIG_GOES_HERE]
 
 </head>
 
-  <body oncontextmenu="return false;"> 
-
-    <div id="opensilver-root" style="position: relative; width: 100%; height: 100%; overflow-x: hidden; overflow-y: hidden">
-        [PARAM_INITPARAMS_GOES_HERE]
+<body>
+  <!--oncontextmenu="return false;">-->
+  <div id="opensilver-root" style="position: relative; width: 100%; height: 100%; overflow-x: hidden; overflow-y: hidden">
+    <div id="SimOverlay" style="position: absolute; width: 100%; height: 100%; overflow: hidden; z-index: 10000; display: none;">
+      <div id="SimOverlayC" style="position: absolute; width: 100%; height: 100%; overflow: hidden; background-color:yellow; opacity:10%; z-index: 10000; " />
     </div>
-  </body>
+    <div id="SimElementHighlightBlueOuter" style="position: absolute; width: 100%; height: 100%; z-index: 10010;">
+      <div id="SimElementHighlightBlue" style="position: absolute; width: 0px; height: 0px; border-color: blue; border-style: dashed; border-width: 2px; z-index: 10010; display: auto;" />
+    </div>
+    <div id="SimElementHighlightRedOuter" style="position: absolute; width: 100%; height: 100%; z-index: 10011;">
+      <div id="SimElementHighlightRed" style="position: absolute; width: 0px; height: 0px; border-color: red; border-style: dashed; border-width: 2px; z-index: 10011; display: auto;" />
+    </div>
+  </div>
+
+  <script language="javascript">
+
+    var simOverlay = document.getElementById("SimOverlay");
+
+    function onSimOverlayEvent(e) {
+      e = e || event;
+
+      if (e.type == "mousemove") {
+          chrome.webview.hostObjects.SimOverlayCallback.OnMouseMove(e.clientX, e.clientY);
+      }
+
+      if (e.type == "mousedown") {
+        chrome.webview.hostObjects.SimOverlayCallback.OnMouseDown(e.clientX, e.clientY);
+      }
+
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    simOverlay.addEventListener("mousedown", onSimOverlayEvent);
+    simOverlay.addEventListener("mouseup", onSimOverlayEvent);
+    simOverlay.addEventListener("mousemove", onSimOverlayEvent);
+    simOverlay.addEventListener("mouseenter", onSimOverlayEvent);
+    simOverlay.addEventListener("mouseleave", onSimOverlayEvent);
+    simOverlay.addEventListener("mouseover", onSimOverlayEvent);
+
+    function simHighlightElement(eleId, highlighClr) {
+      var bounds = null;
+      if (eleId) {
+        var element = document.getElementByIdSafe(eleId);
+        bounds = element.getBoundingClientRect();
+      }
+      simMoveElementHighlightDiv(highlighClr, bounds);
+    }
+
+    function simMoveElementHighlightDiv(highlighClr, bounds) {
+      var highlightDivId;
+      if (highlighClr == 1)
+        highlightDivId = "SimElementHighlightBlue";
+      else if (highlighClr == 2)
+        highlightDivId = "SimElementHighlightRed";
+
+      var highlightDiv = document.getElementById(highlightDivId);
+      var highlightDivOuter = document.getElementById(highlightDivId + "Outer");
+
+      if (!bounds) {
+        highlightDivOuter.style.display = "none";
+        return;
+      }
+
+      highlightDivOuter.style.display = "";
+      highlightDiv.style.left = bounds.left + "px";
+      highlightDiv.style.top = bounds.top + "px";
+      highlightDiv.style.width = bounds.width + "px";
+      highlightDiv.style.height = bounds.height + "px";
+    }
+
+  </script>
+</body>
 </html>

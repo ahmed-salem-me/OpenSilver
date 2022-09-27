@@ -23,22 +23,21 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Microsoft.Web.WebView2.Wpf;
+using OpenSilver.Simulator;
 
 namespace DotNetForHtml5.EmulatorWithoutJavascript
 {
     //Do not remove this class: called via reflection.
     public class SimulatorProxy 
     {
-        public WebView2 _webControl;
         ConsoleControl _console;
         private Dispatcher _SimDispatcher;
-        private Dispatcher _OSDispatcher;
+        public static Dispatcher _OSDispatcher;
         public bool UseSimBrowser { get; set; } = true;
         public bool IsOSRuntimeRunning { get; set; } = true;
 
-        public SimulatorProxy(WebView2 webControl, ConsoleControl console, Dispatcher simDispatcher, Dispatcher oSDispatcher)
+        public SimulatorProxy(ConsoleControl console, Dispatcher simDispatcher, Dispatcher oSDispatcher)
         {
-            _webControl = webControl;
             _console = console;
             _SimDispatcher = simDispatcher;
             _OSDispatcher = oSDispatcher;
@@ -47,7 +46,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
         //Do not remove this method: called via reflection.
         public Point GetMousePosition()
         {
-            Point mousePosition = Mouse.GetPosition(_webControl);
+            Point mousePosition = Mouse.GetPosition(SimBrowser.Instance);
             return new Point(-mousePosition.X, -mousePosition.Y);
         }
 
@@ -167,7 +166,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
 
         public void AddHostObject(string objectName, object objectInstance)
         {
-            _SimDispatcher.InvokeAsync(() => _webControl.CoreWebView2.AddHostObjectToScript(objectName, objectInstance));
+            _SimDispatcher.InvokeAsync(() => SimBrowser.Instance.CoreWebView2.AddHostObjectToScript(objectName, objectInstance));
         }
 
         public void OSInvokeAsync(Action action)

@@ -16,10 +16,13 @@ namespace OpenSilver.Simulator
     public class SimBrowser : WebView2
     {
         private bool _ReloadApp;
+        public static SimBrowser Instance { get; }
         public Action OnNavigationCompleted { get; set; }
         public Action OnInitialized { get; set; }
 
-        public SimBrowser()
+        static SimBrowser() { Instance = new SimBrowser(); }
+
+        private SimBrowser()
         {
             Loaded += SimBrowser_Loaded;
             CoreWebView2InitializationCompleted += SimBrowser_CoreWebView2InitializationCompleted;
@@ -202,6 +205,71 @@ namespace OpenSilver.Simulator
             for (int i = e.MenuItems.Count - 1; i > -1; i--)
                 if (!validItems.Contains(e.MenuItems[i].Name))
                     e.MenuItems.RemoveAt(i);
+
+            CoreWebView2Deferral deferral = e.GetDeferral();
+            e.Handled = true;
+            ContextMenu cMenu = new ContextMenu();
+            cMenu.Closed += (s, ex) => deferral.Complete();
+
+            var inspectXamlElementItem = new MenuItem()
+            {
+                Header = "Inspect Xaml Element in New Window",
+            };
+            inspectXamlElementItem.Click += (ss, ee) => { };
+
+            var inspectDomElementItem = new MenuItem()
+            {
+                Header = "Inspect Dom Element",
+            };
+
+            inspectDomElementItem.Click += (ss, ee) =>
+            {
+                e.SelectedCommandId = e.MenuItems.Single(mi => mi.Name == "inspectElement").CommandId;
+            };
+
+            cMenu.Items.Add(inspectXamlElementItem);
+            cMenu.Items.Add(new Separator());
+            cMenu.Items.Add(inspectDomElementItem);
+            cMenu.IsOpen = true;
+        }
+
+        void PopulateContextMenu(CoreWebView2ContextMenuRequestedEventArgs args, IList<CoreWebView2ContextMenuItem> menuList, ItemsControl cm)
+        {
+            for (int i = 0; i < menuList.Count; i++)
+            {
+                CoreWebView2ContextMenuItem current = menuList[i];
+                if (current.Kind == CoreWebView2ContextMenuItemKind.Separator)
+                {
+                    Separator sep = new Separator();
+                    cm.Items.Add(sep);
+                    continue;
+                }
+                MenuItem newItem = new MenuItem();
+                // The accessibility key is the key after the & in the label
+                // Replace with '_' so it is underlined in the label
+                newItem.Header = current.Label.Replace('&', '_');
+                newItem.InputGestureText = current.ShortcutKeyDescription;
+                newItem.IsEnabled = current.IsEnabled;
+                if (current.Kind == CoreWebView2ContextMenuItemKind.Submenu)
+                {
+                    PopulateContextMenu(args, current.Children, newItem);
+                }
+                else
+                {
+                    if (current.Kind == CoreWebView2ContextMenuItemKind.CheckBox
+                    || current.Kind == CoreWebView2ContextMenuItemKind.Radio)
+                    {
+                        newItem.IsCheckable = true;
+                        newItem.IsChecked = current.IsChecked;
+                    }
+
+                    newItem.Click += (s, ex) =>
+                    {
+                        args.SelectedCommandId = current.CommandId;
+                    };
+                }
+                cm.Items.Add(newItem);
+            }
         }
 
         public object ExecuteScriptWithResult(string javaScript)

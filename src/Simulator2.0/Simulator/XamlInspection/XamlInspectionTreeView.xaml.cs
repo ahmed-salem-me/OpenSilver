@@ -43,8 +43,6 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
     public partial class XamlInspectionTreeView : UserControl
     {
         XamlPropertiesPane _xamlPropertiesPane;
-        WebView2 _webControl;
-        Rectangle _rectangleUsedToHighlight;
         bool _hasBeenFullyExpanded;
 
         public XamlInspectionTreeView()
@@ -52,13 +50,11 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             InitializeComponent();
         }
 
-        public bool TryRefresh(Assembly entryPointAssembly, XamlPropertiesPane xamlPropertiesPane, WebView2 webControl, Rectangle highlightElement)
+        public bool TryRefresh(Assembly entryPointAssembly, XamlPropertiesPane xamlPropertiesPane)
         {
             int nbTreeViewElements;
 
             _xamlPropertiesPane = xamlPropertiesPane;
-            _webControl = webControl;
-            _rectangleUsedToHighlight = highlightElement;
             _hasBeenFullyExpanded = false;
             
             var isSuccess = XamlInspectionHelper.TryInitializeTreeView(this.TreeViewForXamlInspection, entryPointAssembly, out nbTreeViewElements);
@@ -78,7 +74,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                 _xamlPropertiesPane.Refresh(e.NewValue);
 
                 // Clear highlight:
-                XamlInspectionHelper.HighlightElement(null, _rectangleUsedToHighlight, _webControl);
+                XamlInspectionHelper.HighlightElementUsingJS(null, 2);
             }
             else
             {
@@ -87,7 +83,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                 _xamlPropertiesPane.Refresh(treeNode.Element);
 
                 // Highlight the element in the web browser:
-                XamlInspectionHelper.HighlightElement(treeNode.Element, _rectangleUsedToHighlight, _webControl);
+                XamlInspectionHelper.HighlightElementUsingJS(treeNode.Element, 2);
             }
         }
 
@@ -102,7 +98,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             _hasBeenFullyExpanded = true;
         }
 
-        public bool TrySelectTreeNode(object correspondingUIElementInUserApplication)
+        public bool TrySelectTreeNode(object uiElement)
         {
             bool wasFullyExpanded = _hasBeenFullyExpanded;
 
@@ -114,7 +110,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             {
                 TreeNode treeNode = treeNodeAndTreeViewItem.Item1;
                 TreeViewItem treeViewItem = treeNodeAndTreeViewItem.Item2;
-                if (treeNodeAndTreeViewItem.Item1.Element == correspondingUIElementInUserApplication)
+                if (treeNodeAndTreeViewItem.Item1.Element == uiElement)
                 {
                     if (treeViewItem != null)
                     {
@@ -135,6 +131,41 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             }
             return false;
         }
+
+        public bool TrySelectTreeNodeX(object uiElement)
+        {
+            bool wasFullyExpanded = _hasBeenFullyExpanded;
+
+            // First, we need to expand all the nodes so that the "item generators" can be called (which creates the TreeViewItems") and so we can select the node:
+            //ExpandAllNodes();
+
+            // Then, select the item:
+            foreach (Tuple<TreeNode, TreeViewItem> treeNodeAndTreeViewItem in TraverseTreeViewItems(TreeViewForXamlInspection))
+            {
+                TreeNode treeNode = treeNodeAndTreeViewItem.Item1;
+                TreeViewItem treeViewItem = treeNodeAndTreeViewItem.Item2;
+                if (treeNodeAndTreeViewItem.Item1.Element == uiElement)
+                {
+                    if (treeViewItem != null)
+                    {
+                        Dispatcher.BeginInvoke((Action)(async () =>
+                        {
+                            treeViewItem.IsSelected = true;
+
+                            if (!wasFullyExpanded)
+                                await Task.Delay(3000); // We give the time to the TreeView to expand, in ordero to make it possible to bring the selected item into view.
+
+                            treeViewItem.BringIntoView();
+                        }));
+                    }
+                    else
+                        throw new Exception("Unable to get the TreeViewItem from the TreeNode. Please inform the authors at: support@cshtml5.com");
+                    return true;
+                }
+            }
+            return false;
+        }
+
 
         /*
         static IEnumerable<TreeNode> TraverseTreeView(object treeViewOrTreeNode)

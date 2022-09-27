@@ -25,11 +25,16 @@ using System.Collections;
 using System.Windows.Shapes;
 using DotNetForHtml5.Compiler;
 using Microsoft.Web.WebView2.Wpf;
+using OpenSilver.Simulator;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 {
     internal static class XamlInspectionHelper
     {
+        private static SimOverlayCallback _SimOverlayCallback;
+
         public static bool TryInitializeTreeView(TreeView treeView, Assembly entryPointAssembly, out int NbTreeViewElement)
         {
             NbTreeViewElement = 0;
@@ -40,7 +45,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
                 foreach (object treeRootElement in treeRootElements)
                 {
-                    treeView.Items.Add(RecursivelyAddElementsToTree(treeRootElement, false, ref NbTreeViewElement));
+                    treeView.Items.Add(RecursivelyAddElementsToTree(treeRootElement, false, ref NbTreeViewElement, 10));
                 }
 
                 return true;
@@ -49,11 +54,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                 return false;
         }
 
-        static TreeNode RecursivelyAddElementsToTree(dynamic uiElement, bool alreadyInsertedANodeForXamlSourcePath, ref int NbTreeViewElement)
+        static TreeNode RecursivelyAddElementsToTree(dynamic uiElement, bool alreadyInsertedANodeForXamlSourcePath, ref int NbTreeViewElement, int maxTreeLevel)
         {
             // If the element is a XAML root element (that is, if its "XamlSourcePath" property has been filled), we add a node to the tree that tells us in which XAML file the element is defined:
             string xamlSourcePathOrNull = alreadyInsertedANodeForXamlSourcePath ? null : GetXamlSourcePathOrNullFromElement(uiElement); ;
             bool isNodeForXamlSourcePath = !string.IsNullOrEmpty(xamlSourcePathOrNull);
+            var currMaxLevel = maxTreeLevel;
 
             TreeNode treeNode;
             if (isNodeForXamlSourcePath)
@@ -69,7 +75,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                 };
 
                 // Call itself and set "alreadyInsertedANodeForXamlSourcePath" to true:
-                treeNode.Children.Add(RecursivelyAddElementsToTree(uiElement, true, ref NbTreeViewElement));
+                treeNode.Children.Add(RecursivelyAddElementsToTree(uiElement, true, ref NbTreeViewElement, currMaxLevel - 1));
             }
             else
             {
@@ -81,19 +87,28 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                     Name = GetNameOrNullFromElement(uiElement),
                     Children = new ObservableCollection<TreeNode>()
                 };
-
+                
                 // Handle the children recursively:
                 IDictionary visualChildrenInformation = uiElement.INTERNAL_VisualChildrenInformation as IDictionary;
                 if (visualChildrenInformation != null)
                 {
-                    foreach (dynamic item in visualChildrenInformation.Values) // This corresponds to elements of type "INTERNAL_VisualChildInformation" in the "Core" assembly.
+                    if (currMaxLevel > 0)
                     {
-                        var childElement = item.INTERNAL_UIElement;
-                        if (childElement != null)
+                        currMaxLevel--;
+                        foreach (dynamic item in visualChildrenInformation.Values) // This corresponds to elements of type "INTERNAL_VisualChildInformation" in the "Core" assembly.
                         {
-                            treeNode.Children.Add(RecursivelyAddElementsToTree(childElement, isNodeForXamlSourcePath, ref NbTreeViewElement));
+                            var childElement = item.INTERNAL_UIElement;
+                            if (childElement != null)
+                            {
+                                if (treeNode.Title == "Window" && (GetTitleFromElement(childElement) == "TextBlock" || GetTitleFromElement(childElement) == "TextBox"))
+                                    return treeNode;
+
+                                treeNode.Children.Add(RecursivelyAddElementsToTree(childElement, isNodeForXamlSourcePath, ref NbTreeViewElement, currMaxLevel));
+                            }
                         }
                     }
+                    else
+                        treeNode.Title += " {...}";
                 }
             }
             NbTreeViewElement++;
@@ -251,10 +266,11 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                     var methodInfo = manager.GetMethod("FindElementInHostCoordinates_UsedBySimulatorToo", BindingFlags.Public | BindingFlags.Static);
                     if (methodInfo != null)
                     {
-                        double dpiAwareX = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(coordinates.X, invert: true);
-                        double dpiAwareY = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(coordinates.Y, invert: true);
+                        //With WebView2 we get a dpi aware values
+                        //double dpiAwareX = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(coordinates.X, invert: true);
+                        //double dpiAwareY = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(coordinates.Y, invert: true);
 
-                        var element = methodInfo.Invoke(null, new object[] { dpiAwareX, dpiAwareY });
+                        var element = methodInfo.Invoke(null, new object[] { coordinates.X, coordinates.Y });
                         return element;
                     }
                     else
@@ -323,6 +339,73 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                 rectangleUsedToHighlight.Width = double.NaN;
                 rectangleUsedToHighlight.Height = double.NaN;
                 rectangleUsedToHighlight.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        public static void HighlightElementUsingJS(object uiElement, int highlightClr)
+        {
+            if (uiElement != null)
+            {
+                string uniqueIdentifier = ((dynamic)((dynamic)uiElement).INTERNAL_OuterDomElement).UniqueIdentifier.ToString();
+                uniqueIdentifier = uniqueIdentifier != null ? $"'{uniqueIdentifier}'" : "null";
+                SimBrowser.Instance.ExecuteScriptAsync($"simHighlightElement({uniqueIdentifier}, {highlightClr})");
+            }
+        }
+
+        public static void StartInspection()
+        {
+            SimBrowser.Instance.ExecuteScriptAsync("simOverlay.style.display=''");
+            if (_SimOverlayCallback == null)
+            {
+                _SimOverlayCallback = new SimOverlayCallback();
+                SimBrowser.Instance.CoreWebView2.AddHostObjectToScript("SimOverlayCallback", _SimOverlayCallback);
+            }
+        }
+
+        public static void StopInspection()
+        {
+            var stopScript = "simHighlightElement(null, 1);";
+            stopScript += "simHighlightElement(null, 2);";
+            stopScript += "simOverlay.style.display='none';";
+
+            SimBrowser.Instance.ExecuteScriptAsync(stopScript);
+        }
+
+        private static async Task<object> GetElementAtPoint(int x, int y)
+        {
+            await SimBrowser.Instance.ExecuteScriptAsync("simOverlay.style.pointerEvents='none'");  //We do this so elementFromPoint returns the element below the simOverlay
+
+            var element = await SimulatorProxy._OSDispatcher.InvokeAsync(() =>
+            {
+                return XamlInspectionHelper.GetElementAtSpecifiedCoordinates(new Point(x, y));
+            });
+
+            await SimBrowser.Instance.ExecuteScriptAsync("simOverlay.style.pointerEvents=''");
+
+            return element;
+        }
+
+        public static async void HighlightElementAtPoint(int x, int y)
+        {
+            XamlInspectionHelper.HighlightElementUsingJS(await GetElementAtPoint(x, y), 1);
+        }
+
+        public static async void SelectElementAtPoint(int x, int y)
+        {
+            var element = await GetElementAtPoint(x, y);
+            XamlInspectionHelper.HighlightElementUsingJS(element, 2);
+
+            if (element != null)
+            {
+                // Select the TreeNode in the Visual Tree Inspector that corresponds to the specified element:
+                if (!MainWindow.Instance.XamlInspectionTreeViewInstance.TrySelectTreeNode(element))
+                {
+                    MessageBox.Show("The selected element was not found in the visual tree. Please make sure that the visual tree is up to date by clicking the 'Refresh' button in the top-right corner of the window, and try again.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("No item was selected by the XAML Visual Tree inspector.");
             }
         }
 
