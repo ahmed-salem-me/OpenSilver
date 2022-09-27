@@ -346,21 +346,21 @@ namespace OpenSilver
             public string Url { get; set; }
         }
 
-        public static void StartInteropLoggin()
+        public static void StartInteropLogging()
         {
-            if (OpenSilver.Interop.IsRunningInTheSimulator)
+            if (IsRunningInTheSimulator)
                 INTERNAL_Simulator.DynamicJavaScriptExecutionHandler.StartInteropLoggin();
         }
 
-        public static void StopInteropLoggin()
+        public static void StopInteropLogging()
         {
-            if (OpenSilver.Interop.IsRunningInTheSimulator)
+            if (IsRunningInTheSimulator)
                 INTERNAL_Simulator.DynamicJavaScriptExecutionHandler.StopInteropLoggin();
         }
 
-        public static void ClearInteropLoggin()
+        public static void ClearInteropLogging()
         {
-            if (OpenSilver.Interop.IsRunningInTheSimulator)
+            if (IsRunningInTheSimulator)
                 INTERNAL_Simulator.DynamicJavaScriptExecutionHandler.ClearInteropLoggin();
         }
 
