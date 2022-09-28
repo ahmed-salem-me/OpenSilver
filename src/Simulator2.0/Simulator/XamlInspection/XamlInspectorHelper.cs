@@ -35,9 +35,8 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
     {
         private static SimOverlayCallback _SimOverlayCallback;
 
-        public static bool TryInitializeTreeView(TreeView treeView, Assembly entryPointAssembly, out int NbTreeViewElement)
+        public static bool TryInitializeTreeView(TreeView treeView)
         {
-            NbTreeViewElement = 0;
             IEnumerable treeRootElements = GetVisualTreeRootElements();
             if (treeRootElements != null)
             {
@@ -45,7 +44,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
                 foreach (object treeRootElement in treeRootElements)
                 {
-                    treeView.Items.Add(RecursivelyAddElementsToTree(treeRootElement, false, ref NbTreeViewElement, 10));
+                    treeView.Items.Add(RecursivelyAddElementsToTree(treeRootElement, false, null, 6, true));
                 }
 
                 return true;
@@ -54,7 +53,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                 return false;
         }
 
-        static TreeNode RecursivelyAddElementsToTree(dynamic uiElement, bool alreadyInsertedANodeForXamlSourcePath, ref int NbTreeViewElement, int maxTreeLevel)
+        public static TreeNode RecursivelyAddElementsToTree(dynamic uiElement, bool alreadyInsertedANodeForXamlSourcePath, TreeNode parentNode, int maxTreeLevel, bool includeEntryElement)
         {
             // If the element is a XAML root element (that is, if its "XamlSourcePath" property has been filled), we add a node to the tree that tells us in which XAML file the element is defined:
             string xamlSourcePathOrNull = alreadyInsertedANodeForXamlSourcePath ? null : GetXamlSourcePathOrNullFromElement(uiElement); ;
@@ -66,28 +65,36 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             {
                 string fileName = GetFileNameFromPath(xamlSourcePathOrNull);
                 // Create the tree node for displaying the XAML source path:
-                treeNode = new TreeNode()
-                {
-                    Title = xamlSourcePathOrNull, //"---- File: " + fileName + " ----",
-                    IsNodeForXamlSourcePath = isNodeForXamlSourcePath,
-                    //XamlSourcePathOrNull = (xamlSourcePathOrNull != fileName ? "(" + fileName + ")" : null),
-                    Children = new ObservableCollection<TreeNode>(),
-                };
+                if (!includeEntryElement)
+                    treeNode = parentNode;
+                else
+                    treeNode = new TreeNode()
+                    {
+                        Title = xamlSourcePathOrNull, //"---- File: " + fileName + " ----",
+                        IsNodeForXamlSourcePath = isNodeForXamlSourcePath,
+                        //XamlSourcePathOrNull = (xamlSourcePathOrNull != fileName ? "(" + fileName + ")" : null),
+                        Children = new ObservableCollection<TreeNode>(),
+                        Parent = parentNode
+                    };
 
                 // Call itself and set "alreadyInsertedANodeForXamlSourcePath" to true:
-                treeNode.Children.Add(RecursivelyAddElementsToTree(uiElement, true, ref NbTreeViewElement, currMaxLevel - 1));
+                treeNode.Children.Add(RecursivelyAddElementsToTree(uiElement, true, treeNode, currMaxLevel - 1, true));
             }
             else
             {
                 // Create the tree node for displaying the element:
-                treeNode = new TreeNode()
-                {
-                    Element = (object)uiElement,
-                    Title = GetTitleFromElement(uiElement),
-                    Name = GetNameOrNullFromElement(uiElement),
-                    Children = new ObservableCollection<TreeNode>()
-                };
-                
+                if (!includeEntryElement)
+                    treeNode = parentNode;
+                else
+                    treeNode = new TreeNode()
+                    {
+                        Element = (object)uiElement,
+                        Title = GetTitleFromElement(uiElement),
+                        Name = GetNameOrNullFromElement(uiElement),
+                        Children = new ObservableCollection<TreeNode>(),
+                        Parent = parentNode
+                    };
+
                 // Handle the children recursively:
                 IDictionary visualChildrenInformation = uiElement.INTERNAL_VisualChildrenInformation as IDictionary;
                 if (visualChildrenInformation != null)
@@ -103,15 +110,14 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                                 if (treeNode.Title == "Window" && (GetTitleFromElement(childElement) == "TextBlock" || GetTitleFromElement(childElement) == "TextBox"))
                                     return treeNode;
 
-                                treeNode.Children.Add(RecursivelyAddElementsToTree(childElement, isNodeForXamlSourcePath, ref NbTreeViewElement, currMaxLevel));
+                                treeNode.Children.Add(RecursivelyAddElementsToTree(childElement, isNodeForXamlSourcePath, treeNode, currMaxLevel, true));
                             }
                         }
                     }
                     else
-                        treeNode.Title += " {...}";
+                        treeNode.ExpanderVisibility = Visibility.Visible;
                 }
             }
-            NbTreeViewElement++;
             return treeNode;
         }
 
@@ -397,11 +403,18 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
             if (element != null)
             {
+                var treeNode = MainWindow.Instance.XamlInspectionTree.FindElementNode(element,
+                    MainWindow.Instance.XamlInspectionTree.XamlTree.Items.GetItemAt(0) as TreeNode);
+
+                var tvItem = MainWindow.Instance.XamlInspectionTree.FindTreeViewItem(MainWindow.Instance.XamlInspectionTree.XamlTree, treeNode);
+
+                MainWindow.Instance.XamlInspectionTree.ExpandToNode(treeNode);
+
                 // Select the TreeNode in the Visual Tree Inspector that corresponds to the specified element:
-                if (!MainWindow.Instance.XamlInspectionTreeViewInstance.TrySelectTreeNode(element))
-                {
-                    MessageBox.Show("The selected element was not found in the visual tree. Please make sure that the visual tree is up to date by clicking the 'Refresh' button in the top-right corner of the window, and try again.");
-                }
+                //if (!MainWindow.Instance.XamlInspectionTree.TrySelectTreeNode(element))
+                //{
+                //    MessageBox.Show("The selected element was not found in the visual tree. Please make sure that the visual tree is up to date by clicking the 'Refresh' button in the top-right corner of the window, and try again.");
+                //}
             }
             else
             {

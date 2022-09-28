@@ -708,7 +708,7 @@ Click OK to continue.";
         private void ButtonViewXamlTree_Click(object sender, RoutedEventArgs e)
         {
             if (_clientAppAssembly != null
-                && XamlInspectionTreeViewInstance.TryRefresh(_clientAppAssembly, XamlPropertiesPaneInstance))
+                && XamlInspectionTree.TryRefresh(_clientAppAssembly, XamlPropertiesPaneInstance))
             {
                 MainGridSplitter.Visibility = Visibility.Visible;
                 BorderForXamlInspection.Visibility = Visibility.Visible;
@@ -767,7 +767,7 @@ Click OK to continue.";
 
         void ButtonExpandAllNodes_Click(object sender, RoutedEventArgs e)
         {
-            XamlInspectionTreeViewInstance.ExpandAllNodes();
+            XamlInspectionTree.ExpandAllNodes();
         }
 
         private void ButtonViewCompilationLog_Click(object sender, RoutedEventArgs e)
@@ -793,7 +793,7 @@ Click OK to continue.";
         private void ButtonTest_Click(object sender, RoutedEventArgs e)
         {
             if (_javaScriptExecutionHandler == null)
-                _javaScriptExecutionHandler = new JavaScriptExecutionHandler(MainWebBrowser);
+                _javaScriptExecutionHandler = new JavaScriptExecutionHandler();
 
             dynamic rootElement = _javaScriptExecutionHandler.ExecuteJavaScriptWithResult(@"document.getXamlRoot()");
         }
@@ -1897,7 +1897,7 @@ Click OK to continue.";
             if (element != null)
             {
                 // Select the TreeNode in the Visual Tree Inspector that corresponds to the specified element:
-                if (!XamlInspectionTreeViewInstance.TrySelectTreeNode(element))
+                if (!XamlInspectionTree.TrySelectTreeNode(element))
                 {
                     MessageBox.Show("The selected element was not found in the visual tree. Please make sure that the visual tree is up to date by clicking the 'Refresh' button in the top-right corner of the window, and try again.");
                 }

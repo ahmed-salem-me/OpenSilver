@@ -19,21 +19,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.Web.WebView2.Wpf;
-
 
 namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 {
@@ -44,6 +34,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
     {
         XamlPropertiesPane _xamlPropertiesPane;
         bool _hasBeenFullyExpanded;
+        TreeViewItem _selectedTreeItem;
 
         public XamlInspectionTreeView()
         {
@@ -52,17 +43,11 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
         public bool TryRefresh(Assembly entryPointAssembly, XamlPropertiesPane xamlPropertiesPane)
         {
-            int nbTreeViewElements;
-
             _xamlPropertiesPane = xamlPropertiesPane;
             _hasBeenFullyExpanded = false;
-            
-            var isSuccess = XamlInspectionHelper.TryInitializeTreeView(this.TreeViewForXamlInspection, entryPointAssembly, out nbTreeViewElements);
 
-            if (isSuccess)
-                this.NumberTreeViewElement.Text = "Element count: " + nbTreeViewElements;
-            else
-                this.NumberTreeViewElement.Text = "";
+            var isSuccess = XamlInspectionHelper.TryInitializeTreeView(XamlTree);
+
             return isSuccess;
         }
 
@@ -89,13 +74,45 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
         public void ExpandAllNodes()
         {
-            foreach (object item in this.TreeViewForXamlInspection.Items)
+            foreach (object item in this.XamlTree.Items)
             {
-                TreeViewItem treeViewItem = this.TreeViewForXamlInspection.ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
+                TreeViewItem treeViewItem = this.XamlTree.ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
                 if (treeViewItem != null)
                     treeViewItem.ExpandSubtree();
             }
             _hasBeenFullyExpanded = true;
+        }
+
+        public void ExpandToNode(TreeNode treeNode)
+        {
+            var ancestors = new Stack<TreeNode>();
+            var node = treeNode;
+            ancestors.Push(node);
+
+            while (node.Parent != null)
+            {
+                ancestors.Push(node.Parent);
+                node = node.Parent;
+            }
+
+            TreeViewItem treeItem = null;
+            while (ancestors.Count > 0)
+            {
+                var item = ancestors.Pop();
+                treeItem = FindTreeViewItem(XamlTree, item);
+                if (treeItem != null)
+                    treeItem.IsExpanded = true;
+            }
+            treeItem.IsSelected = true;
+        }
+
+        private void SelectTreeItem(TreeViewItem treeItem)
+        {
+            if (_selectedTreeItem != null)
+                _selectedTreeItem.Background = Brushes.Black;
+
+            treeItem.Background = Brushes.AntiqueWhite;
+            _selectedTreeItem = treeItem;
         }
 
         public bool TrySelectTreeNode(object uiElement)
@@ -106,7 +123,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             ExpandAllNodes();
 
             // Then, select the item:
-            foreach (Tuple<TreeNode, TreeViewItem> treeNodeAndTreeViewItem in TraverseTreeViewItems(TreeViewForXamlInspection))
+            foreach (Tuple<TreeNode, TreeViewItem> treeNodeAndTreeViewItem in TraverseTreeViewItems(XamlTree))
             {
                 TreeNode treeNode = treeNodeAndTreeViewItem.Item1;
                 TreeViewItem treeViewItem = treeNodeAndTreeViewItem.Item2;
@@ -140,7 +157,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             //ExpandAllNodes();
 
             // Then, select the item:
-            foreach (Tuple<TreeNode, TreeViewItem> treeNodeAndTreeViewItem in TraverseTreeViewItems(TreeViewForXamlInspection))
+            foreach (Tuple<TreeNode, TreeViewItem> treeNodeAndTreeViewItem in TraverseTreeViewItems(XamlTree))
             {
                 TreeNode treeNode = treeNodeAndTreeViewItem.Item1;
                 TreeViewItem treeViewItem = treeNodeAndTreeViewItem.Item2;
@@ -166,6 +183,24 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             return false;
         }
 
+        public TreeNode FindElementNode(object uiElement, TreeNode node)
+        {
+            if (node.Element == uiElement)
+                return node;
+            foreach (var chidlNode in node.Children)
+            {
+                var targetNode = FindElementNode(uiElement, chidlNode);
+                if (targetNode != null)
+                    return targetNode;
+            }
+            return null;
+        }
+
+
+        public TreeViewItem FindNodeTItem(TreeNode treeNode)
+        {
+            return null;
+        }
 
         /*
         static IEnumerable<TreeNode> TraverseTreeView(object treeViewOrTreeNode)
@@ -258,6 +293,123 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                 {
                     throw new Exception("Unexpected type during TreeView traversal: " + (treeViewOrTreeViewItem.GetType().ToString()));
                 }
+            }
+        }
+
+        public TreeViewItem FindTreeViewItem(ItemsControl container, object item)
+        {
+            if (container != null)
+            {
+                if (container.DataContext == item)
+                {
+                    return container as TreeViewItem;
+                }
+
+                // Expand the current container
+                if (container is TreeViewItem && !((TreeViewItem)container).IsExpanded)
+                {
+                    container.SetValue(TreeViewItem.IsExpandedProperty, true);
+                }
+
+                // Try to generate the ItemsPresenter and the ItemsPanel.
+                // by calling ApplyTemplate.  Note that in the
+                // virtualizing case even if the item is marked
+                // expanded we still need to do this step in order to
+                // regenerate the visuals because they may have been virtualized away.
+
+                container.ApplyTemplate();
+                ItemsPresenter itemsPresenter =
+                    (ItemsPresenter)container.Template.FindName("ItemsHost", container);
+                if (itemsPresenter != null)
+                {
+                    itemsPresenter.ApplyTemplate();
+                }
+                else
+                {
+                    // The Tree template has not named the ItemsPresenter,
+                    // so walk the descendents and find the child.
+                    itemsPresenter = FindVisualChild<ItemsPresenter>(container);
+                    if (itemsPresenter == null)
+                    {
+                        container.UpdateLayout();
+
+                        itemsPresenter = FindVisualChild<ItemsPresenter>(container);
+                    }
+                }
+
+                Panel itemsHostPanel = (Panel)VisualTreeHelper.GetChild(itemsPresenter, 0);
+
+                // Ensure that the generator for this panel has been created.
+                UIElementCollection children = itemsHostPanel.Children;
+
+                for (int i = 0, count = container.Items.Count; i < count; i++)
+                {
+                    TreeViewItem subContainer;
+                    subContainer =
+                        (TreeViewItem)container.ItemContainerGenerator.
+                        ContainerFromIndex(i);
+
+                    // Bring the item into view to maintain the
+                    // same behavior as with a virtualizing panel.
+                    subContainer.BringIntoView();
+
+                    if (subContainer != null)
+                    {
+                        // Search the next level for the object.
+                        TreeViewItem resultContainer = FindTreeViewItem(subContainer, item);
+                        if (resultContainer != null)
+                        {
+                            return resultContainer;
+                        }
+                        else
+                        {
+                            // The object is not under this TreeViewItem
+                            // so collapse it.
+                            subContainer.IsExpanded = false;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Search for an element of a certain type in the visual tree.
+        /// </summary>
+        /// <typeparam name="T">The type of element to find.</typeparam>
+        /// <param name="visual">The parent element.</param>
+        /// <returns></returns>
+        private T FindVisualChild<T>(Visual visual) where T : Visual
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(visual); i++)
+            {
+                Visual child = (Visual)VisualTreeHelper.GetChild(visual, i);
+                if (child != null)
+                {
+                    T correctlyTyped = child as T;
+                    if (correctlyTyped != null)
+                    {
+                        return correctlyTyped;
+                    }
+
+                    T descendent = FindVisualChild<T>(child);
+                    if (descendent != null)
+                    {
+                        return descendent;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private void Expander_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                var treeNode = XamlTree.SelectedItem as TreeNode;
+                XamlInspectionHelper.RecursivelyAddElementsToTree(treeNode.Element, false, treeNode, 5, false);
             }
         }
     }

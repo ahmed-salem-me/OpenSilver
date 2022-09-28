@@ -14,25 +14,17 @@
 \*====================================================================================*/
 
 
-
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using OpenSilver.Simulator;
 
 namespace DotNetForHtml5.EmulatorWithoutJavascript
 {
-    public class JavaScriptExecutionHandler 
+    public class JavaScriptExecutionHandler
     {
         private bool _webControlDisposed = false;
-        private SimBrowser _webControl;
         private string _lastExecutedJavaScriptCode;
         private List<string> _InteropLog = new List<string>();
         private bool _IsJSLoggingEnabled;
-
-        public JavaScriptExecutionHandler(SimBrowser webControl)
-        {
-            _webControl = webControl; 
-        }
 
         // Called via reflection by the "INTERNAL_HtmlDomManager" class of the "Core" project.
         public void ExecuteJavaScript(string javaScriptToExecute)
@@ -43,7 +35,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             _lastExecutedJavaScriptCode = javaScriptToExecute;
             if (_IsJSLoggingEnabled)
                 _InteropLog.Add(javaScriptToExecute + ";");
-            _webControl.ExecuteScriptAsync(javaScriptToExecute);
+            SimBrowser.Instance.ExecuteScriptAsync(javaScriptToExecute);
         }
 
         // Called via reflection by the "INTERNAL_HtmlDomManager" class of the "Core" project.
@@ -55,7 +47,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             _lastExecutedJavaScriptCode = javaScriptToExecute;
             if (_IsJSLoggingEnabled)
                 _InteropLog.Add(javaScriptToExecute + ";");
-            return _webControl.ExecuteScriptWithResult(javaScriptToExecute);
+            return SimBrowser.Instance.ExecuteScriptWithResult(javaScriptToExecute);
         }
 
         internal string GetLastExecutedJavaScriptCode()
@@ -78,7 +70,6 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
 
         public void StartInteropLogging()
         {
-            ClearInteropLog();
             _IsJSLoggingEnabled = true;
         }
 

@@ -67,7 +67,7 @@ namespace OpenSilver.Simulator
             try
             {
                 // Create the JavaScriptExecutionHandler that will be called by the "Core" project to interact with the Emulator:
-                JavaScriptExecutionHandler = new JavaScriptExecutionHandler(SimBrowser.Instance);
+                JavaScriptExecutionHandler = new JavaScriptExecutionHandler();
 
                 //InteropHelpers.InjectConvertBrowserResult(BrowserResultConverter.CastFromJsValue, _OSRuntimeAssembly);
                 InteropHelpers.InjectJavaScriptExecutionHandler(JavaScriptExecutionHandler, _OSRuntimeAssembly);

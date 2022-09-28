@@ -13,7 +13,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock Text="Note: you need to manually refresh when the Visual Tree changes." TextWrapping="Wrap" Margin="10,0,10,13" Width="200" Foreground="LightGray" TextAlignment="Center" HorizontalAlignment="Center"/>
-        <TreeView Grid.Row="1" x:Name="TreeViewForXamlInspection" SelectedItemChanged="TreeView_SelectedItemChanged">
+        <TreeView Grid.Row="1" x:Name="XamlTree" SelectedItemChanged="TreeView_SelectedItemChanged" VirtualizingPanel.IsVirtualizing="False">
             <TreeView.ItemTemplateSelector>
                 <xamlinspection:TreeNodeDataTemplateSelector>
                     <xamlinspection:TreeNodeDataTemplateSelector.NormalTemplate>
@@ -21,6 +21,7 @@
                             <StackPanel Orientation="Horizontal" Margin="0,0,30,0">
                                 <TextBlock Text="{Binding Title}" />
                                 <TextBlock Text="{Binding Name}" Foreground="LightBlue" Margin="10,0,0,0" />
+                                <Image Source="/OpenSilver.Simulator;component/Expand-Icon-2.png" Width="20" Height="20" MouseDown="Expander_MouseDown" Visibility="{Binding ExpanderVisibility}" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
                     </xamlinspection:TreeNodeDataTemplateSelector.NormalTemplate>

@@ -22,6 +22,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 {
@@ -102,5 +103,9 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public TreeNode Parent { get; set; }
+
+        public Visibility ExpanderVisibility { get; set; } = Visibility.Hidden;
     }
 }

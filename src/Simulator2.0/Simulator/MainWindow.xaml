@@ -256,7 +256,7 @@
                             <TextBlock x:Name="InformationAboutHowThePickerWorks" Text="Click on any element in your application UI (on the left) to reveal it in the Visual Tree and to modify its properties." TextWrapping="Wrap" Margin="10,0,10,10" Width="200" Foreground="LightGreen" TextAlignment="Center" HorizontalAlignment="Center"/>
                         </StackPanel>
                         <Button x:Name="ButtonHideXamlTree" Margin="10,0,0,16" Content="X" Click="ButtonHideXamlTree_Click" Padding="10,3" FontSize="16" Foreground="LightGray" Cursor="Hand" BorderThickness="0" Focusable="False" Background="Transparent" VerticalAlignment="Top" HorizontalAlignment="Right"/>
-                        <xamlinspection:XamlInspectionTreeView x:Name="XamlInspectionTreeViewInstance" Grid.Row="1" MinWidth="200"/>
+                        <xamlinspection:XamlInspectionTreeView x:Name="XamlInspectionTree" Grid.Row="1" MinWidth="200"/>
                     </Grid>
                 </Border>
                 <Border Grid.Column="4" Grid.RowSpan="1000" Background="#FF303030">
