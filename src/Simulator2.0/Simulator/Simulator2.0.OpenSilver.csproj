@@ -309,9 +309,11 @@
     </None>
     <Resource Include="Debugging\DevToolsScreencast.png" />
     <Resource Include="Expand-Icon-2.png" />
+    <Resource Include="Expand-Icon-4.png" />
     <Content Include="interop_debug_root_opensilver.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="SelectedElementChild.png" />
     <Content Include="simulator_root_opensilver.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -326,10 +328,10 @@
     <PackageReference Include="MahApps.Metro" Version="1.2.4" />
     <PackageReference Include="Microsoft.Web.Administration" Version="7.0.0" />
     <PackageReference Include="Microsoft.Web.WebView2">
-      <Version>1.0.1343.22</Version>
+      <Version>1.0.1369-prerelease</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Web.WebView2.DevToolsProtocolExtension">
-      <Version>1.0.824</Version>
+    <PackageReference Include="System.Text.Json">
+      <Version>6.0.6</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

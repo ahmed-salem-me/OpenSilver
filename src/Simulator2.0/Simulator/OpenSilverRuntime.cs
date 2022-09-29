@@ -61,7 +61,7 @@ namespace OpenSilver.Simulator
 
         }
 
-        public bool Initialize()
+        private bool Initialize()
         {
             // In OpenSilver we already have the user application type passed to the constructor, so we do not need to retrieve it here
             try

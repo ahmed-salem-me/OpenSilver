@@ -32,7 +32,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
     {
         ConsoleControl _console;
         private Dispatcher _SimDispatcher;
-        public static Dispatcher _OSDispatcher;
+        public static Dispatcher OSDispatcher;
         public bool UseSimBrowser { get; set; } = true;
         public bool IsOSRuntimeRunning { get; set; } = true;
 
@@ -40,7 +40,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
         {
             _console = console;
             _SimDispatcher = simDispatcher;
-            _OSDispatcher = oSDispatcher;
+            OSDispatcher = oSDispatcher;
         }
 
         //Do not remove this method: called via reflection.
@@ -171,7 +171,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
 
         public void OSInvokeAsync(Action action)
         {
-            _OSDispatcher.InvokeAsync(action);
+            OSDispatcher.InvokeAsync(action);
         }
 
         public void SimInvokeAsync(Action action)
@@ -181,7 +181,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
 
         public OSDispatcherTimer CreateOSDispatcherTimer(Action tickAction, TimeSpan interval)
         {
-            var timer = _OSDispatcher.Invoke(() => { return new OSDispatcherTimer(tickAction, interval); });
+            var timer = OSDispatcher.Invoke(() => { return new OSDispatcherTimer(tickAction, interval); });
             return timer;
         }
     }

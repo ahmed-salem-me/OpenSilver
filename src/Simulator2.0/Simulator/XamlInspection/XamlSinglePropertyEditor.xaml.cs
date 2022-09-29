@@ -81,7 +81,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             Refresh();
         }
 
-        public void Refresh()
+        public async void Refresh()
         {
             try
             {
@@ -110,7 +110,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                 _isChangingTextProgrammatically = true;
                 try
                 {
-                    object value = _propertyInfo.GetValue(_targetElement);
+                    object value = await SimulatorProxy.OSDispatcher.InvokeAsync(() => { return _propertyInfo.GetValue(_targetElement); });
                     this.PropertyValueTextBox.Text = ConvertToString(value);
                 }
                 catch (Exception)

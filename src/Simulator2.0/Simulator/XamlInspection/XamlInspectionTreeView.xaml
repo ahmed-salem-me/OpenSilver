@@ -6,6 +6,9 @@
              xmlns:xamlinspection="clr-namespace:DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -21,7 +24,8 @@
                             <StackPanel Orientation="Horizontal" Margin="0,0,30,0">
                                 <TextBlock Text="{Binding Title}" />
                                 <TextBlock Text="{Binding Name}" Foreground="LightBlue" Margin="10,0,0,0" />
-                                <Image Source="/OpenSilver.Simulator;component/Expand-Icon-2.png" Width="20" Height="20" MouseDown="SubtreeLoader_MouseDown" MouseUp="SubtreeLoader_MouseUp" Visibility="{Binding SubtreeLoaderVisibility}" />
+                                <Image Source="/OpenSilver.Simulator;component/Expand-Icon-4.png" Margin="20,2,0,0" Width="40" Height="15" VerticalAlignment="Center" MouseDown="SubtreeLoader_MouseDown" Visibility="{Binding AreChildrenNonLoaded, Mode=TwoWay, Converter={StaticResource BoolToVis}}" />
+                                <Image Source="/OpenSilver.Simulator;component/SelectedElementChild.png" Margin="20,0,0,0" Width="12" Height="12" VerticalAlignment="Center" Visibility="{Binding IsSelectedNodeChild, Converter={StaticResource BoolToVis}}" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
                     </xamlinspection:TreeNodeDataTemplateSelector.NormalTemplate>

@@ -15,14 +15,8 @@
 
 
 
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 {
@@ -106,6 +100,27 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
         public TreeNode Parent { get; set; }
 
-        public Visibility SubtreeLoaderVisibility { get; set; } = Visibility.Hidden;
+
+        bool _AreChildrenNonLoaded = false;
+        public bool AreChildrenNonLoaded
+        {
+            get { return _AreChildrenNonLoaded; }
+            set
+            {
+                _AreChildrenNonLoaded = value;
+                NotifiyPropertyChanged("AreChildrenNonLoaded");
+            }
+        }
+
+        bool _IsSelectedNodeChild = false;
+        public bool IsSelectedNodeChild
+        {
+            get { return _IsSelectedNodeChild; }
+            set
+            {
+                _IsSelectedNodeChild = value;
+                NotifiyPropertyChanged("IsSelectedNodeChild");
+            }
+        }
     }
 }

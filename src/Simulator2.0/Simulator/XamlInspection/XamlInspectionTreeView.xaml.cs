@@ -23,6 +23,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -36,18 +37,19 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
         XamlPropertiesPane _xamlPropertiesPane;
         bool _hasBeenFullyExpanded;
         TreeViewItem _selectedTreeItem;
+        TreeNode _selectedTreeNode;
+        ContextMenu _ContextMenu;
 
         public XamlInspectionTreeView()
         {
             InitializeComponent();
-            MouseRightButtonDown += (s, e) =>
-            {
-                UIElement ClickedItem = VisualTreeHelper.GetParent(e.OriginalSource as UIElement) as UIElement;
-                while ((ClickedItem != null) && !(ClickedItem is TreeViewItem))
-                {
-                    ClickedItem = VisualTreeHelper.GetParent(ClickedItem) as UIElement;
-                }
-            };
+
+            _ContextMenu = new ContextMenu();
+            var miExpandRecursivly = new MenuItem() { Header = "Expand Recursivly" };
+            miExpandRecursivly.Click += MiExpandRecursivly_Click;
+            _ContextMenu.Items.Add(miExpandRecursivly);
+
+            XamlTree.MouseRightButtonUp += XamlTree_MouseRightButtonUp;
         }
 
         public bool TryRefresh(Assembly entryPointAssembly, XamlPropertiesPane xamlPropertiesPane)
@@ -78,6 +80,11 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
                 // Highlight the element in the web browser:
                 XamlInspectionHelper.HighlightElementUsingJS(treeNode.Element, 2);
+                if (_selectedTreeNode != null)
+                    MarkNodeAndChildren(_selectedTreeNode, false);
+
+                MarkNodeAndChildren(treeNode,true);
+                _selectedTreeNode = treeNode;
             }
         }
 
@@ -113,15 +120,6 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                     treeItem.IsExpanded = true;
             }
             treeItem.IsSelected = true;
-        }
-
-        private void SelectTreeItem(TreeViewItem treeItem)
-        {
-            if (_selectedTreeItem != null)
-                _selectedTreeItem.Background = Brushes.Black;
-
-            treeItem.Background = Brushes.AntiqueWhite;
-            _selectedTreeItem = treeItem;
         }
 
         public bool TrySelectTreeNode(object uiElement)
@@ -205,8 +203,16 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             return null;
         }
 
+        public void MarkNodeAndChildren(TreeNode treeNode, bool isSelected)
+        {
+            treeNode.IsSelectedNodeChild = isSelected;
+            if (treeNode.Children != null)
+                foreach (var node in treeNode.Children)
+                    MarkNodeAndChildren(node, isSelected);
+        }
 
-        public TreeViewItem FindNodeTItem(TreeNode treeNode)
+
+        public TreeViewItem FindNodeTreeItem(TreeNode treeNode)
         {
             return null;
         }
@@ -370,27 +376,85 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
         private void SubtreeLoader_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.LeftButton== MouseButtonState.Pressed && e.ClickCount == 2)
+            if (e.LeftButton == MouseButtonState.Pressed && e.ClickCount == 2)
             {
-                var treeNode = XamlTree.SelectedItem as TreeNode; //ams> u're assuming it clicked the icon on the selected item : wrong
+                var treeItem = GetTreeItemFromElement(e.OriginalSource);
+                var treeNode = treeItem.DataContext as TreeNode;
+                treeNode.AreChildrenNonLoaded = false;
                 XamlInspectionHelper.RecursivelyAddElementsToTree(treeNode.Element, false, treeNode, 5, false);
             }
         }
 
-        private void SubtreeLoader_MouseUp(object sender, MouseButtonEventArgs e)
+        private void MiExpandRecursivly_Click(object sender, RoutedEventArgs e)
         {
-            if (e.RightButton == MouseButtonState.Released && e.ClickCount == 1)
+            var treeNode = (_ContextMenu.Tag as TreeViewItem).DataContext as TreeNode;
+            var nonLoadedNodes = GetAllNonLoadedChildren(treeNode, null);
+            foreach (var node in nonLoadedNodes)
             {
-                var cMenu = new ContextMenu();
-                var miExpandRecursivly = new MenuItem() { Header = "Expand Recursivly" };
-                miExpandRecursivly.Click += (ss, ee) =>
-                {
-                    var treeNode = XamlTree.SelectedItem as TreeNode; //ams> u're assuming it clicked the icon on the selected item : wrong
-                    XamlInspectionHelper.RecursivelyAddElementsToTree(treeNode.Element, false, treeNode, -1, false);
-                };
-                cMenu.Items.Add(miExpandRecursivly);
-                cMenu.IsOpen = true;
+                XamlInspectionHelper.RecursivelyAddElementsToTree(node.Element, false, node, -1, false);
             }
+        }
+
+        private void XamlTree_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var treeItem = GetTreeItemFromElement(e.OriginalSource);
+            if (treeItem != null)
+            {
+                _ContextMenu.Tag = treeItem;
+                _ContextMenu.IsOpen = true;
+            }
+        }
+
+        private TreeViewItem GetTreeItemFromElement(object uiElement)
+        {
+            UIElement ClickedItem = VisualTreeHelper.GetParent(uiElement as UIElement) as UIElement;
+            while ((ClickedItem != null) && !(ClickedItem is TreeViewItem))
+            {
+                ClickedItem = VisualTreeHelper.GetParent(ClickedItem) as UIElement;
+            }
+
+            if (ClickedItem != null && ClickedItem is TreeViewItem)
+                return (TreeViewItem)ClickedItem;
+            else
+                return null;
+        }
+
+        private List<TreeNode> GetAllNonLoadedChildren(TreeNode treeNode, List<TreeNode> nonLoadedChildren)
+        {
+            if (nonLoadedChildren == null)
+                nonLoadedChildren = new List<TreeNode>();
+
+            if (treeNode.AreChildrenNonLoaded && treeNode.Element != null)
+                nonLoadedChildren.Add(treeNode);
+
+            if (treeNode.Children != null)
+                foreach (var node in treeNode.Children)
+                {
+                    GetAllNonLoadedChildren(node, nonLoadedChildren);
+                }
+
+            return nonLoadedChildren;
+        }
+    }
+
+    public class BooleanToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is Boolean && (bool)value)
+            {
+                return Visibility.Visible;
+            }
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is Visibility && (Visibility)value == Visibility.Visible)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
