@@ -106,6 +106,6 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
         public TreeNode Parent { get; set; }
 
-        public Visibility ExpanderVisibility { get; set; } = Visibility.Hidden;
+        public Visibility SubtreeLoaderVisibility { get; set; } = Visibility.Hidden;
     }
 }

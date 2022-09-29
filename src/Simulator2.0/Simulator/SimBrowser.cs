@@ -211,17 +211,10 @@ namespace OpenSilver.Simulator
             ContextMenu cMenu = new ContextMenu();
             cMenu.Closed += (s, ex) => deferral.Complete();
 
-            var inspectXamlElementItem = new MenuItem()
-            {
-                Header = "Inspect Xaml Element in New Window",
-            };
-            inspectXamlElementItem.Click += (ss, ee) => { };
+            var inspectXamlElementItem = new MenuItem() { Header = "Inspect Xaml Element in New Window" };
+            inspectXamlElementItem.Click += (ss, ee) => { };//ams> not implemented
 
-            var inspectDomElementItem = new MenuItem()
-            {
-                Header = "Inspect Dom Element",
-            };
-
+            var inspectDomElementItem = new MenuItem() { Header = "Inspect Dom Element" };
             inspectDomElementItem.Click += (ss, ee) =>
             {
                 e.SelectedCommandId = e.MenuItems.Single(mi => mi.Name == "inspectElement").CommandId;

@@ -23,6 +23,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
@@ -39,6 +40,14 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
         public XamlInspectionTreeView()
         {
             InitializeComponent();
+            MouseRightButtonDown += (s, e) =>
+            {
+                UIElement ClickedItem = VisualTreeHelper.GetParent(e.OriginalSource as UIElement) as UIElement;
+                while ((ClickedItem != null) && !(ClickedItem is TreeViewItem))
+                {
+                    ClickedItem = VisualTreeHelper.GetParent(ClickedItem) as UIElement;
+                }
+            };
         }
 
         public bool TryRefresh(Assembly entryPointAssembly, XamlPropertiesPane xamlPropertiesPane)
@@ -202,51 +211,6 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             return null;
         }
 
-        /*
-        static IEnumerable<TreeNode> TraverseTreeView(object treeViewOrTreeNode)
-        {
-            if (treeViewOrTreeNode != null)
-            {
-                if (treeViewOrTreeNode is TreeView)
-                {
-                    foreach (var item in ((TreeView)treeViewOrTreeNode).Items)
-                    {
-                        TreeNode treeNode = item as TreeNode;
-                        if (treeNode != null)
-                        {
-                            yield return treeNode;
-
-                            foreach (var subChild in TraverseTreeView(treeNode))
-                            {
-                                yield return subChild;
-                            }
-                        }
-                    }
-                }
-                else if (treeViewOrTreeNode is TreeNode)
-                {
-                    foreach (var item in ((TreeNode)treeViewOrTreeNode).Children)
-                    {
-                        TreeNode treeNode = item as TreeNode;
-                        if (treeNode != null)
-                        {
-                            yield return treeNode;
-
-                            foreach (var subChild in TraverseTreeView(treeNode))
-                            {
-                                yield return subChild;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    throw new Exception("Unexpected type during TreeView traversal: " + (treeViewOrTreeNode.GetType().ToString()));
-                }
-            }
-        }
-        */
-
         static IEnumerable<Tuple<TreeNode, TreeViewItem>> TraverseTreeViewItems(object treeViewOrTreeViewItem)
         {
             if (treeViewOrTreeViewItem != null)
@@ -404,12 +368,28 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             return null;
         }
 
-        private void Expander_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void SubtreeLoader_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount == 2)
+            if (e.LeftButton== MouseButtonState.Pressed && e.ClickCount == 2)
             {
-                var treeNode = XamlTree.SelectedItem as TreeNode;
+                var treeNode = XamlTree.SelectedItem as TreeNode; //ams> u're assuming it clicked the icon on the selected item : wrong
                 XamlInspectionHelper.RecursivelyAddElementsToTree(treeNode.Element, false, treeNode, 5, false);
+            }
+        }
+
+        private void SubtreeLoader_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.RightButton == MouseButtonState.Released && e.ClickCount == 1)
+            {
+                var cMenu = new ContextMenu();
+                var miExpandRecursivly = new MenuItem() { Header = "Expand Recursivly" };
+                miExpandRecursivly.Click += (ss, ee) =>
+                {
+                    var treeNode = XamlTree.SelectedItem as TreeNode; //ams> u're assuming it clicked the icon on the selected item : wrong
+                    XamlInspectionHelper.RecursivelyAddElementsToTree(treeNode.Element, false, treeNode, -1, false);
+                };
+                cMenu.Items.Add(miExpandRecursivly);
+                cMenu.IsOpen = true;
             }
         }
     }

@@ -331,11 +331,6 @@
     <PackageReference Include="Microsoft.Web.WebView2.DevToolsProtocolExtension">
       <Version>1.0.824</Version>
     </PackageReference>
-    <PackageReference Include="NuGet.Build.Tasks.Pack">
-      <Version>5.9.1</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LicenseChecking\" />

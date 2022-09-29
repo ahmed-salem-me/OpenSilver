@@ -78,7 +78,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                     };
 
                 // Call itself and set "alreadyInsertedANodeForXamlSourcePath" to true:
-                treeNode.Children.Add(RecursivelyAddElementsToTree(uiElement, true, treeNode, currMaxLevel - 1, true));
+                treeNode.Children.Add(RecursivelyAddElementsToTree(uiElement, true, treeNode, maxTreeLevel == -1 ? -1 : currMaxLevel - 1, true));
             }
             else
             {
@@ -99,9 +99,9 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                 IDictionary visualChildrenInformation = uiElement.INTERNAL_VisualChildrenInformation as IDictionary;
                 if (visualChildrenInformation != null)
                 {
-                    if (currMaxLevel > 0)
+                    if (currMaxLevel > 0 || maxTreeLevel == -1)
                     {
-                        currMaxLevel--;
+                        if (maxTreeLevel != -1) currMaxLevel--;
                         foreach (dynamic item in visualChildrenInformation.Values) // This corresponds to elements of type "INTERNAL_VisualChildInformation" in the "Core" assembly.
                         {
                             var childElement = item.INTERNAL_UIElement;
@@ -115,7 +115,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                         }
                     }
                     else
-                        treeNode.ExpanderVisibility = Visibility.Visible;
+                        treeNode.SubtreeLoaderVisibility = Visibility.Visible;
                 }
             }
             return treeNode;
@@ -406,7 +406,10 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                 var treeNode = MainWindow.Instance.XamlInspectionTree.FindElementNode(element,
                     MainWindow.Instance.XamlInspectionTree.XamlTree.Items.GetItemAt(0) as TreeNode);
 
-                var tvItem = MainWindow.Instance.XamlInspectionTree.FindTreeViewItem(MainWindow.Instance.XamlInspectionTree.XamlTree, treeNode);
+                //if (treeNode == null) //subtree not loaded
+
+
+                //    var tvItem = MainWindow.Instance.XamlInspectionTree.FindTreeViewItem(MainWindow.Instance.XamlInspectionTree.XamlTree, treeNode);
 
                 MainWindow.Instance.XamlInspectionTree.ExpandToNode(treeNode);
 

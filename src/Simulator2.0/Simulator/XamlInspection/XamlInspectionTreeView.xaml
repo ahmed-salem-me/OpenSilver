@@ -21,7 +21,7 @@
                             <StackPanel Orientation="Horizontal" Margin="0,0,30,0">
                                 <TextBlock Text="{Binding Title}" />
                                 <TextBlock Text="{Binding Name}" Foreground="LightBlue" Margin="10,0,0,0" />
-                                <Image Source="/OpenSilver.Simulator;component/Expand-Icon-2.png" Width="20" Height="20" MouseDown="Expander_MouseDown" Visibility="{Binding ExpanderVisibility}" />
+                                <Image Source="/OpenSilver.Simulator;component/Expand-Icon-2.png" Width="20" Height="20" MouseDown="SubtreeLoader_MouseDown" MouseUp="SubtreeLoader_MouseUp" Visibility="{Binding SubtreeLoaderVisibility}" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
                     </xamlinspection:TreeNodeDataTemplateSelector.NormalTemplate>
