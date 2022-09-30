@@ -101,14 +101,14 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
         public TreeNode Parent { get; set; }
 
 
-        bool _AreChildrenNonLoaded = false;
-        public bool AreChildrenNonLoaded
+        bool _AreChildrenLoaded = true;
+        public bool AreChildrenLoaded
         {
-            get { return _AreChildrenNonLoaded; }
+            get { return _AreChildrenLoaded; }
             set
             {
-                _AreChildrenNonLoaded = value;
-                NotifiyPropertyChanged("AreChildrenNonLoaded");
+                _AreChildrenLoaded = value;
+                NotifiyPropertyChanged("AreChildrenLoaded");
             }
         }
 
@@ -120,6 +120,17 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             {
                 _IsSelectedNodeChild = value;
                 NotifiyPropertyChanged("IsSelectedNodeChild");
+            }
+        }
+
+        bool _IsActiveNodeAncestor = false;
+        public bool IsActiveNodeAncestor
+        {
+            get { return _IsActiveNodeAncestor; }
+            set
+            {
+                _IsActiveNodeAncestor = value;
+                NotifiyPropertyChanged("IsActiveNodeAncestor");
             }
         }
     }

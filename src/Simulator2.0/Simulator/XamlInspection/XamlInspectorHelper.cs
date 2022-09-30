@@ -28,6 +28,7 @@ using Microsoft.Web.WebView2.Wpf;
 using OpenSilver.Simulator;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 {
@@ -78,7 +79,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                     };
 
                 // Call itself and set "alreadyInsertedANodeForXamlSourcePath" to true:
-                treeNode.AreChildrenNonLoaded = false;
+                treeNode.AreChildrenLoaded = true;
                 treeNode.Children.Add(RecursivelyAddElementsToTree(uiElement, true, treeNode, maxTreeLevel == -1 ? -1 : currMaxLevel - 1, true));
             }
             else
@@ -95,7 +96,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                         Children = new ObservableCollection<TreeNode>(),
                         Parent = parentNode
                     };
-                treeNode.AreChildrenNonLoaded = false;
+                treeNode.AreChildrenLoaded = true;
                 // Handle the children recursively:
                 IDictionary visualChildrenInformation = uiElement.INTERNAL_VisualChildrenInformation as IDictionary;
                 if (visualChildrenInformation != null)
@@ -116,10 +117,55 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                         }
                     }
                     else
-                        treeNode.AreChildrenNonLoaded = true;
+                        treeNode.AreChildrenLoaded = false;
                 }
             }
             return treeNode;
+        }
+
+        public static TreeNode AddElementBranchToTree(List<dynamic> elementBranch, TreeNode parentNode)
+        {
+            //elementBranch arg is a branch starting from lowest leaf and going up
+
+            TreeNode lastLeafNode = null;
+            parentNode.AreChildrenLoaded = true;
+
+            var leafNode = parentNode;
+
+            for (int i = elementBranch.Count - 1; i > 0; i--)
+            {
+                var parentElement = elementBranch[i];
+
+                IDictionary visualChildrenInformation = parentElement.INTERNAL_VisualChildrenInformation as IDictionary;
+                if (visualChildrenInformation != null)
+                {
+                    foreach (dynamic item in visualChildrenInformation.Values) // This corresponds to elements of type "INTERNAL_VisualChildInformation" in the "Core" assembly.
+                    {
+                        var childElement = item.INTERNAL_UIElement;
+                        if (childElement != null)
+                        {
+                            var treeNode = new TreeNode()
+                            {
+                                Element = (object)childElement,
+                                Title = GetTitleFromElement(childElement),
+                                Name = GetNameOrNullFromElement(childElement),
+                                Children = new ObservableCollection<TreeNode>(),
+                                Parent = parentNode,
+                                AreChildrenLoaded = childElement.Equals(elementBranch[i - 1])
+                            };
+                            parentNode.Children.Add(treeNode);
+                            if (treeNode.AreChildrenLoaded)
+                                leafNode = treeNode;
+                            if (i == 1 && childElement.Equals(elementBranch[0]))
+                                lastLeafNode = treeNode;
+                        }
+                    }
+                    parentNode = leafNode;
+                }
+            }
+
+            lastLeafNode.AreChildrenLoaded = elementBranch.First().INTERNAL_VisualChildrenInformation == null || (elementBranch.First().INTERNAL_VisualChildrenInformation as IDictionary).Count == 0;
+            return lastLeafNode;
         }
 
         static string GetFileNameFromPath(string path)
@@ -249,6 +295,24 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             }
             else
                 return null;
+        }
+
+        static object GetVisualParent(object uiElement)
+        {
+            // Find the "Core" assembly among the loaded assemblies:
+            Assembly coreAssembly =
+                (from a in AppDomain.CurrentDomain.GetAssemblies()
+                 where a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY
+                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_USING_BRIDGE
+                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION
+                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BRIDGE
+                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_USING_BLAZOR
+                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BLAZOR
+                 select a).FirstOrDefault();
+            // Find the type "INTERNAL_PopupsManager" in Core:
+            var visualTreeHelperType = coreAssembly.GetType("System.Windows.Media.VisualTreeHelper");
+            var methodInfo = visualTreeHelperType.GetMethod("GetParent", BindingFlags.Public | BindingFlags.Static);
+            return methodInfo.Invoke(null, new object[] { uiElement });
         }
 
         public static object GetElementAtSpecifiedCoordinates(Point coordinates)
@@ -404,10 +468,33 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
             if (element != null)
             {
-                var treeNode = MainWindow.Instance.XamlInspectionTree.FindElementNode(element,
-                    MainWindow.Instance.XamlInspectionTree.XamlTree.Items.GetItemAt(0) as TreeNode);
+                var rootNode = MainWindow.Instance.XamlInspectionTree.XamlTree.Items.GetItemAt(0) as TreeNode;
 
-                MainWindow.Instance.XamlInspectionTree.MarkNodeAndChildren(treeNode, true);
+                var elementNode = MainWindow.Instance.XamlInspectionTree.FindElementNode(element, rootNode);
+
+                if (elementNode == null)
+                {
+                    var elementTreeBranch = new List<dynamic>();
+                    elementTreeBranch.Add(element);
+                    var firstLoadedNode = elementNode;
+                    while (firstLoadedNode == null)
+                    {
+                        var parentElement = GetVisualParent(element);
+                        elementTreeBranch.Add(parentElement);
+                        firstLoadedNode = MainWindow.Instance.XamlInspectionTree.FindElementNode(parentElement, rootNode);
+                        element = parentElement;
+                    }
+                    elementNode = XamlInspectionHelper.AddElementBranchToTree(elementTreeBranch, firstLoadedNode);
+                }
+                //var nonLoadedNodes = MainWindow.Instance.XamlInspectionTree.GetAllNonLoadedChildren(treeNode, null, null);
+                //foreach (var node in nonLoadedNodes)
+                //{
+                //    XamlInspectionHelper.RecursivelyAddElementsToTree(node.Element, false, node, -1, false);
+                //}
+                MainWindow.Instance.XamlInspectionTree.SelectElementTreeItem(elementNode);
+                MainWindow.Instance.XamlInspectionTree.ExpandToNode(null, elementNode);
+
+                //MainWindow.Instance.XamlInspectionTree.MarkNodeAndChildren(elementNode, true);
                 //if (treeNode == null) //subtree not loaded
 
 

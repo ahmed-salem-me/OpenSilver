@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
@@ -36,8 +37,8 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
     {
         XamlPropertiesPane _xamlPropertiesPane;
         bool _hasBeenFullyExpanded;
-        TreeViewItem _selectedTreeItem;
         TreeNode _selectedTreeNode;
+        TreeNode _nodeBranchMarked;
         ContextMenu _ContextMenu;
 
         public XamlInspectionTreeView()
@@ -46,8 +47,14 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
             _ContextMenu = new ContextMenu();
             var miExpandRecursivly = new MenuItem() { Header = "Expand Recursivly" };
-            miExpandRecursivly.Click += MiExpandRecursivly_Click;
+            miExpandRecursivly.Click += MenuItemExpandRecursivly_Click;
+
+            var miMarkNodeBranch = new MenuItem() { Header = "Mark Element Branch" };
+            miMarkNodeBranch.Click += MenuItemMarkNodeBranch_Click;
+
             _ContextMenu.Items.Add(miExpandRecursivly);
+            _ContextMenu.Items.Add(new Separator());
+            _ContextMenu.Items.Add(miMarkNodeBranch);
 
             XamlTree.MouseRightButtonUp += XamlTree_MouseRightButtonUp;
         }
@@ -64,10 +71,15 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
         void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (e.NewValue == null || ((TreeNode)e.NewValue) == null)
+            SelectElementTreeItem(e.NewValue as TreeNode);
+        }
+
+        public void SelectElementTreeItem(TreeNode treeNode)
+        {
+            if (treeNode == null)
             {
                 // Clear properties pane:
-                _xamlPropertiesPane.Refresh(e.NewValue);
+                _xamlPropertiesPane.Refresh(null);
 
                 // Clear highlight:
                 XamlInspectionHelper.HighlightElementUsingJS(null, 2);
@@ -75,16 +87,11 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             else
             {
                 // Refresh the properties pane:
-                var treeNode = (TreeNode)e.NewValue;
                 _xamlPropertiesPane.Refresh(treeNode.Element);
 
                 // Highlight the element in the web browser:
                 XamlInspectionHelper.HighlightElementUsingJS(treeNode.Element, 2);
-                if (_selectedTreeNode != null)
-                    MarkNodeAndChildren(_selectedTreeNode, false);
-
-                MarkNodeAndChildren(treeNode,true);
-                _selectedTreeNode = treeNode;
+                MarkNodeAndChildrenAndUnmarkPrevious(treeNode, true);
             }
         }
 
@@ -99,13 +106,13 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             _hasBeenFullyExpanded = true;
         }
 
-        public void ExpandToNode(TreeNode treeNode)
+        public void ExpandToNode(TreeNode fromNode, TreeNode toNode)
         {
             var ancestors = new Stack<TreeNode>();
-            var node = treeNode;
+            var node = toNode;
             ancestors.Push(node);
 
-            while (node.Parent != null)
+            while (node != fromNode && node.Parent != null)
             {
                 ancestors.Push(node.Parent);
                 node = node.Parent;
@@ -115,7 +122,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             while (ancestors.Count > 0)
             {
                 var item = ancestors.Pop();
-                treeItem = FindTreeViewItem(XamlTree, item);
+                treeItem = FindTreeItemFromNode(XamlTree, item);
                 if (treeItem != null)
                     treeItem.IsExpanded = true;
             }
@@ -160,9 +167,6 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
         {
             bool wasFullyExpanded = _hasBeenFullyExpanded;
 
-            // First, we need to expand all the nodes so that the "item generators" can be called (which creates the TreeViewItems") and so we can select the node:
-            //ExpandAllNodes();
-
             // Then, select the item:
             foreach (Tuple<TreeNode, TreeViewItem> treeNodeAndTreeViewItem in TraverseTreeViewItems(XamlTree))
             {
@@ -203,6 +207,15 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             return null;
         }
 
+        public void MarkNodeAndChildrenAndUnmarkPrevious(TreeNode treeNode, bool isSelected)
+        {
+            if (_selectedTreeNode != null)
+                MarkNodeAndChildren(_selectedTreeNode, false);
+
+            MarkNodeAndChildren(treeNode, true);
+            _selectedTreeNode = treeNode;
+        }
+
         public void MarkNodeAndChildren(TreeNode treeNode, bool isSelected)
         {
             treeNode.IsSelectedNodeChild = isSelected;
@@ -211,11 +224,24 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                     MarkNodeAndChildren(node, isSelected);
         }
 
-
-        public TreeViewItem FindNodeTreeItem(TreeNode treeNode)
+        public void MarkNodeBranch(TreeNode treeNode, bool isSelected)
         {
-            return null;
+            if (_nodeBranchMarked != null)
+            {
+                var nodeBranch = _nodeBranchMarked; 
+                _nodeBranchMarked = null;
+                MarkNodeBranch(nodeBranch, false);
+            }
+
+            _nodeBranchMarked = treeNode;
+
+            while (treeNode != null)
+            {
+                treeNode.IsActiveNodeAncestor = isSelected;
+                treeNode = treeNode.Parent;
+            }
         }
+
 
         static IEnumerable<Tuple<TreeNode, TreeViewItem>> TraverseTreeViewItems(object treeViewOrTreeViewItem)
         {
@@ -266,7 +292,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             }
         }
 
-        public TreeViewItem FindTreeViewItem(ItemsControl container, object item)
+        public TreeViewItem FindTreeItemFromNode(ItemsControl container, TreeNode item)
         {
             if (container != null)
             {
@@ -326,7 +352,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                     if (subContainer != null)
                     {
                         // Search the next level for the object.
-                        TreeViewItem resultContainer = FindTreeViewItem(subContainer, item);
+                        TreeViewItem resultContainer = FindTreeItemFromNode(subContainer, item);
                         if (resultContainer != null)
                         {
                             return resultContainer;
@@ -378,26 +404,36 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
         {
             if (e.LeftButton == MouseButtonState.Pressed && e.ClickCount == 2)
             {
-                var treeItem = GetTreeItemFromElement(e.OriginalSource);
+                var treeItem = GetTreeItemFromWpfElement(e.OriginalSource);
                 var treeNode = treeItem.DataContext as TreeNode;
-                treeNode.AreChildrenNonLoaded = false;
+                treeNode.AreChildrenLoaded = true;
                 XamlInspectionHelper.RecursivelyAddElementsToTree(treeNode.Element, false, treeNode, 5, false);
+                MarkNodeAndChildrenAndUnmarkPrevious(treeNode, true);
             }
         }
 
-        private void MiExpandRecursivly_Click(object sender, RoutedEventArgs e)
+        private void MenuItemExpandRecursivly_Click(object sender, RoutedEventArgs e)
         {
             var treeNode = (_ContextMenu.Tag as TreeViewItem).DataContext as TreeNode;
-            var nonLoadedNodes = GetAllNonLoadedChildren(treeNode, null);
+            var nonLoadedNodes = GetAllNonLoadedChildren(treeNode, null, null);
             foreach (var node in nonLoadedNodes)
             {
                 XamlInspectionHelper.RecursivelyAddElementsToTree(node.Element, false, node, -1, false);
             }
+
+            FindTreeItemFromNode(XamlTree, treeNode).ExpandSubtree();
+            MarkNodeAndChildrenAndUnmarkPrevious(treeNode, true);
+        }
+
+        private void MenuItemMarkNodeBranch_Click(object sender, RoutedEventArgs e)
+        {
+            var treeNode = (_ContextMenu.Tag as TreeViewItem).DataContext as TreeNode;
+            MarkNodeBranch(treeNode, true);
         }
 
         private void XamlTree_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var treeItem = GetTreeItemFromElement(e.OriginalSource);
+            var treeItem = GetTreeItemFromWpfElement(e.OriginalSource);
             if (treeItem != null)
             {
                 _ContextMenu.Tag = treeItem;
@@ -405,7 +441,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             }
         }
 
-        private TreeViewItem GetTreeItemFromElement(object uiElement)
+        private TreeViewItem GetTreeItemFromWpfElement(object uiElement)
         {
             UIElement ClickedItem = VisualTreeHelper.GetParent(uiElement as UIElement) as UIElement;
             while ((ClickedItem != null) && !(ClickedItem is TreeViewItem))
@@ -419,42 +455,43 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                 return null;
         }
 
-        private List<TreeNode> GetAllNonLoadedChildren(TreeNode treeNode, List<TreeNode> nonLoadedChildren)
+        public List<TreeNode> GetAllNonLoadedChildren(TreeNode treeNode, TreeNode downToNode, List<TreeNode> nonLoadedChildren)
         {
             if (nonLoadedChildren == null)
                 nonLoadedChildren = new List<TreeNode>();
 
-            if (treeNode.AreChildrenNonLoaded && treeNode.Element != null)
+            if (!treeNode.AreChildrenLoaded && treeNode.Element != null)
                 nonLoadedChildren.Add(treeNode);
 
-            if (treeNode.Children != null)
-                foreach (var node in treeNode.Children)
-                {
-                    GetAllNonLoadedChildren(node, nonLoadedChildren);
-                }
+            if (treeNode != downToNode)
+                if (treeNode.Children != null)
+                    foreach (var node in treeNode.Children)
+                    {
+                        GetAllNonLoadedChildren(node, downToNode, nonLoadedChildren);
+                    }
 
             return nonLoadedChildren;
         }
     }
 
-    public class BooleanToVisibilityConverter : IValueConverter
+    public class InvertBooleanToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (value is Boolean && (bool)value)
             {
-                return Visibility.Visible;
+                return Visibility.Collapsed;
             }
-            return Visibility.Collapsed;
+            return Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (value is Visibility && (Visibility)value == Visibility.Visible)
             {
-                return true;
+                return false;
             }
-            return false;
+            return true;
         }
     }
 }

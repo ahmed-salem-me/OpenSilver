@@ -8,6 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <xamlinspection:InvertBooleanToVisibilityConverter x:Key="InvertBoolToVis"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -22,10 +23,17 @@
                     <xamlinspection:TreeNodeDataTemplateSelector.NormalTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type xamlinspection:TreeNode}" ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal" Margin="0,0,30,0">
+                                <Grid Margin="2,0,5,0" Visibility="{Binding IsActiveNodeAncestor, Converter={StaticResource BoolToVis}}">
+                                    <Ellipse Fill="White" Width="8" Height="8" VerticalAlignment="Center" />
+                                    <Ellipse Fill="LightGreen" Width="6" Height="6" VerticalAlignment="Center" />
+                                </Grid>
+                                <Grid Margin="2,0,5,0" Visibility="{Binding IsSelectedNodeChild, Converter={StaticResource BoolToVis}}" >
+                                    <Ellipse Fill="White" Width="8" Height="8" VerticalAlignment="Center" />
+                                    <Ellipse Fill="Yellow" Width="6" Height="6" VerticalAlignment="Center" />
+                                </Grid>
                                 <TextBlock Text="{Binding Title}" />
                                 <TextBlock Text="{Binding Name}" Foreground="LightBlue" Margin="10,0,0,0" />
-                                <Image Source="/OpenSilver.Simulator;component/Expand-Icon-4.png" Margin="20,2,0,0" Width="40" Height="15" VerticalAlignment="Center" MouseDown="SubtreeLoader_MouseDown" Visibility="{Binding AreChildrenNonLoaded, Mode=TwoWay, Converter={StaticResource BoolToVis}}" />
-                                <Image Source="/OpenSilver.Simulator;component/SelectedElementChild.png" Margin="20,0,0,0" Width="12" Height="12" VerticalAlignment="Center" Visibility="{Binding IsSelectedNodeChild, Converter={StaticResource BoolToVis}}" />
+                                <Image Source="/OpenSilver.Simulator;component/Expand-Icon-5.png" Margin="20,2,0,0" Width="40" Height="15" VerticalAlignment="Center" MouseDown="SubtreeLoader_MouseDown" Visibility="{Binding AreChildrenLoaded, Mode=TwoWay, Converter={StaticResource InvertBoolToVis}}" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
                     </xamlinspection:TreeNodeDataTemplateSelector.NormalTemplate>

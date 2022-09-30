@@ -1,5 +1,5 @@
 ﻿using Microsoft.Web.WebView2.Core;
-//using Microsoft.Web.WebView2.Core.DevToolsProtocolExtension;
+using Microsoft.Web.WebView2.Core.DevToolsProtocolExtension;
 using Microsoft.Web.WebView2.Wpf;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
@@ -73,10 +72,10 @@ namespace OpenSilver.Simulator
 
             coreWebView.SetVirtualHostNameToFolderMapping(RootPage.SimulatorHostName, Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), CoreWebView2HostResourceAccessKind.Allow);
 
-            //Attach to browser console logging //temp remove Microsoft.Web.WebView2.DevToolsProtocolExtension package
-            //DevToolsProtocolHelper helper = coreWebView.GetDevToolsProtocolHelper();
-            //await helper.Runtime.EnableAsync();
-            //helper.Runtime.ConsoleAPICalled += OnConsoleMessage;
+            //Attach to browser console logging 
+            DevToolsProtocolHelper helper = coreWebView.GetDevToolsProtocolHelper();
+            await helper.Runtime.EnableAsync();
+            helper.Runtime.ConsoleAPICalled += OnConsoleMessage;
 
             if (DotNetForHtml5.EmulatorWithoutJavascript.Properties.Settings.Default.IsDevToolsOpened)
                 coreWebView.OpenDevToolsWindow();
@@ -149,54 +148,54 @@ namespace OpenSilver.Simulator
             }
         }
 
-        //private void OnConsoleMessage(object sender, Runtime.ConsoleAPICalledEventArgs e)
-        //{
+        private void OnConsoleMessage(object sender, Runtime.ConsoleAPICalledEventArgs e)
+        {
 
-        //    //            switch (args.Level)
-        //    //            {
-        //    //#if DEBUG
-        //    //                case ConsoleEventArgs.MessageLevel.DEBUG:
-        //    //#endif
-        //    //                case ConsoleEventArgs.MessageLevel.LOG:
-        //    //                    Console.AddMessage(new ConsoleMessage(args.Message, ConsoleMessage.MessageLevel.Log));
-        //    //                    break;
-        //    //                case ConsoleEventArgs.MessageLevel.WARNING:
-        //    //                    if (!string.IsNullOrEmpty(args.Source))
-        //    //                    {
-        //    //                        Console.AddMessage(new ConsoleMessage(
-        //    //                            args.Message,
-        //    //                            ConsoleMessage.MessageLevel.Warning,
-        //    //                            new FileSource(args.Source, args.LineNumber)
-        //    //                            ));
-        //    //                    }
-        //    //                    else
-        //    //                    {
-        //    //                        Console.AddMessage(new ConsoleMessage(
-        //    //                            args.Message,
-        //    //                            ConsoleMessage.MessageLevel.Warning
-        //    //                            ));
-        //    //                    }
-        //    //                    break;
-        //    //                case ConsoleEventArgs.MessageLevel.ERROR:
-        //    //                    if (!string.IsNullOrEmpty(args.Source))
-        //    //                    {
-        //    //                        Console.AddMessage(new ConsoleMessage(
-        //    //                            args.Message,
-        //    //                            ConsoleMessage.MessageLevel.Error,
-        //    //                            new FileSource(args.Source, args.LineNumber)
-        //    //                            ));
-        //    //                    }
-        //    //                    else
-        //    //                    {
-        //    //                        Console.AddMessage(new ConsoleMessage(
-        //    //                            args.Message,
-        //    //                            ConsoleMessage.MessageLevel.Error
-        //    //                            ));
-        //    //                    }
-        //    //                    break;
-        //    //            }
+            //            switch (args.Level)
+            //            {
+            //#if DEBUG
+            //                case ConsoleEventArgs.MessageLevel.DEBUG:
+            //#endif
+            //                case ConsoleEventArgs.MessageLevel.LOG:
+            //                    Console.AddMessage(new ConsoleMessage(args.Message, ConsoleMessage.MessageLevel.Log));
+            //                    break;
+            //                case ConsoleEventArgs.MessageLevel.WARNING:
+            //                    if (!string.IsNullOrEmpty(args.Source))
+            //                    {
+            //                        Console.AddMessage(new ConsoleMessage(
+            //                            args.Message,
+            //                            ConsoleMessage.MessageLevel.Warning,
+            //                            new FileSource(args.Source, args.LineNumber)
+            //                            ));
+            //                    }
+            //                    else
+            //                    {
+            //                        Console.AddMessage(new ConsoleMessage(
+            //                            args.Message,
+            //                            ConsoleMessage.MessageLevel.Warning
+            //                            ));
+            //                    }
+            //                    break;
+            //                case ConsoleEventArgs.MessageLevel.ERROR:
+            //                    if (!string.IsNullOrEmpty(args.Source))
+            //                    {
+            //                        Console.AddMessage(new ConsoleMessage(
+            //                            args.Message,
+            //                            ConsoleMessage.MessageLevel.Error,
+            //                            new FileSource(args.Source, args.LineNumber)
+            //                            ));
+            //                    }
+            //                    else
+            //                    {
+            //                        Console.AddMessage(new ConsoleMessage(
+            //                            args.Message,
+            //                            ConsoleMessage.MessageLevel.Error
+            //                            ));
+            //                    }
+            //                    break;
+            //            }
 
-        //}
+        }
 
         private void CoreWebView_ContextMenuRequested(object sender, CoreWebView2ContextMenuRequestedEventArgs e)
         {
@@ -211,8 +210,8 @@ namespace OpenSilver.Simulator
             ContextMenu cMenu = new ContextMenu();
             cMenu.Closed += (s, ex) => deferral.Complete();
 
-            var inspectXamlElementItem = new MenuItem() { Header = "Inspect Xaml Element in New Window" };
-            inspectXamlElementItem.Click += (ss, ee) => { };//ams> not implemented
+            //var inspectXamlElementItem = new MenuItem() { Header = "Inspect Xaml Element in New Window" };
+            //inspectXamlElementItem.Click += (ss, ee) => { };//ams> not implemented
 
             var inspectDomElementItem = new MenuItem() { Header = "Inspect Dom Element" };
             inspectDomElementItem.Click += (ss, ee) =>
@@ -220,49 +219,10 @@ namespace OpenSilver.Simulator
                 e.SelectedCommandId = e.MenuItems.Single(mi => mi.Name == "inspectElement").CommandId;
             };
 
-            cMenu.Items.Add(inspectXamlElementItem);
+            //cMenu.Items.Add(inspectXamlElementItem);
             cMenu.Items.Add(new Separator());
             cMenu.Items.Add(inspectDomElementItem);
             cMenu.IsOpen = true;
-        }
-
-        void PopulateContextMenu(CoreWebView2ContextMenuRequestedEventArgs args, IList<CoreWebView2ContextMenuItem> menuList, ItemsControl cm)
-        {
-            for (int i = 0; i < menuList.Count; i++)
-            {
-                CoreWebView2ContextMenuItem current = menuList[i];
-                if (current.Kind == CoreWebView2ContextMenuItemKind.Separator)
-                {
-                    Separator sep = new Separator();
-                    cm.Items.Add(sep);
-                    continue;
-                }
-                MenuItem newItem = new MenuItem();
-                // The accessibility key is the key after the & in the label
-                // Replace with '_' so it is underlined in the label
-                newItem.Header = current.Label.Replace('&', '_');
-                newItem.InputGestureText = current.ShortcutKeyDescription;
-                newItem.IsEnabled = current.IsEnabled;
-                if (current.Kind == CoreWebView2ContextMenuItemKind.Submenu)
-                {
-                    PopulateContextMenu(args, current.Children, newItem);
-                }
-                else
-                {
-                    if (current.Kind == CoreWebView2ContextMenuItemKind.CheckBox
-                    || current.Kind == CoreWebView2ContextMenuItemKind.Radio)
-                    {
-                        newItem.IsCheckable = true;
-                        newItem.IsChecked = current.IsChecked;
-                    }
-
-                    newItem.Click += (s, ex) =>
-                    {
-                        args.SelectedCommandId = current.CommandId;
-                    };
-                }
-                cm.Items.Add(newItem);
-            }
         }
 
         public object ExecuteScriptWithResult(string javaScript)
