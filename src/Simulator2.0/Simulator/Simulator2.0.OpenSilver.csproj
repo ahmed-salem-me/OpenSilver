@@ -21,6 +21,16 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DefineConstants>TRACE;DEBUG;OPENSILVER</DefineConstants>
     <Optimize>false</Optimize>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\OpenSilver\Release\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;OPENSILVER</DefineConstants>
+    <DocumentationFile>bin\OpenSilver\Release\OpenSilver.Simulator.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build.Framework" />
@@ -327,7 +337,7 @@
     <PackageReference Include="MahApps.Metro" Version="1.2.4" />
     <PackageReference Include="Microsoft.Web.Administration" Version="7.0.0" />
     <PackageReference Include="Microsoft.Web.WebView2">
-      <Version>1.0.1369-prerelease</Version>
+      <Version>1.0.1343.22</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Web.WebView2.DevToolsProtocolExtension">
       <Version>1.0.824</Version>
