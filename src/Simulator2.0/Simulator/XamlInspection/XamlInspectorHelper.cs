@@ -128,12 +128,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             //elementBranch arg is a branch starting from lowest leaf and going up
 
             TreeNode lastLeafNode = null;
-            parentNode.AreChildrenLoaded = true;
 
             var leafNode = parentNode;
 
             for (int i = elementBranch.Count - 1; i > 0; i--)
             {
+                parentNode.AreChildrenLoaded = true;
                 var parentElement = elementBranch[i];
 
                 IDictionary visualChildrenInformation = parentElement.INTERNAL_VisualChildrenInformation as IDictionary;
@@ -151,10 +151,10 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                                 Name = GetNameOrNullFromElement(childElement),
                                 Children = new ObservableCollection<TreeNode>(),
                                 Parent = parentNode,
-                                AreChildrenLoaded = childElement.Equals(elementBranch[i - 1])
+                                AreChildrenLoaded = (childElement.INTERNAL_VisualChildrenInformation == null || (childElement.INTERNAL_VisualChildrenInformation as IDictionary).Count == 0)
                             };
                             parentNode.Children.Add(treeNode);
-                            if (treeNode.AreChildrenLoaded)
+                            if (childElement.Equals(elementBranch[i - 1]))
                                 leafNode = treeNode;
                             if (i == 1 && childElement.Equals(elementBranch[0]))
                                 lastLeafNode = treeNode;
@@ -164,7 +164,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                 }
             }
 
-            lastLeafNode.AreChildrenLoaded = elementBranch.First().INTERNAL_VisualChildrenInformation == null || (elementBranch.First().INTERNAL_VisualChildrenInformation as IDictionary).Count == 0;
+            //lastLeafNode.AreChildrenLoaded = elementBranch.First().INTERNAL_VisualChildrenInformation == null || (elementBranch.First().INTERNAL_VisualChildrenInformation as IDictionary).Count == 0;
             return lastLeafNode;
         }
 
@@ -425,21 +425,17 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
         public static void StartInspection()
         {
-            SimBrowser.Instance.ExecuteScriptAsync("simOverlay.style.display=''");
             if (_SimOverlayCallback == null)
             {
                 _SimOverlayCallback = new SimOverlayCallback();
                 SimBrowser.Instance.CoreWebView2.AddHostObjectToScript("SimOverlayCallback", _SimOverlayCallback);
             }
+            SimBrowser.Instance.ExecuteScriptAsync("startInspection()");
         }
 
         public static void StopInspection()
         {
-            var stopScript = "simHighlightElement(null, 1);";
-            stopScript += "simHighlightElement(null, 2);";
-            stopScript += "simOverlay.style.display='none';";
-
-            SimBrowser.Instance.ExecuteScriptAsync(stopScript);
+            SimBrowser.Instance.ExecuteScriptAsync("stopInspection()");
         }
 
         private static async Task<object> GetElementAtPoint(int x, int y)
@@ -486,21 +482,9 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                     }
                     elementNode = XamlInspectionHelper.AddElementBranchToTree(elementTreeBranch, firstLoadedNode);
                 }
-                //var nonLoadedNodes = MainWindow.Instance.XamlInspectionTree.GetAllNonLoadedChildren(treeNode, null, null);
-                //foreach (var node in nonLoadedNodes)
-                //{
-                //    XamlInspectionHelper.RecursivelyAddElementsToTree(node.Element, false, node, -1, false);
-                //}
-                MainWindow.Instance.XamlInspectionTree.SelectElementTreeItem(elementNode);
+
+                MainWindow.Instance.XamlInspectionTree.SelectTreeItem(elementNode);
                 MainWindow.Instance.XamlInspectionTree.ExpandToNode(null, elementNode);
-
-                //MainWindow.Instance.XamlInspectionTree.MarkNodeAndChildren(elementNode, true);
-                //if (treeNode == null) //subtree not loaded
-
-
-                //    var tvItem = MainWindow.Instance.XamlInspectionTree.FindTreeViewItem(MainWindow.Instance.XamlInspectionTree.XamlTree, treeNode);
-
-                //MainWindow.Instance.XamlInspectionTree.ExpandToNode(treeNode);
 
                 // Select the TreeNode in the Visual Tree Inspector that corresponds to the specified element:
                 //if (!MainWindow.Instance.XamlInspectionTree.TrySelectTreeNode(element))

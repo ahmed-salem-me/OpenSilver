@@ -10,6 +10,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <xamlinspection:InvertBooleanToVisibilityConverter x:Key="InvertBoolToVis"/>
     </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -17,23 +18,23 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock Text="Note: you need to manually refresh when the Visual Tree changes." TextWrapping="Wrap" Margin="10,0,10,13" Width="200" Foreground="LightGray" TextAlignment="Center" HorizontalAlignment="Center"/>
-        <TreeView Grid.Row="1" x:Name="XamlTree" SelectedItemChanged="TreeView_SelectedItemChanged" VirtualizingPanel.IsVirtualizing="False">
+        <TreeView Grid.Row="1" x:Name="XamlTree" SelectedItemChanged="TreeView_SelectedItemChanged" VirtualizingPanel.IsVirtualizing="False" >
             <TreeView.ItemTemplateSelector>
                 <xamlinspection:TreeNodeDataTemplateSelector>
                     <xamlinspection:TreeNodeDataTemplateSelector.NormalTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type xamlinspection:TreeNode}" ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal" Margin="0,0,30,0">
-                                <Grid Margin="2,0,5,0" Visibility="{Binding IsActiveNodeAncestor, Converter={StaticResource BoolToVis}}">
-                                    <Ellipse Fill="White" Width="8" Height="8" VerticalAlignment="Center" />
-                                    <Ellipse Fill="LightGreen" Width="6" Height="6" VerticalAlignment="Center" />
+                                <Grid Margin="2,0,5,0" VerticalAlignment="Center" Visibility="{Binding IsActiveNodeAncestor, Converter={StaticResource BoolToVis}}">
+                                    <Ellipse Fill="White" Width="8" Height="8" />
+                                    <Ellipse Fill="LightGreen" Width="6" Height="6" />
                                 </Grid>
-                                <Grid Margin="2,0,5,0" Visibility="{Binding IsSelectedNodeChild, Converter={StaticResource BoolToVis}}" >
-                                    <Ellipse Fill="White" Width="8" Height="8" VerticalAlignment="Center" />
-                                    <Ellipse Fill="Yellow" Width="6" Height="6" VerticalAlignment="Center" />
+                                <Grid Margin="2,0,5,0" VerticalAlignment="Center" Visibility="{Binding IsSelectedNodeChild, Converter={StaticResource BoolToVis}}" >
+                                    <Ellipse Fill="White" Width="8" Height="8" />
+                                    <Ellipse Fill="Yellow" Width="6" Height="6" />
                                 </Grid>
                                 <TextBlock Text="{Binding Title}" />
                                 <TextBlock Text="{Binding Name}" Foreground="LightBlue" Margin="10,0,0,0" />
-                                <Image Source="/OpenSilver.Simulator;component/Expand-Icon-5.png" Margin="20,2,0,0" Width="40" Height="15" VerticalAlignment="Center" MouseDown="SubtreeLoader_MouseDown" Visibility="{Binding AreChildrenLoaded, Mode=TwoWay, Converter={StaticResource InvertBoolToVis}}" />
+                                <Image Source="/OpenSilver.Simulator;component/Expand-Icon-5.png" Margin="20,2,0,0" Width="35" Height="12" VerticalAlignment="Center" MouseDown="SubtreeLoader_MouseDown" Visibility="{Binding AreChildrenLoaded, Mode=TwoWay, Converter={StaticResource InvertBoolToVis}}" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
                     </xamlinspection:TreeNodeDataTemplateSelector.NormalTemplate>

@@ -57,6 +57,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             _ContextMenu.Items.Add(miMarkNodeBranch);
 
             XamlTree.MouseRightButtonUp += XamlTree_MouseRightButtonUp;
+            XamlTree.MouseDoubleClick += (s, e) => LoadSubtreeFromMouseEvent(e);
         }
 
         public bool TryRefresh(Assembly entryPointAssembly, XamlPropertiesPane xamlPropertiesPane)
@@ -71,10 +72,10 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
         void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            SelectElementTreeItem(e.NewValue as TreeNode);
+            SelectTreeItem(e.NewValue as TreeNode);
         }
 
-        public void SelectElementTreeItem(TreeNode treeNode)
+        public void SelectTreeItem(TreeNode treeNode)
         {
             if (treeNode == null)
             {
@@ -91,7 +92,11 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
                 // Highlight the element in the web browser:
                 XamlInspectionHelper.HighlightElementUsingJS(treeNode.Element, 2);
+                if (!treeNode.AreChildrenLoaded)
+                    XamlInspectionHelper.RecursivelyAddElementsToTree(treeNode.Element, false, treeNode, 5, false);
+                FindTreeItemFromNode(XamlTree, treeNode).ExpandSubtree();
                 MarkNodeAndChildrenAndUnmarkPrevious(treeNode, true);
+                MarkNodeBranch(_selectedTreeNode, false);
             }
         }
 
@@ -224,20 +229,18 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                     MarkNodeAndChildren(node, isSelected);
         }
 
-        public void MarkNodeBranch(TreeNode treeNode, bool isSelected)
+        public void MarkNodeBranch(TreeNode treeNode, bool markState)
         {
-            if (_nodeBranchMarked != null)
+            if (markState)
             {
-                var nodeBranch = _nodeBranchMarked; 
-                _nodeBranchMarked = null;
-                MarkNodeBranch(nodeBranch, false);
+                if (_nodeBranchMarked != null)
+                    MarkNodeBranch(_nodeBranchMarked, false);
+                _nodeBranchMarked = treeNode;
             }
-
-            _nodeBranchMarked = treeNode;
 
             while (treeNode != null)
             {
-                treeNode.IsActiveNodeAncestor = isSelected;
+                treeNode.IsActiveNodeAncestor = markState;
                 treeNode = treeNode.Parent;
             }
         }
@@ -400,16 +403,26 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             return null;
         }
 
+        private void LoadSubtreeFromMouseEvent(MouseButtonEventArgs eventArg)
+        {
+            var treeItem = GetTreeItemFromWpfElement(eventArg.OriginalSource);
+            if (treeItem != null)
+            {
+                var treeNode = treeItem.DataContext as TreeNode;
+                if (!treeNode.AreChildrenLoaded)
+                {
+                    treeNode.AreChildrenLoaded = true;
+                    XamlInspectionHelper.RecursivelyAddElementsToTree(treeNode.Element, false, treeNode, 5, false);
+                    MarkNodeAndChildrenAndUnmarkPrevious(treeNode, true);
+                }
+                treeItem.ExpandSubtree();
+            }
+        }
+
         private void SubtreeLoader_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed && e.ClickCount == 2)
-            {
-                var treeItem = GetTreeItemFromWpfElement(e.OriginalSource);
-                var treeNode = treeItem.DataContext as TreeNode;
-                treeNode.AreChildrenLoaded = true;
-                XamlInspectionHelper.RecursivelyAddElementsToTree(treeNode.Element, false, treeNode, 5, false);
-                MarkNodeAndChildrenAndUnmarkPrevious(treeNode, true);
-            }
+                LoadSubtreeFromMouseEvent(e);
         }
 
         private void MenuItemExpandRecursivly_Click(object sender, RoutedEventArgs e)
