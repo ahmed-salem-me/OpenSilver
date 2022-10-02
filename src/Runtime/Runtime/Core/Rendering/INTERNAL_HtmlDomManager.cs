@@ -1148,7 +1148,7 @@ function(){
             {
                 Interop.ExecuteJavaScriptAsync(@"document.createElementSafe($0, $1, $2, $3)", domElementTag, uniqueIdentifier, parentRef, index);
             }
-            
+
             _store.Add(uniqueIdentifier, new WeakReference<UIElement>(associatedUIElement));
 
             return new INTERNAL_HtmlDomElementReference(uniqueIdentifier, parent); //todo: when parent is null this breaks for the root control, but the whole logic will be replaced with simple "ExecuteJavaScript" calls in the future, so it will not be a problem.
@@ -1210,10 +1210,10 @@ newElement.setAttribute(""id"", ""{uniqueIdentifier}"");
 var parentElement = document.getElementByIdSafe(""{parentUniqueIdentifier}"");
 parentElement.appendChild(newElement);";
 
-                ExecuteJavaScript(javaScriptToExecute);
-                _store.Add(uniqueIdentifier, new WeakReference<UIElement>(associatedUIElement));
-                return new INTERNAL_HtmlDomElementReference(uniqueIdentifier, ((INTERNAL_HtmlDomElementReference)parentRef).Parent);
-                //todo-perfs: check if there is a better solution in terms of performance (while still remaining compatible with all browsers).
+            ExecuteJavaScript(javaScriptToExecute);
+            _store.Add(uniqueIdentifier, new WeakReference<UIElement>(associatedUIElement));
+            return new INTERNAL_HtmlDomElementReference(uniqueIdentifier, ((INTERNAL_HtmlDomElementReference)parentRef).Parent);
+            //todo-perfs: check if there is a better solution in terms of performance (while still remaining compatible with all browsers).
 #if !CSHTML5NETSTANDARD
             }
 #endif
@@ -1413,7 +1413,30 @@ parentElement.appendChild(child);";
         /// in the visual tree composition at the specified point.</returns>
         public static UIElement FindElementInHostCoordinates_UsedBySimulatorToo(double x, double y) // IMPORTANT: If you rename this method or change its signature, make sure to rename its dynamic call in the Simulator.
         {
-            object domElementAtCoordinates = Interop.ExecuteJavaScript(@"
+            object domElementAtCoordinates;
+            if (OpenSilver.Interop.IsRunningInTheSimulator)
+            {   //When Inspecting Xaml we need to find the element beneath the SimOverlay
+                domElementAtCoordinates = Interop.ExecuteJavaScript(@"
+(function(){
+    var domElementsAtCoordinates = document.elementsFromPoint($0, $1);
+    var domElementAtPoint;
+    if (!domElementsAtCoordinates || domElementsAtCoordinates[0] === document.documentElement)
+    {
+        return null;
+    }
+
+    if(simOverlay.style.display == '')
+        domElementAtPoint = domElementsAtCoordinates[1];
+    else
+        domElementAtPoint = domElementsAtCoordinates[0];
+
+    return domElementAtPoint;
+}())
+", x, y);
+            }
+            else
+            {
+                domElementAtCoordinates = Interop.ExecuteJavaScript(@"
 (function(){
     var domElementAtCoordinates = document.elementFromPoint($0, $1);
     if (!domElementAtCoordinates || domElementAtCoordinates === document.documentElement)
@@ -1426,7 +1449,7 @@ parentElement.appendChild(child);";
     }
 }())
 ", x, y);
-
+            }
             UIElement result = GetUIElementFromDomElement(domElementAtCoordinates);
 
             return result;
