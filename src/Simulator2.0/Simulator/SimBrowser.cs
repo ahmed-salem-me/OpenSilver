@@ -220,7 +220,7 @@ namespace OpenSilver.Simulator
             };
 
             //cMenu.Items.Add(inspectXamlElementItem);
-            cMenu.Items.Add(new Separator());
+            //cMenu.Items.Add(new Separator());
             cMenu.Items.Add(inspectDomElementItem);
             cMenu.IsOpen = true;
         }

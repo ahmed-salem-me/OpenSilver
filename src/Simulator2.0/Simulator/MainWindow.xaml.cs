@@ -1881,7 +1881,7 @@ Click OK to continue.";
         void ElementPickerForInspection_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             // Get the element at the specified position:
-            var element = XamlInspectionHelper.GetElementAtSpecifiedCoordinates(e.GetPosition(MainWebBrowser));
+            var element = XamlInspectionHelper.GetVisualElementAtPoint(e.GetPosition(MainWebBrowser));
 
             // Highlight the element picker (or remove highlight if null):
             XamlInspectionHelper.HighlightElement(element, ElementPickerHighlight, MainWebBrowser);
@@ -1892,7 +1892,7 @@ Click OK to continue.";
             StopElementPickerForInspection();
 
             // Get the element at the specified position:
-            var element = XamlInspectionHelper.GetElementAtSpecifiedCoordinates(e.GetPosition(MainWebBrowser));
+            var element = XamlInspectionHelper.GetVisualElementAtPoint(e.GetPosition(MainWebBrowser));
 
             if (element != null)
             {

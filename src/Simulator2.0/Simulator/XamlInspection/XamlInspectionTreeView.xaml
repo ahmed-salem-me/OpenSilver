@@ -26,11 +26,11 @@
                             <StackPanel Orientation="Horizontal" Margin="0,0,30,0">
                                 <Grid Margin="2,0,5,0" VerticalAlignment="Center" Visibility="{Binding IsActiveNodeAncestor, Converter={StaticResource BoolToVis}}">
                                     <Ellipse Fill="White" Width="8" Height="8" />
-                                    <Ellipse Fill="LightGreen" Width="6" Height="6" />
+                                    <Ellipse Fill="LightGreen" Width="7" Height="7" />
                                 </Grid>
                                 <Grid Margin="2,0,5,0" VerticalAlignment="Center" Visibility="{Binding IsSelectedNodeChild, Converter={StaticResource BoolToVis}}" >
                                     <Ellipse Fill="White" Width="8" Height="8" />
-                                    <Ellipse Fill="Yellow" Width="6" Height="6" />
+                                    <Ellipse Fill="#1FBAFF" Width="6" Height="6" />
                                 </Grid>
                                 <TextBlock Text="{Binding Title}" />
                                 <TextBlock Text="{Binding Name}" Foreground="LightBlue" Margin="10,0,0,0" />

@@ -1,5 +1,4 @@
-﻿//extern alias OS;
-using DotNetForHtml5.EmulatorWithoutJavascript;
+﻿using DotNetForHtml5.EmulatorWithoutJavascript;
 using System;
 using System.Reflection;
 using System.Threading;
@@ -13,8 +12,8 @@ namespace OpenSilver.Simulator
         private readonly MainWindow _simMainWindow;
         private Dispatcher _SimDispatcher;
         private Dispatcher _OSDispatcher;
-        private Assembly _OSRuntimeAssembly;
         private Action _ClientAppStartup;
+        public static Assembly OSRuntimeAssembly { get; private set; }
 
         public JavaScriptExecutionHandler JavaScriptExecutionHandler { get; set; }
 
@@ -25,7 +24,11 @@ namespace OpenSilver.Simulator
         {
             _simMainWindow = simMainWindow;
             _SimDispatcher = simDispatcher;
-            ReflectionInUserAssembliesHelper.TryGetCoreAssembly(out _OSRuntimeAssembly);
+            Assembly osRunTimeAsm;
+            if (!ReflectionInUserAssembliesHelper.TryGetCoreAssembly(out osRunTimeAsm))
+                throw new Exception("Can't find OpenSilver runtime assembly");
+
+            OSRuntimeAssembly = osRunTimeAsm;
         }
 
         public bool Start(Action clientAppStartup)
@@ -70,24 +73,24 @@ namespace OpenSilver.Simulator
                 JavaScriptExecutionHandler = new JavaScriptExecutionHandler();
 
                 //InteropHelpers.InjectConvertBrowserResult(BrowserResultConverter.CastFromJsValue, _OSRuntimeAssembly);
-                InteropHelpers.InjectJavaScriptExecutionHandler(JavaScriptExecutionHandler, _OSRuntimeAssembly);
+                InteropHelpers.InjectJavaScriptExecutionHandler(JavaScriptExecutionHandler, OSRuntimeAssembly);
                 //InteropHelpers.InjectWpfMediaElementFactory(_OSRuntimeAssembly);
                 //InteropHelpers.InjectWebClientFactory(_OSRuntimeAssembly);
-                InteropHelpers.InjectClipboardHandler(_OSRuntimeAssembly);
-                InteropHelpers.InjectSimulatorProxy(new SimulatorProxy(_simMainWindow.Console, _SimDispatcher, _OSDispatcher), _OSRuntimeAssembly);
+                InteropHelpers.InjectClipboardHandler(OSRuntimeAssembly);
+                InteropHelpers.InjectSimulatorProxy(new SimulatorProxy(_simMainWindow.Console, _SimDispatcher, _OSDispatcher), OSRuntimeAssembly);
 
                 // In the OpenSilver Version, we use this work-around to know if we're in the simulator
-                InteropHelpers.InjectIsRunningInTheSimulator_WorkAround(_OSRuntimeAssembly);
+                InteropHelpers.InjectIsRunningInTheSimulator_WorkAround(OSRuntimeAssembly);
 
                 //WpfMediaElementFactory._gridWhereToPlaceMediaElements = _simMainWindow.GridForAudioMediaElements;
 
                 // Inject the code to display the message box in the simulator:
                 InteropHelpers.InjectCodeToDisplayTheMessageBox(
                     (message, title, showCancelButton) => { return MessageBox.Show(message, title, showCancelButton ? MessageBoxButton.OKCancel : MessageBoxButton.OK) == MessageBoxResult.OK; },
-                    _OSRuntimeAssembly);
+                    OSRuntimeAssembly);
 
                 // Ensure the static constructor of all common types is called so that the type converters are initialized:
-                StaticConstructorsCaller.EnsureStaticConstructorOfCommonTypesIsCalled(_OSRuntimeAssembly);
+                StaticConstructorsCaller.EnsureStaticConstructorOfCommonTypesIsCalled(OSRuntimeAssembly);
                 return true;
             }
             catch (Exception ex)
