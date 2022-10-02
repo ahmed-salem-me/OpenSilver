@@ -52,9 +52,13 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             var miMarkNodeBranch = new MenuItem() { Header = "Mark Element Branch" };
             miMarkNodeBranch.Click += MenuItemMarkNodeBranch_Click;
 
+            var miCollapseAllButElementBranch = new MenuItem() { Header = "Collapse All But Element Branch" };
+            miCollapseAllButElementBranch.Click += MenuItemCollapseAllButElementBranch_Click;
+
             _ContextMenu.Items.Add(miExpandRecursivly);
             _ContextMenu.Items.Add(new Separator());
             _ContextMenu.Items.Add(miMarkNodeBranch);
+            _ContextMenu.Items.Add(miCollapseAllButElementBranch);
 
             XamlTree.MouseRightButtonUp += XamlTree_MouseRightButtonUp;
             XamlTree.MouseDoubleClick += (s, e) => LoadSubtreeFromMouseEvent(e);
@@ -113,21 +117,21 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
         public void ExpandToNode(TreeNode fromNode, TreeNode toNode)
         {
-            var ancestors = new Stack<TreeNode>();
+            var nodeBranch = new Stack<TreeNode>();
             var node = toNode;
-            ancestors.Push(node);
+            nodeBranch.Push(node);
 
             while (node != fromNode && node.Parent != null)
             {
-                ancestors.Push(node.Parent);
+                nodeBranch.Push(node.Parent);
                 node = node.Parent;
             }
 
             TreeViewItem treeItem = null;
-            while (ancestors.Count > 0)
+            while (nodeBranch.Count > 0)
             {
-                var item = ancestors.Pop();
-                treeItem = FindTreeItemFromNode(XamlTree, item);
+                var leafNode = nodeBranch.Pop();
+                treeItem = FindTreeItemFromNode(XamlTree, leafNode);
                 if (treeItem != null)
                     treeItem.IsExpanded = true;
             }
@@ -442,6 +446,33 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
         {
             var treeNode = (_ContextMenu.Tag as TreeViewItem).DataContext as TreeNode;
             MarkNodeBranch(treeNode, true);
+        }
+
+        private void MenuItemCollapseAllButElementBranch_Click(object sender, RoutedEventArgs e)
+        {
+            var treeNode = (_ContextMenu.Tag as TreeViewItem).DataContext as TreeNode;
+            List<TreeNode> nodeBranch = new List<TreeNode>();
+            treeNode = treeNode.Parent;
+            while (treeNode != null)
+            {
+                nodeBranch.Add(treeNode);
+                treeNode = treeNode.Parent;
+            }
+
+            var treeItem = (XamlTree as ItemsControl);
+            for (int i = nodeBranch.Count - 1; i > -1; i--)
+            {
+                var leafNode = nodeBranch[i];
+                treeItem = treeItem.ItemContainerGenerator.ContainerFromItem(leafNode) as ItemsControl;
+                foreach (var childNode in leafNode.Children)
+                {
+                    if (!nodeBranch.Contains(childNode))
+                    {
+                        var childTreeItem = treeItem.ItemContainerGenerator.ContainerFromItem(childNode) as TreeViewItem;
+                        childTreeItem.IsExpanded = false;
+                    }
+                }
+            }
         }
 
         private void XamlTree_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
