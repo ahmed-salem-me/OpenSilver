@@ -35,6 +35,8 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
     internal static class XamlInspectionHelper
     {
         private static SimOverlayCallback _SimOverlayCallback;
+        private static MethodInfo _FindElementInHostInfo;
+        private static MethodInfo _GetVisualParent;
 
         public static bool TryInitializeTreeView(TreeView treeView)
         {
@@ -151,7 +153,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                                 Name = GetNameOrNullFromElement(childElement),
                                 Children = new ObservableCollection<TreeNode>(),
                                 Parent = parentNode,
-                                AreChildrenLoaded = (childElement.INTERNAL_VisualChildrenInformation == null || (childElement.INTERNAL_VisualChildrenInformation as IDictionary).Count == 0)
+                                AreChildrenLoaded = childElement.INTERNAL_VisualChildrenInformation == null || (childElement.INTERNAL_VisualChildrenInformation as IDictionary).Count == 0
                             };
                             parentNode.Children.Add(treeNode);
                             if (childElement.Equals(elementBranch[i - 1]))
@@ -260,15 +262,16 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
         static IEnumerable GetVisualTreeRootElements()
         {
             // Find the "Core" assembly among the loaded assemblies:
-            Assembly coreAssembly =
-                (from a in AppDomain.CurrentDomain.GetAssemblies()
-                 where a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY
-                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_USING_BRIDGE
-                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION
-                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BRIDGE
-                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_USING_BLAZOR
-                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BLAZOR
-                 select a).FirstOrDefault();
+            //Assembly coreAssembly =
+            //    (from a in AppDomain.CurrentDomain.GetAssemblies()
+            //     where a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY
+            //     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_USING_BRIDGE
+            //     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION
+            //     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BRIDGE
+            //     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_USING_BLAZOR
+            //     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BLAZOR
+            //     select a).FirstOrDefault();
+            Assembly coreAssembly = OpenSilverRuntime.OSRuntimeAssembly;
             if (coreAssembly != null)
             {
                 // Find the type "INTERNAL_PopupsManager" in Core:
@@ -299,56 +302,53 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
         static object GetVisualParent(object uiElement)
         {
-            // Find the "Core" assembly among the loaded assemblies:
-            Assembly coreAssembly =
-                (from a in AppDomain.CurrentDomain.GetAssemblies()
-                 where a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY
-                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_USING_BRIDGE
-                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION
-                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BRIDGE
-                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_USING_BLAZOR
-                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BLAZOR
-                 select a).FirstOrDefault();
-            // Find the type "INTERNAL_PopupsManager" in Core:
-            var visualTreeHelperType = coreAssembly.GetType("System.Windows.Media.VisualTreeHelper");
-            var methodInfo = visualTreeHelperType.GetMethod("GetParent", BindingFlags.Public | BindingFlags.Static);
-            return methodInfo.Invoke(null, new object[] { uiElement });
+            if (_GetVisualParent == null)
+            {
+                // Find the "Core" assembly among the loaded assemblies:
+                //Assembly coreAssembly =
+                //    (from a in AppDomain.CurrentDomain.GetAssemblies()
+                //     where a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY
+                //     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_USING_BRIDGE
+                //     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION
+                //     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BRIDGE
+                //     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_USING_BLAZOR
+                //     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BLAZOR
+                //     select a).FirstOrDefault();
+
+                Assembly coreAssembly = OpenSilverRuntime.OSRuntimeAssembly;
+                var visualTreeHelperType = coreAssembly.GetType("System.Windows.Media.VisualTreeHelper");
+                _GetVisualParent = visualTreeHelperType.GetMethod("GetParent", BindingFlags.Public | BindingFlags.Static);
+            }
+            return _GetVisualParent.Invoke(null, new object[] { uiElement });
         }
 
-        public static object GetElementAtSpecifiedCoordinates(Point coordinates)
+        public static object GetVisualElementAtPoint(Point coordinates)
         {
-            // Find the "Core" assembly among the loaded assemblies:
-            Assembly coreAssembly =
-                (from a in AppDomain.CurrentDomain.GetAssemblies()
-                 where a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY
-                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_USING_BRIDGE
-                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION
-                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BRIDGE
-                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_USING_BLAZOR
-                 || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BLAZOR
-                 select a).FirstOrDefault();
-            if (coreAssembly != null)
+            if (_FindElementInHostInfo == null)
             {
-                // Find the type "VisualTreeHelper" in Core:
+                // Find the "Core" assembly among the loaded assemblies:
+                //Assembly coreAssembly =
+                //    (from a in AppDomain.CurrentDomain.GetAssemblies()
+                //     where a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY
+                //     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_USING_BRIDGE
+                //     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION
+                //     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BRIDGE
+                //     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_USING_BLAZOR
+                //     || a.GetName().Name == Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION_USING_BLAZOR
+                //     select a).FirstOrDefault();
+                Assembly coreAssembly = OpenSilverRuntime.OSRuntimeAssembly;
                 Type manager = (from type in coreAssembly.GetTypes() where (type.Namespace == "CSHTML5.Internal" && type.Name == "INTERNAL_HtmlDomManager") select type).FirstOrDefault();
-                if (manager != null)
-                {
-                    // Call the "GetAllRootUIElements" method:
-                    var methodInfo = manager.GetMethod("FindElementInHostCoordinates_UsedBySimulatorToo", BindingFlags.Public | BindingFlags.Static);
-                    if (methodInfo != null)
-                    {
-                        //With WebView2 we get a dpi aware values
-                        //double dpiAwareX = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(coordinates.X, invert: true);
-                        //double dpiAwareY = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(coordinates.Y, invert: true);
+                _FindElementInHostInfo = manager.GetMethod("FindElementInHostCoordinates_UsedBySimulatorToo", BindingFlags.Public | BindingFlags.Static);
+            }
 
-                        var element = methodInfo.Invoke(null, new object[] { coordinates.X, coordinates.Y });
-                        return element;
-                    }
-                    else
-                        return null;
-                }
-                else
-                    return null;
+            if (_FindElementInHostInfo != null)
+            {
+                //With WebView2 we get a dpi aware values so commenting these:
+                //double dpiAwareX = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(coordinates.X, invert: true);
+                //double dpiAwareY = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(coordinates.Y, invert: true);
+
+                var element = _FindElementInHostInfo.Invoke(null, new object[] { coordinates.X, coordinates.Y });
+                return element;
             }
             else
                 return null;
@@ -430,24 +430,20 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                 _SimOverlayCallback = new SimOverlayCallback();
                 SimBrowser.Instance.CoreWebView2.AddHostObjectToScript("SimOverlayCallback", _SimOverlayCallback);
             }
-            SimBrowser.Instance.ExecuteScriptAsync("startInspection()");
+            SimBrowser.Instance.ExecuteScriptAsync("startXamlInspection()");
         }
 
         public static void StopInspection()
         {
-            SimBrowser.Instance.ExecuteScriptAsync("stopInspection()");
+            SimBrowser.Instance.ExecuteScriptAsync("stopXamlInspection()");
         }
 
         private static async Task<object> GetElementAtPoint(int x, int y)
         {
-            await SimBrowser.Instance.ExecuteScriptAsync("simOverlay.style.pointerEvents='none'");  //We do this so elementFromPoint returns the element below the simOverlay
-
             var element = await SimulatorProxy.OSDispatcher.InvokeAsync(() =>
             {
-                return XamlInspectionHelper.GetElementAtSpecifiedCoordinates(new Point(x, y));
+                return XamlInspectionHelper.GetVisualElementAtPoint(new Point(x, y));
             });
-
-            await SimBrowser.Instance.ExecuteScriptAsync("simOverlay.style.pointerEvents=''");
 
             return element;
         }
