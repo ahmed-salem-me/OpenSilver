@@ -319,7 +319,6 @@
     </None>
     <Resource Include="Debugging\DevToolsScreencast.png" />
     <Resource Include="Expand-Icon-5.png" />
-    <Resource Include="Expand-Icon-5.jpg" />
     <Content Include="interop_debug_root_opensilver.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
