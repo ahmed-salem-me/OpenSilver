@@ -38,7 +38,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
         XamlPropertiesPane _xamlPropertiesPane;
         bool _hasBeenFullyExpanded;
         TreeNode _selectedTreeNode;
-        TreeNode _nodeBranchMarked;
+        TreeNode _nodeBranchPreviouslyMarked;
         ContextMenu _ContextMenu;
 
         public XamlInspectionTreeView()
@@ -237,12 +237,18 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
         public void MarkNodeBranch(TreeNode treeNode, bool markState)
         {
-            if (markState)
+            if (_nodeBranchPreviouslyMarked != null)
             {
-                if (_nodeBranchMarked != null)
-                    MarkNodeBranch(_nodeBranchMarked, false);
-                _nodeBranchMarked = treeNode;
+                var markedBranch = _nodeBranchPreviouslyMarked;
+                if (markState)
+                    _nodeBranchPreviouslyMarked = treeNode;
+                else
+                    _nodeBranchPreviouslyMarked = null;
+
+                MarkNodeBranch(markedBranch, false);
             }
+            else
+                _nodeBranchPreviouslyMarked = treeNode;
 
             while (treeNode != null)
             {

@@ -37,10 +37,11 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
         private static SimOverlayCallback _SimOverlayCallback;
         private static MethodInfo _FindElementInHostInfo;
         private static MethodInfo _GetVisualParent;
-        private static Dictionary<object, TreeNode> _XamlSourcePathNodes = new Dictionary<object, TreeNode>();
+        private static Dictionary<object, TreeNode> _XamlSourcePathNodes;
 
         public static bool TryInitializeTreeView(TreeView treeView)
         {
+            _XamlSourcePathNodes = new Dictionary<object, TreeNode>();
             IEnumerable treeRootElements = GetVisualTreeRootElements();
             if (treeRootElements != null)
             {
@@ -125,7 +126,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
                                 TreeNode childNode;
 
-                               if (_XamlSourcePathNodes.ContainsKey(childElement))
+                                if (_XamlSourcePathNodes.ContainsKey(childElement))
                                     childNode = (_XamlSourcePathNodes[childElement] as TreeNode).Children.SingleOrDefault(nd => nd.Element == childElement);
                                 else
                                     childNode = treeNode.Children.SingleOrDefault(nd => nd.Element == childElement);
