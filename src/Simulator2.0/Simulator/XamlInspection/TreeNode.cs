@@ -133,5 +133,10 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                 NotifiyPropertyChanged("IsActiveNodeAncestor");
             }
         }
+
+        public override string ToString()
+        {
+            return _title;
+        }
     }
 }

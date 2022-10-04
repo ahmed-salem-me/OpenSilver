@@ -132,6 +132,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             {
                 var leafNode = nodeBranch.Pop();
                 treeItem = FindTreeItemFromNode(XamlTree, leafNode);
+
                 if (treeItem != null)
                     treeItem.IsExpanded = true;
             }
@@ -207,6 +208,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
         {
             if (node.Element == uiElement)
                 return node;
+
             foreach (var chidlNode in node.Children)
             {
                 var targetNode = FindElementNode(uiElement, chidlNode);
@@ -301,6 +303,14 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
         public TreeViewItem FindTreeItemFromNode(ItemsControl container, TreeNode item)
         {
+            XamlTree.SelectedItemChanged -= TreeView_SelectedItemChanged;
+            var treeItem = FindTreeItemFromNodeRecursive(container, item);
+            XamlTree.SelectedItemChanged += TreeView_SelectedItemChanged;
+            return treeItem;
+        }
+
+        public TreeViewItem FindTreeItemFromNodeRecursive(ItemsControl container, TreeNode item)
+        {
             if (container != null)
             {
                 if (container.DataContext == item)
@@ -359,7 +369,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                     if (subContainer != null)
                     {
                         // Search the next level for the object.
-                        TreeViewItem resultContainer = FindTreeItemFromNode(subContainer, item);
+                        TreeViewItem resultContainer = FindTreeItemFromNodeRecursive(subContainer, item);
                         if (resultContainer != null)
                         {
                             return resultContainer;
@@ -432,13 +442,15 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
         private void MenuItemExpandRecursivly_Click(object sender, RoutedEventArgs e)
         {
             var treeNode = (_ContextMenu.Tag as TreeViewItem).DataContext as TreeNode;
-            var nonLoadedNodes = GetAllNonLoadedChildren(treeNode, null, null);
-            foreach (var node in nonLoadedNodes)
-            {
-                XamlInspectionHelper.RecursivelyAddElementsToTree(node.Element, false, node, -1, false);
-            }
+            //var nonLoadedNodes = GetAllNonLoadedChildren(treeNode, null, null);
+            // foreach (var node in nonLoadedNodes)
+            // {
+            // }
+            var treeItem = FindTreeItemFromNode(XamlTree, treeNode);
+            XamlInspectionHelper.RecursivelyAddElementsToTree(treeNode.Element, false, treeNode, -1, false);
+            treeItem.IsSelected = true;
 
-            FindTreeItemFromNode(XamlTree, treeNode).ExpandSubtree();
+            treeItem.ExpandSubtree();
             MarkNodeAndChildrenAndUnmarkPrevious(treeNode, true);
         }
 
@@ -452,7 +464,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
         {
             var treeNode = (_ContextMenu.Tag as TreeViewItem).DataContext as TreeNode;
             List<TreeNode> nodeBranch = new List<TreeNode>();
-            treeNode = treeNode.Parent;
+
             while (treeNode != null)
             {
                 nodeBranch.Add(treeNode);
@@ -460,16 +472,22 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             }
 
             var treeItem = (XamlTree as ItemsControl);
-            for (int i = nodeBranch.Count - 1; i > -1; i--)
+            for (int i = nodeBranch.Count - 1; i > 0; i--)
             {
                 var leafNode = nodeBranch[i];
                 treeItem = treeItem.ItemContainerGenerator.ContainerFromItem(leafNode) as ItemsControl;
                 foreach (var childNode in leafNode.Children)
                 {
+                    TreeViewItem childTreeItem = null;
                     if (!nodeBranch.Contains(childNode))
                     {
-                        var childTreeItem = treeItem.ItemContainerGenerator.ContainerFromItem(childNode) as TreeViewItem;
+                        childTreeItem = treeItem.ItemContainerGenerator.ContainerFromItem(childNode) as TreeViewItem;
                         childTreeItem.IsExpanded = false;
+                    }
+                    else if (i == 1)
+                    {
+                        childTreeItem = treeItem.ItemContainerGenerator.ContainerFromItem(childNode) as TreeViewItem;
+                        childTreeItem.IsSelected = true;
                     }
                 }
             }
@@ -517,6 +535,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             return nonLoadedChildren;
         }
     }
+
 
     public class InvertBooleanToVisibilityConverter : IValueConverter
     {

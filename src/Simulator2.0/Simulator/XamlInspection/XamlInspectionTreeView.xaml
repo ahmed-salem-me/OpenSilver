@@ -34,7 +34,7 @@
                                 </Grid>
                                 <TextBlock Text="{Binding Title}" />
                                 <TextBlock Text="{Binding Name}" Foreground="LightBlue" Margin="10,0,0,0" />
-                                <Image Source="/OpenSilver.Simulator;component/Expand-Icon-5.png" Margin="20,2,0,0" Width="35" Height="12" VerticalAlignment="Center" MouseDown="SubtreeLoader_MouseDown" Visibility="{Binding AreChildrenLoaded, Mode=TwoWay, Converter={StaticResource InvertBoolToVis}}" />
+                                <Image Source="/OpenSilver.Simulator;component/Expand-Icon-5.png" Margin="20,3,0,0" Width="35" Height="12" VerticalAlignment="Center" MouseDown="SubtreeLoader_MouseDown" Visibility="{Binding AreChildrenLoaded, Mode=TwoWay, Converter={StaticResource InvertBoolToVis}}" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
                     </xamlinspection:TreeNodeDataTemplateSelector.NormalTemplate>

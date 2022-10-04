@@ -37,6 +37,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
         private static SimOverlayCallback _SimOverlayCallback;
         private static MethodInfo _FindElementInHostInfo;
         private static MethodInfo _GetVisualParent;
+        private static Dictionary<object, TreeNode> _XamlSourcePathNodes = new Dictionary<object, TreeNode>();
 
         public static bool TryInitializeTreeView(TreeView treeView)
         {
@@ -60,7 +61,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
         {
             // If the element is a XAML root element (that is, if its "XamlSourcePath" property has been filled), we add a node to the tree that tells us in which XAML file the element is defined:
             string xamlSourcePathOrNull = alreadyInsertedANodeForXamlSourcePath ? null : GetXamlSourcePathOrNullFromElement(uiElement); ;
-            bool isNodeForXamlSourcePath = !string.IsNullOrEmpty(xamlSourcePathOrNull);
+            bool isNodeForXamlSourcePath = !string.IsNullOrEmpty(xamlSourcePathOrNull) && includeEntryElement;
             var currMaxLevel = maxTreeLevel;
 
             TreeNode treeNode;
@@ -68,9 +69,8 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             {
                 string fileName = GetFileNameFromPath(xamlSourcePathOrNull);
                 // Create the tree node for displaying the XAML source path:
-                if (!includeEntryElement)
-                    treeNode = parentNode;
-                else
+                if (includeEntryElement)
+                {
                     treeNode = new TreeNode()
                     {
                         Title = xamlSourcePathOrNull, //"---- File: " + fileName + " ----",
@@ -79,7 +79,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                         Children = new ObservableCollection<TreeNode>(),
                         Parent = parentNode
                     };
-
+                }
+                else
+                {
+                    treeNode = parentNode;
+                }
+                _XamlSourcePathNodes.Add(uiElement, treeNode);
                 // Call itself and set "alreadyInsertedANodeForXamlSourcePath" to true:
                 treeNode.AreChildrenLoaded = true;
                 treeNode.Children.Add(RecursivelyAddElementsToTree(uiElement, true, treeNode, maxTreeLevel == -1 ? -1 : currMaxLevel - 1, true));
@@ -87,9 +92,8 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
             else
             {
                 // Create the tree node for displaying the element:
-                if (!includeEntryElement)
-                    treeNode = parentNode;
-                else
+                if (includeEntryElement)
+                {
                     treeNode = new TreeNode()
                     {
                         Element = (object)uiElement,
@@ -98,6 +102,11 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                         Children = new ObservableCollection<TreeNode>(),
                         Parent = parentNode
                     };
+                }
+                else
+                {
+                    treeNode = parentNode;
+                }
                 treeNode.AreChildrenLoaded = true;
                 // Handle the children recursively:
                 IDictionary visualChildrenInformation = uiElement.INTERNAL_VisualChildrenInformation as IDictionary;
@@ -114,7 +123,18 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
                                 if (treeNode.Title == "Window" && (GetTitleFromElement(childElement) == "TextBlock" || GetTitleFromElement(childElement) == "TextBox"))
                                     return treeNode;
 
-                                treeNode.Children.Add(RecursivelyAddElementsToTree(childElement, isNodeForXamlSourcePath, treeNode, currMaxLevel, true));
+                                TreeNode childNode;
+
+                               if (_XamlSourcePathNodes.ContainsKey(childElement))
+                                    childNode = (_XamlSourcePathNodes[childElement] as TreeNode).Children.SingleOrDefault(nd => nd.Element == childElement);
+                                else
+                                    childNode = treeNode.Children.SingleOrDefault(nd => nd.Element == childElement);
+
+                                if (childNode == null)
+                                    treeNode.Children.Add(RecursivelyAddElementsToTree(childElement, isNodeForXamlSourcePath, treeNode, currMaxLevel, true));
+                                else
+                                    RecursivelyAddElementsToTree(childElement, isNodeForXamlSourcePath, childNode, currMaxLevel, false);
+
                             }
                         }
                     }
