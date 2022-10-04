@@ -839,6 +839,13 @@ Click OK to continue.";
             }
         }
 
+
+        private void AllowContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            MainWebBrowser.AllowDenyContextMenu((bool)AllowContextMenu.IsChecked);
+        }
+
+
         private void ViewInteropLog_Click(object sender, RoutedEventArgs e)
         {
             var logWin = new Window() { Title = "Interop Log", WindowStartupLocation = WindowStartupLocation.CenterScreen };
@@ -2017,7 +2024,7 @@ Click OK to continue.";
 
             simBrowser.OnInitialized = () =>
             {
-                _openSilverRuntime = new OpenSilverRuntime( this, Dispatcher.CurrentDispatcher);
+                _openSilverRuntime = new OpenSilverRuntime(this, Dispatcher.CurrentDispatcher);
                 LoadIndexPage();
             };
 
