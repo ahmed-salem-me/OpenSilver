@@ -47,8 +47,8 @@ namespace OpenSilver.Simulator
         {
             CoreWebView2EnvironmentOptions options = new CoreWebView2EnvironmentOptions();
 
-            //options.AdditionalBrowserArguments = "--disable-web-security";
-            options.AdditionalBrowserArguments = "--disable-web-security --user-data-dir=\"c:/ chromedev\" --disable-features=SameSiteByDefaultCookies";
+            options.AdditionalBrowserArguments = "--disable-web-security";
+            //options.AdditionalBrowserArguments = "--disable-web-security --user-data-dir=\"c:/ chromedev\" --disable-features=SameSiteByDefaultCookies";
             options.AdditionalBrowserArguments += " --allow-file-access-from-file";
             options.AdditionalBrowserArguments += " --allow-file-access";
             options.AdditionalBrowserArguments += " --remote-debugging-port=9222";

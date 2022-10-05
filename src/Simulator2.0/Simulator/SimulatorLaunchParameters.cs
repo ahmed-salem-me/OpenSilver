@@ -26,7 +26,7 @@ namespace CSHTML5.Simulator
         /// <summary>
         /// Sets or gets custom cookies to the simulator
         /// </summary>
-        public IList<CoreWebView2Cookie> CookiesData { get; set; }
+        public IList<CookieData> CookiesData { get; set; }
     
         /// <summary>
         /// Sets the application init parameters

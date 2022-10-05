@@ -77,8 +77,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             {
                 RegistryHelpers.DeleteSetting(registryName + "_" + MICROSOFT_COOKIES_URL);
             }
-            //ams>do we need second check?
-            //if (browser != null && WebView2.Browser.CookieStorage != null)
+
             if (browser != null)
             {
                 browser.CoreWebView2.CookieManager.DeleteAllCookies();
@@ -86,22 +85,16 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             }
         }
 
-        public static void SetCustomCookies(WebView2 browser, IList<CoreWebView2Cookie> cookies)
+        public static void SetCustomCookies(WebView2 browser, IList<CookieData> cookies)
         {
             if (cookies == null)
                 return;
 
-            foreach (CoreWebView2Cookie cookie in cookies)
+            foreach (var cookie in cookies)
             {
-                browser.CoreWebView2.CookieManager.AddOrUpdateCookie(cookie);
-                //if (data.session)
-                //{
-                //    WebView2.Browser.CookieStorage.SetSessionCookie(data.url, data.name, data.value, data.domain, data.path, data.secure, data.httpOnly);
-                //}
-                //else
-                //{
-                //    WebView2.Browser.CookieStorage.SetCookie(data.url, data.name, data.value, data.domain, data.path, data.expirationTime, data.secure, data.httpOnly);
-                //}
+                var browserCookie = browser.CoreWebView2.CookieManager.CreateCookie(cookie.name, cookie.value, cookie.domain, cookie.path);
+                browser.CoreWebView2.CookieManager.AddOrUpdateCookie(browserCookie);
+                //ams> the default of browserCookie.IsSession=true // how to make a cookie not a session cookie!
             }
         }
 

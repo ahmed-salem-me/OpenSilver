@@ -62,6 +62,13 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
 
             XamlTree.MouseRightButtonUp += XamlTree_MouseRightButtonUp;
             XamlTree.MouseDoubleClick += (s, e) => LoadSubtreeFromMouseEvent(e);
+
+            Loaded += XamlInspectionTreeView_Loaded;
+        }
+
+        private void XamlInspectionTreeView_Loaded(object sender, RoutedEventArgs e)
+        {
+            MaxWidth = ScreenCoordinatesHelper.ScreenWidth / 4;
         }
 
         public bool TryRefresh(Assembly entryPointAssembly, XamlPropertiesPane xamlPropertiesPane)
