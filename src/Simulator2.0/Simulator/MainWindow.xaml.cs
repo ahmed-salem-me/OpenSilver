@@ -674,9 +674,6 @@ Click OK to continue.";
             MainWebBrowser.Source = new Uri(_rootPage.ToUrl());
 
             //MainWebBrowser.Browser.LoadHTML(new LoadHTMLParams(simulatorRootHtml, "UTF-8", "http://cshtml5-simulator/" + ARBITRARY_FILE_NAME_WHEN_RUNNING_FROM_SIMULATOR + urlFragment)); // Note: we set the URL so that the simulator browser can find the JS files.
-            //Note: (see commit c1f98763) the following line of commented code was in a #else (and the one above in a #if OPENSILVER) to fix an issue in FBC MM2 where Interop calls would return null or undefined when they shouldn't. It is probably a case where we are redirected to another context (for example when signing in a Microsoft account before being brought back).
-            //      It seemed to fix it but it causes the SOAP calls to fail in the simulator (tried in the Showcase) and retrying with FBC MM2 shows that the issue was not actually fixed (or it is missing another change that was mistakenly considered to not be part of the fix).
-            //MainWebBrowser.Browser.LoadHTML(new LoadHTMLParams(simulatorRootHtml, "UTF-8", baseURL + "/" + ARBITRARY_FILE_NAME_WHEN_RUNNING_FROM_SIMULATOR + urlFragment)); // Note: we set the URL so that the simulator browser can find the JS files.
         }
 
         void OnIndexPageLoaded()
@@ -694,9 +691,6 @@ Click OK to continue.";
 
                 GoToAppropriateCompilationState();
 
-                //ams>I don't think we'll need this while using the NavigationCompleted event
-                //WaitForDocumentToBeFullyLoaded(); // Note: without this, we got errors when running rokjs (with localhost as base url) without any breakpoints.
-
                 bool success = _openSilverRuntime.Start(_clientAppStartup);
 
                 if (success)
@@ -708,57 +702,6 @@ Click OK to continue.";
                 }
             }
         }
-
-        //        private void WaitForDocumentToBeFullyLoaded()
-        //        {
-        //            int startTime = Environment.TickCount;
-        //            bool loaded = false;
-
-        //            JSValue htmlDocument = MainWebBrowser.Browser.ExecuteJavaScriptAndReturnValue(@"document");
-
-        //            while (!loaded && (Environment.TickCount - startTime < 4000)) // Wait is limited to max 4 seconds.
-        //            {
-        //                if (htmlDocument != null)
-        //                {
-        //                    JSValue xamlRoot = null;
-        //                    try
-        //                    {
-        //                        xamlRoot = CallJSMethodAndReturnValue(htmlDocument, "getXamlRoot");
-        //                    }
-        //                    catch (Exception ex)
-        //                    {
-        //                        Debug.WriteLine($"Initialization: can not get the root. {ex.Message}");
-        //                    }
-
-        //                    if (xamlRoot != null && xamlRoot.IsObject())
-        //                    {
-        //                        loaded = true;
-        //                        break;
-        //                    }
-        //                    else
-        //                    {
-        //#if OPENSILVER
-        //                        const string ROOT_NAME = "opensilver-root";
-        //#elif BRIDGE
-        //                        const string ROOT_NAME = "cshtml5-root";
-        //#endif
-        //                        Debug.WriteLine($"Initialization: {ROOT_NAME} was not ready on first try.");
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    Debug.WriteLine("Initialization: htmlDocument was null on first try.");
-        //                    htmlDocument = MainWebBrowser.Browser.ExecuteJavaScriptAndReturnValue(@"document");
-        //                }
-
-        //                Thread.Sleep(50);
-        //            }
-
-        //            if (!loaded)
-        //            {
-        //                Debug.WriteLine("Initialization: The document was still not loaded after timeout.");
-        //            }
-        //        }
 
         private void CheckKeysValidity()
         {
@@ -922,87 +865,9 @@ Click OK to continue.";
             return html ?? "";
         }
 
-
-#if OPENSILVER
-#elif BRIDGE
-        bool InitializeApplication()
-        {
-            // Read the path of the assembly that contains the entry point:
-            if (ReflectionInUserAssembliesHelper.TryGetPathOfAssemblyThatContainsEntryPoint(out _pathOfAssemblyThatContainsEntryPoint))
-            {
-                // Load the assembly (other assemblies get or got loaded thanks to the "AssemblyResolve" event):
-                try
-                {
-                    _entryPointAssembly = Assembly.LoadFile(_pathOfAssemblyThatContainsEntryPoint);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Unable to load: " + _pathOfAssemblyThatContainsEntryPoint + "\r\n\r\n(" + ex.Message + ")\r\n\r\n---------------\r\nHow to fix this issue:\r\n---------------\r\n\r\nYou can attempt to fix this issue by forcing a Rebuild of the project.\r\n\r\nIf it still does not work, please go to the Project Properties, navigate to the Start Options (under the 'Debug' tab), and make sure that the 'Command line arguments' contains the exact name of the assembly (eg. \"MyAssemblyName.dll\"). You can verify that the assembly name is correct by going to the 'Application' tab of the 'Project Properties' and reading the field 'Assembly name'.\r\n\r\nIf you need any assistance, please contact support at support@cshtml5.com");
-                    HideLoadingMessage();
-                    return false;
-                }
-
-                try
-                {
-                    // Determine Entry point:
-                    Type applicationType;
-                    if (ReflectionInUserAssembliesHelper.TryDetermineTypeThatInheritsFromApplication(_entryPointAssembly, out applicationType, out _coreAssembly))
-                    {
-                        _appCreationDelegate = () => Activator.CreateInstance(applicationType);
-                        // Create the JavaScriptExecutionHandler that will be called by the "Core" project to interact with the Emulator:
-                        _javaScriptExecutionHandler = new JavaScriptExecutionHandler(MainWebBrowser);
-
-                        // Create the HTML DOM MANAGER proxy and pass it to the "Core" project:
-                        JSValue htmlDocument = (JSObject)MainWebBrowser.Browser.ExecuteJavaScriptAndReturnValue("document");
-
-                        InteropHelpers.InjectDOMDocument(MainWebBrowser.Browser.GetDocument(), _coreAssembly);
-                        InteropHelpers.InjectHtmlDocument(htmlDocument, _coreAssembly);//no need for this line right ?
-                        InteropHelpers.InjectWebControlDispatcherBeginInvoke(MainWebBrowser, _coreAssembly);
-                        InteropHelpers.InjectWebControlDispatcherInvoke(MainWebBrowser, _coreAssembly);
-                        InteropHelpers.InjectConvertBrowserResult(BrowserResultConverter.CastFromJsValue, _coreAssembly);
-                        InteropHelpers.InjectJavaScriptExecutionHandler(_javaScriptExecutionHandler, _coreAssembly);
-                        InteropHelpers.InjectWpfMediaElementFactory(_coreAssembly);
-                        InteropHelpers.InjectWebClientFactory(_coreAssembly);
-                        InteropHelpers.InjectClipboardHandler(_coreAssembly);
-                        InteropHelpers.InjectSimulatorProxy(new SimulatorProxy(MainWebBrowser, Console), _coreAssembly);
-
-                        WpfMediaElementFactory._gridWhereToPlaceMediaElements = GridForAudioMediaElements;
-
-                        // Inject the code to display the message box in the simulator:
-                        InteropHelpers.InjectCodeToDisplayTheMessageBox(
-                            (message, title, showCancelButton) => { return MessageBox.Show(message, title, showCancelButton ? MessageBoxButton.OKCancel : MessageBoxButton.OK) == MessageBoxResult.OK; },
-                            _coreAssembly);
-
-                        // Ensure the static constructor of all common types is called so that the type converters are initialized:
-                        StaticConstructorsCaller.EnsureStaticConstructorOfCommonTypesIsCalled(_coreAssembly);
-                        return true;
-
-                    }
-                    else
-                    {
-                        // Error is already displayed by the method above.
-                        HideLoadingMessage();
-                        return false;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error while loading the application: " + Environment.NewLine + Environment.NewLine + ex.Message);
-                    HideLoadingMessage();
-                    return false;
-                }
-            }
-            else
-            {
-                MessageBox.Show("To launch the app in the simulator, call the simulator EXE and pass the path to the application DLL as a command line argument.\r\n\r\nThe easiest way to do so is to launch Visual Studio, click File -> New -> Project, create a project of type \"C#/XAML for HTML5\" application, and then run that project.\r\n\r\nYou can see how it works by going to the Properties of that project, clicking the \"Debug\" tab, and reading what is under \"Start external program\".");
-                HideLoadingMessage();
-                return false;
-            }
-        }
-#endif
-
         void ReloadAppAfterRedirect(string urlFragment)
         {
+            //ams understand what is redirect
             // Create the HTML DOM MANAGER proxy and pass it to the "Core" project:
             //JSValue htmlDocument = (JSObject)MainWebBrowser.Browser.ExecuteJavaScriptAndReturnValue("document");
             //InteropHelpers.InjectDOMDocument(MainWebBrowser.Browser.GetDocument(), _coreAssembly);
@@ -1081,34 +946,6 @@ Click OK to continue.";
                 MessageBox.Show(ex.ToString());
             }
         }
-
-        //static JSValue CallJSMethodAndReturnValue(JSValue instance, string methodname, params object[] args)
-        //{
-        //    var function = GetJSProperty(instance, methodname);
-        //    if (function == null || !function.IsFunction())
-        //    {
-        //        throw new ApplicationException($"'{methodname}' is not a function or does not exist");
-        //    }
-        //    var result = function.AsFunction().InvokeAndReturnValue(instance.AsObject(), args);
-
-        //    return result;
-        //}
-
-
-        //static JSValue GetJSProperty(JSValue instance, string propertyName)
-        //{
-        //    JSValue result = instance.AsObject().GetProperty(propertyName);
-
-        //    return result;
-        //}
-
-        //static bool SetJSProperty(JSValue instance, string propertyName, object value)
-        //{
-        //    var result = instance.AsObject().SetProperty(propertyName, value);
-
-        //    return result;
-        //}
-
 
         string _lastExecutedJavaScript = "";
 
@@ -1284,223 +1121,8 @@ Click OK to continue.";
 
         void GoToAppropriateCompilationState()
         {
-#if BRIDGE || OPENSILVER
-            // In the Bridge-based version, the HTML/JS generation is done at build-time, so when we arrive here it is already compiled.
-            // In the OpenSilver version, code dont need to be transpilled, so we skip compilation.
-
             _compilationState = CompilationState.AlreadyCompiled;
             UpdateToolbarBasedOnCurrentCompilationState();
-#else
-            //------------
-            // Check if we need to compile by checking if the compilation is supposed to be done during build or by the Simulator:
-            //------------
-            bool generateJavaScriptDuringBuild;
-            ReflectionInUserAssembliesHelper.GetSettingsByReadingAssemblyAttributes(_entryPointAssembly, out generateJavaScriptDuringBuild);
-
-            //------------
-            // Compile:
-            //------------
-            if (!generateJavaScriptDuringBuild) // We generate the JS in the Simulator only if the generation was not already done during the Build process.
-            {
-                //------------
-                // Check if we need to compile again by checking if the assembly date has changed:
-                //------------
-                string dateOfAssemblyLastSuccessfullyCompiledToJavaScript = Properties.Settings.Default.DateOfAssemblyLastSuccessfullyCompiledToJavaScript;
-                string assemblyDate = File.GetLastWriteTimeUtc(_pathOfAssemblyThatContainsEntryPoint).ToString();
-                bool fileDateHasChanged = (assemblyDate != dateOfAssemblyLastSuccessfullyCompiledToJavaScript);
-                string pathToIndexHtml = GetOutputIndexPath();
-                bool outputFileDoesNotExist = !File.Exists(pathToIndexHtml);
-
-                //------------
-                // Compile:
-                //------------
-                if (fileDateHasChanged || outputFileDoesNotExist)
-                {
-                    _compilationState = CompilationState.Compiling;
-                    _compilationLog = null;
-                    UpdateToolbarBasedOnCurrentCompilationState();
-
-                    // Read the attributes from the entry assembly:
-                    string outputRootPath, outputAppFilesPath, outputLibrariesPath, outputResourcesPath, intermediateOutputAbsolutePath;
-                    ReflectionInUserAssembliesHelper.GetOutputPathsByReadingAssemblyAttributes(_entryPointAssembly, out outputRootPath, out outputAppFilesPath, out outputLibrariesPath, out outputResourcesPath, out intermediateOutputAbsolutePath);
-                    _outputRootPath = outputRootPath;
-
-                    // Execute in background thread so as not to block the UI:
-                    ExecuteInBackgroundThread((Action)(() =>
-                        {
-                            try
-                            {
-                                // Create an instance of the CompilationHandler class in a new AppDomain so that it doesn't mess with the system that swaps the references to the CSHTML5 "system.dll" into a reference to the real "system.dll" (cf. document "How system references work.txt"):
-                                string compilerAssemblyPath;
-                                if (ReflectionInUserAssembliesHelper.WasAssemblyWasCompiledInSLMigrationMode())
-                                {
-                                    compilerAssemblyPath = Path.Combine(PathsHelper.GetCompilerPath(), @"SLMigration\SLMigration.CSharpXamlForHtml5.Compiler.dll");
-                                }
-                                else
-                                {
-                                    compilerAssemblyPath = Path.Combine(PathsHelper.GetCompilerPath(), @"CSharpXamlForHtml5.Compiler.dll");
-                                }
-                                AppDomainSetup setupInformation = AppDomain.CurrentDomain.SetupInformation;
-                                AppDomain newAppDomain = AppDomain.CreateDomain("newAppDomain", AppDomain.CurrentDomain.Evidence, setupInformation);
-                                System.Runtime.Remoting.ObjectHandle obj = newAppDomain.CreateInstanceFrom(compilerAssemblyPath, "DotNetForHtml5.Compiler.CompilationFromSimulator");
-                                ICompilationFromSimulator compilationFromSimulator = (Compiler.Common.ICompilationFromSimulator)obj.Unwrap();
-
-                                // Determine if it is the first-time compilation (in the new domain):
-                                _isFirstTimeJavaScriptCompilation = compilationFromSimulator.IsFirstTimeJavaScriptCompilation(intermediateOutputAbsolutePath);
-                                if (_isFirstTimeJavaScriptCompilation)
-                                {
-                                    //--------------
-                                    // First-time compilation
-                                    //--------------
-
-                                    // Display a message on the UI thread to tell the user that the first compilation is slower than subsequent ones:
-                                    Dispatcher.BeginInvoke((Action)(() =>
-                                    {
-                                        MessageToDisplayDuringFirstTimeCompilation.Visibility = Visibility.Visible;
-                                    }));
-                                }
-                                else
-                                {
-                                    //--------------
-                                    // Not first-time compilation
-                                    //--------------
-
-                                    Dispatcher.BeginInvoke((Action)(() =>
-                                    {
-                                        // Start a timer so as to display a tip to the user if the compilation takes a really long time:
-                                        _timerToInformTheUserIfTheCompilationIsTakingTooLong.Stop();
-                                        _timerToInformTheUserIfTheCompilationIsTakingTooLong.Interval = TimeAfterWhichToSayThatCompilationisTakingTooLong;
-                                        _timerToInformTheUserIfTheCompilationIsTakingTooLong.Tick -= TimerToInformTheUserIfTheCompilationIsTakingTooLong_Tick; // In case it was already registered.
-                                        _timerToInformTheUserIfTheCompilationIsTakingTooLong.Tick += TimerToInformTheUserIfTheCompilationIsTakingTooLong_Tick;
-                                        _timerToInformTheUserIfTheCompilationIsTakingTooLong.Start();
-                                    }));
-                                }
-
-                                // Start the compilation (in the new domain):
-                                string sourceAssembly = _pathOfAssemblyThatContainsEntryPoint;
-                                string result = compilationFromSimulator.StartCompilation(
-                                    sourceAssembly,
-                                    outputRootPath,
-                                    outputAppFilesPath,
-                                    outputLibrariesPath,
-                                    outputResourcesPath,
-                                    intermediateOutputAbsolutePath,
-                                    _entryPointAssembly.GetName().Name,
-                                    "", //todo: pass the compilation flags via an attribute generated during compilation, in the same way as we pass the other stuff such as the outputResourcesPath?
-                                    false); //todo: specify whether it is the Bridge-based version.
-
-                                // Go back to the UI thread:
-                                Dispatcher.BeginInvoke((Action)(() =>
-                                {
-                                    // Stop the dispatcher timer, in case it was running:
-                                    _timerToInformTheUserIfTheCompilationIsTakingTooLong.Stop();
-
-                                    // Check the result ("null" means compilation succeeded, otherwise the result contains the log string):
-                                    bool compilationSucceeded = (result ?? "").EndsWith(COMPILATION_SUCCEEDED_KEYWORD);
-                                    if (compilationSucceeded)
-                                    {
-                                        // Check if there are warnings about the first argument of "Interop.ExecuteJavaScript" not being a string literal:
-                                        if ((result ?? "").Contains(COMPILATION_WARNING_ABOUT_EXECUTEJAVASCRIPT))
-                                        {
-                                            //---------------------------
-                                            // COMPILATION BLOCKING WARNINGa
-                                            //---------------------------
-                                            _compilationState = CompilationState.CompilationError;
-                                            string errorMessage = "There was an error during the generation of the HTML and JavaScript files."
-                                                + Environment.NewLine
-                                                + Environment.NewLine
-                                                + "The error is due to the fact that you call the 'Interop.ExecuteJavaScript' method without passing a string literal as an argument. The first argument of the 'Interop.ExecuteJavaScript' method must be a string literal because the compiler will take it and copy it 'as is' into the generated JavaScript file."
-                                                + Environment.NewLine
-                                                + Environment.NewLine
-                                                + @"You can fix this error by changing the way that you call the 'Interop.ExecuteJavaScript' method. You should pass a string that is known at compile-time rather than at runtime. For example, passing a variable is not allowed. Similarly, concatenating strings such as ""the"" + ""is"" + ""a"" + ""concatenated"" + ""string"" or using String.Format(...) will NOT work, because that would require evaluating the string at runtime, while the compiler needs to know the string at compile-time."
-                                                + Environment.NewLine
-                                                + Environment.NewLine
-                                                + @"TIP: If you need to pass runtime variables to the 'Interop.ExecuteJavaScript' method, you can do so by using the $0, $1, $2, $3... placeholders syntax. For example, you can write: Interop.ExecuteJavaScript(""alert($0)"", messageToDisplay);"
-                                                + Environment.NewLine
-                                                + Environment.NewLine
-                                                + "For more information on this topic, please visit:"
-                                                + Environment.NewLine
-                                                + "http://cshtml5.com/links/how-to-call-javascript.aspx";
-                                            var msgBox = new MessageBoxScrollable()
-                                        {
-                                            Value = errorMessage,
-                                            Title = "Error while compiling to HTML and JavaScript"
-                                        };
-                                            msgBox.ShowDialog();
-                                        }
-                                        else
-                                        {
-                                            //---------------------------
-                                            // COMPILATION SUCCEEDED
-                                            //---------------------------
-                                            // Remember the file date so that we do not recompile if the assembly doesn't change:
-                                            Properties.Settings.Default.DateOfAssemblyLastSuccessfullyCompiledToJavaScript = File.GetLastWriteTimeUtc(_pathOfAssemblyThatContainsEntryPoint).ToString();
-                                            Properties.Settings.Default.Save();
-                                            _compilationState = CompilationState.AlreadyCompiled;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        //---------------------------
-                                        // COMPILATION ERROR
-                                        //---------------------------
-                                        _compilationState = CompilationState.CompilationError;
-                                    }
-                                    _compilationLog = result;
-                                    UpdateToolbarBasedOnCurrentCompilationState();
-                                }));
-
-                            }
-                            catch (Exception ex)
-                            {
-                                // Go back to the UI thread:
-                                Dispatcher.BeginInvoke((Action)(() =>
-                                    {
-                                        // Stop the dispatcher timer, in case it was running:
-                                        _timerToInformTheUserIfTheCompilationIsTakingTooLong.Stop();
-
-                                        // Display error message:
-                                        MessageBox.Show(TipToCopyToClipboard
-                                            + Environment.NewLine + Environment.NewLine
-                                            + "Error while attempting to generate HTML and JavaScript files. Please report this error to: support@cshtml5.com"
-                                            + Environment.NewLine + Environment.NewLine
-                                            + ex.ToString());
-                                    }));
-                            }
-                        }));
-                }
-                else
-                {
-                    //-------------------------------------------
-                    // If we arrived here, it means that we do not need to
-                    // compile again because the files have not changed.
-                    //-------------------------------------------
-                    _compilationState = CompilationState.AlreadyCompiled;
-                    UpdateToolbarBasedOnCurrentCompilationState();
-                }
-            }
-            else
-            {
-                //-------------------------------------------
-                // If we arrived here, it means that the compilation (ie.
-                // the generation of JS) was already done during the build process.
-                //-------------------------------------------
-                _compilationState = CompilationState.AlreadyCompiled;
-                UpdateToolbarBasedOnCurrentCompilationState();
-            }
-#endif
-        }
-
-        static void ExecuteInBackgroundThread(Action method)
-        {
-            var newThread = new System.Threading.Thread(() =>
-            {
-                method();
-            })
-            {
-                IsBackground = true
-            };
-            newThread.Start();
         }
 
         void SaveDisplaySize()
@@ -1602,48 +1224,6 @@ Click OK to continue.";
             }
         }
         private delegate void CustomResponseHandler(object sender, CustomResponseEventArgs e);
-
-        //private class CustomLoadHandler : DefaultLoadHandler
-        //{
-        //    public event CustomResponseHandler CustomResponseEvent;
-
-        //    public override bool OnLoad(LoadParams loadParams)
-        //    {
-        //        if (loadParams.Url.ToLower().StartsWith(@"http://") || loadParams.Url.ToLower().StartsWith(@"https://"))
-        //        {
-        //            var customResponseEvent = CustomResponseEvent;
-        //            if (customResponseEvent != null)
-        //            {
-        //                customResponseEvent.Invoke(this, new CustomResponseEventArgs(loadParams.Url));
-        //            }
-        //        }
-
-        //        return false;
-        //    }
-
-        //    public override bool OnCertificateError(CertificateErrorParams errorParams)
-        //    {
-        //        Debug.WriteLine("Invalid certificate. The Simulator will ignore this error and continue. Certificate details: ");
-        //        Certificate certificate = errorParams.Certificate;
-
-        //        Debug.WriteLine("ErrorCode = " + errorParams.CertificateError);
-        //        Debug.WriteLine("SerialNumber = " + certificate.SerialNumber);
-        //        Debug.WriteLine("FingerPrint = " + certificate.FingerPrint);
-        //        Debug.WriteLine("CAFingerPrint = " + certificate.CAFingerPrint);
-
-        //        string subject = certificate.Subject;
-        //        Debug.WriteLine("Subject = " + subject);
-
-        //        string issuer = certificate.Issuer;
-        //        Debug.WriteLine("Issuer = " + issuer);
-
-        //        Debug.WriteLine("KeyUsages = " + String.Join(", ", certificate.KeyUsages));
-        //        Debug.WriteLine("ExtendedKeyUsages = " + String.Join(", ", certificate.ExtendedKeyUsages));
-
-        //        Debug.WriteLine("HasExpired = " + certificate.HasExpired);
-        //        return false; //ignores the error.
-        //    }
-        //}
 
         #region Element Picker for XAML Inspection
 
@@ -1771,14 +1351,6 @@ Click OK to continue.";
             simBrowser.Width = 150;
             simBrowser.Height = 200;
             simBrowser.SizeChanged += MainWebBrowser_SizeChanged;
-
-            //ams>fix:
-            //simBrowser.OnNavigationCompleted = () => Dispatcher.BeginInvoke((Action)(async () =>
-            //{
-            //    InteropHelpers.RaiseReloadedEvent(_coreAssembly); // to reset some static fields
-            //    await Task.Delay(3000); //Note: this is to ensure all the js and css files of simulator_root.html have been loaded (client_fb).
-            //    StartApplication();
-            //}));
 
             simBrowser.OnInitialized = () =>
             {
