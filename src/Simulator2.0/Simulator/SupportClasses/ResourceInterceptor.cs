@@ -22,7 +22,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Path = System.IO.Path;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript
+namespace OpenSilver.Simulator
 {
     public class ResourceInterceptor
     {

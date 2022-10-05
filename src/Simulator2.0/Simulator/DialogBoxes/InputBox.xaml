@@ -1,4 +1,4 @@
-﻿<Window x:Class="DotNetForHtml5.EmulatorWithoutJavascript.InputBox"
+﻿<Window x:Class="OpenSilver.Simulator.InputBox"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="" Height="250" Width="400" WindowStartupLocation="CenterScreen">

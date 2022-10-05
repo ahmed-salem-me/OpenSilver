@@ -17,7 +17,7 @@
 
 using System.Windows;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript
+namespace OpenSilver.Simulator
 {
     public class ClipboardHandler
     {

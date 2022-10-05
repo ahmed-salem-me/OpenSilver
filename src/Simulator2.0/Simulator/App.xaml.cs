@@ -26,7 +26,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript
+namespace OpenSilver.Simulator
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -24,7 +24,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript
+namespace OpenSilver.Simulator
 {
     public static class Serializer
     {

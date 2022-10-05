@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript.Console
+namespace OpenSilver.Simulator.Console
 {
     public class FileSource : IMessageSource
     {

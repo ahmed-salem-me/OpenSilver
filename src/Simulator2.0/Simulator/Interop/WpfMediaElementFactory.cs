@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript
+namespace OpenSilver.Simulator
 {
     public class WpfMediaElementFactory
     {

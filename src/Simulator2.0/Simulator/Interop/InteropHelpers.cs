@@ -22,7 +22,7 @@ using System.Windows;
 using Microsoft.Web.WebView2.Wpf;
 
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript
+namespace OpenSilver.Simulator
 {
     static class InteropHelpers
     {

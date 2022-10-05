@@ -19,7 +19,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript
+namespace OpenSilver.Simulator
 {
     static class ScreenCoordinatesHelper
     {

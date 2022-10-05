@@ -23,14 +23,14 @@ using System.Linq;
 using System.Windows;
 using System.Collections;
 using System.Windows.Shapes;
-using DotNetForHtml5.Compiler;
+using OpenSilver.Compiler;
 using Microsoft.Web.WebView2.Wpf;
 using OpenSilver.Simulator;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
+namespace OpenSilver.Simulator.XamlInspection
 {
     internal static class XamlInspectionHelper
     {

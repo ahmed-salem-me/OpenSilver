@@ -28,7 +28,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
+namespace OpenSilver.Simulator.XamlInspection
 {
     /// <summary>
     /// Interaction logic for XamlInspectionTreeView.xaml

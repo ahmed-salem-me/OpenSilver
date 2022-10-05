@@ -22,7 +22,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript
+namespace OpenSilver.Simulator
 {
     static class CrossDomainCallsHelper
     {

@@ -21,9 +21,9 @@ using System.Reflection;
 using System.Windows;
 using System.Linq;
 using System.Collections.Generic;
-using DotNetForHtml5.Compiler;
+using OpenSilver.Compiler;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript
+namespace OpenSilver.Simulator
 {
     static class ReflectionInUserAssembliesHelper
     {

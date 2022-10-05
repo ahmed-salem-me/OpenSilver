@@ -1,4 +1,4 @@
-﻿using DotNetForHtml5.EmulatorWithoutJavascript;
+﻿using OpenSilver.Simulator;
 using System;
 using System.Collections.Generic;
 using System.Reflection;

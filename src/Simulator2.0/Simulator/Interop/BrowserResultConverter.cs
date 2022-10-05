@@ -16,7 +16,7 @@
 
 
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript
+namespace OpenSilver.Simulator
 {
     internal class BrowserResultConverter
     {

@@ -22,7 +22,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript
+namespace OpenSilver.Simulator
 {
     public class WebClientFactory
     {

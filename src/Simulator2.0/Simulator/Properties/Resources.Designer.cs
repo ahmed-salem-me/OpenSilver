@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript.Properties {
+namespace OpenSilver.Simulator.Properties {
     using System;
     
     

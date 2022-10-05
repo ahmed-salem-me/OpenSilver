@@ -1,5 +1,5 @@
-﻿using DotNetForHtml5;
-using DotNetForHtml5.EmulatorWithoutJavascript;
+﻿using OpenSilver;
+using OpenSilver.Simulator;
 using System.IO;
 using System.Reflection;
 using System.Text;

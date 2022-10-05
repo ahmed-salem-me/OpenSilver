@@ -18,7 +18,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
+namespace OpenSilver.Simulator.XamlInspection
 {
     public class TreeNode : INotifyPropertyChanged
     {

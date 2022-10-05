@@ -15,7 +15,7 @@
 
 
 
-using DotNetForHtml5.EmulatorWithoutJavascript.Console;
+using OpenSilver.Simulator.Console;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -25,7 +25,7 @@ using System.Windows.Threading;
 using Microsoft.Web.WebView2.Wpf;
 using OpenSilver.Simulator;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript
+namespace OpenSilver.Simulator
 {
     //Do not remove this class: called via reflection.
     public class SimulatorProxy 

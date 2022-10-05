@@ -17,7 +17,7 @@
 using System.Collections.Generic;
 using OpenSilver.Simulator;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript
+namespace OpenSilver.Simulator
 {
     public class JavaScriptExecutionHandler
     {

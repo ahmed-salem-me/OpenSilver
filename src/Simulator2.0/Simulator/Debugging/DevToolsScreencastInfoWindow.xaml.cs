@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript.Debugging
+namespace OpenSilver.Simulator.Debugging
 {
     /// <summary>
     /// Interaction logic for DevToolsScreencastInfoWindow.xaml

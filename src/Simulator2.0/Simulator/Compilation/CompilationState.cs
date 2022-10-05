@@ -15,7 +15,7 @@
 
 
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript
+namespace OpenSilver.Simulator
 {
     internal enum CompilationState
     {

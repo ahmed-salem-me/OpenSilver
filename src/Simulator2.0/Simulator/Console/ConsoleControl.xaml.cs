@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript.Console
+namespace OpenSilver.Simulator.Console
 {
     /// <summary>
     /// Interaction logic for Console.xaml

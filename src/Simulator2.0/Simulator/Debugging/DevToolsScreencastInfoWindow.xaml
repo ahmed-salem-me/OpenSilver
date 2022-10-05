@@ -1,9 +1,9 @@
-﻿<Window x:Class="DotNetForHtml5.EmulatorWithoutJavascript.Debugging.DevToolsScreencastInfoWindow"
+﻿<Window x:Class="OpenSilver.Simulator.Debugging.DevToolsScreencastInfoWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DotNetForHtml5.EmulatorWithoutJavascript.Debugging"
+        xmlns:local="clr-namespace:OpenSilver.Simulator.Debugging"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         Title="DevTools Information" Height="600" Width="700">

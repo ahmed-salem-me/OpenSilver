@@ -24,28 +24,23 @@ using System.Diagnostics;
 using MahApps.Metro.Controls;
 using System.Windows.Controls;
 using System.Globalization;
-using DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection;
+using OpenSilver.Simulator.XamlInspection;
 using Microsoft.Win32;
-using DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference;
+using OpenSilver.Simulator.LicensingServiceReference;
 //ams>could/shoud replace
 //using DotNetForHtml5.EmulatorWithoutJavascript.LicenseChecking;
-using DotNetForHtml5.Compiler;
+using OpenSilver.Compiler;
 using System.Threading;
 using System.Windows.Threading;
 
 
 using System.Windows.Media;
 using System.Threading.Tasks;
-using System.ComponentModel;
 using System.Net.NetworkInformation;
 using System.Windows.Input;
-#if OPENSILVER
-using OpenSilver.Simulator;
-#else
-using CSHTML5.Simulator;
-#endif
+using System.Windows.Media.Imaging;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript
+namespace OpenSilver.Simulator
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -71,15 +66,10 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
         RootPage _rootPage;
         bool _isFirstTimeJavaScriptCompilation = false;
         SimBrowser MainWebBrowser;
-        //ams>fix
-        //ChromiumDevTools _devTools;
         bool _pendingRefreshOfHighlight = false;
         Assembly _coreAssembly;
-        Assembly _typeForwardingAssembly;
         string _browserUserDataDir;
         OpenSilverRuntime _openSilverRuntime;
-
-        //ResourceInterceptor _resourceInterceptor = new ResourceInterceptor("http://cshtml5-simulator/");
 
         const bool IS_LICENSE_CHECKER_ENABLED = false;
         const string NAME_FOR_STORING_COOKIES = "ms_cookies_for_user_application"; // This is an arbitrary name used to store the cookies in the registry
@@ -101,57 +91,19 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             InitializeComponent();
             Instance = this;
 
-#if OPENSILVER
-            //ams>fix
-            //Icon = new BitmapImage(new Uri("pack://application:,,,/OpenSilver.Simulator;component/OpenSilverIcon.ico"));
-            Title = "Simulator - OpenSilver";
-#else
-            Icon = new BitmapImage(new Uri("pack://application:,,,/CSharpXamlForHtml5.Simulator;component/CSHTML5Icon.ico"));
-            Title = "Simulator - CSHTML5";
-#endif
+            Icon = new BitmapImage(new Uri("pack://application:,,,/OpenSilver.Simulator;component/OpenSilverIcon.ico"));
 
+            Title = "Simulator - OpenSilver";
             MessageToDisplayDuringFirstTimeCompilation.Visibility = Visibility.Collapsed;
             MessageToDisplayWhenCompilationIsSlow.Visibility = Visibility.Collapsed;
 
-#if BRIDGE
-            MenuButtonViewCompilationLog.Visibility = Visibility.Collapsed; // In version 2.x, the JavaScript generation is done at compile-time rather than by the Simulator.
-#else
             WelcomeTextBlock.Visibility = Visibility.Collapsed; // In version 1.x, we do not display the welcome text because there is already a similar text while the JS generation is taking place.
-#endif
-
-#if ENABLE_DOTNETBROWSER_LOGGING
-            // Enable logging of the browser control, cf. https://dotnetbrowser.support.teamdev.com/support/solutions/articles/9000110288-logging
-            LoggerProvider.Instance.LoggingEnabled = true;
-            LoggerProvider.Instance.FileLoggingEnabled = true;
-            LoggerProvider.Instance.OutputFile = @"C:\temp\DotNetBrowser.log";
-            LoggerProvider.Instance.ChromiumLogFile = @"C:\temp\chromium.log";
-            BrowserPreferences.SetChromiumSwitches("--v=1");
-#endif
-
-#if OPENSILVER
             _clientAppStartup = entryAppCreator ?? throw new ArgumentNullException(nameof(entryAppCreator));
             _simulatorLaunchParameters = simulatorLaunchParameters;
             ReflectionInUserAssembliesHelper.TryGetCoreAssembly(out _coreAssembly);
             _clientAppAssembly = appAssembly;
             _pathOfAssemblyThatContainsEntryPoint = _clientAppAssembly.Location;
-#endif
 
-#if BRIDGE
-            // Load the "TypeForwarding" assembly that allows to redirect the type references from Bridge.dll to Mscorlib.dll:
-            // Note: paths are relative to the current .exe file
-            string pathOfThisVeryAssembly = PathsHelper.GetPathOfThisVeryAssembly();
-            string folderOfThisVeryAssembly = Path.GetDirectoryName(pathOfThisVeryAssembly);
-            string typeForwardingAssemblyPathForDebugging = Path.Combine(folderOfThisVeryAssembly, @"..\..\..\DotNetForHtml5.Bridge.TypeForwarding\bin\Debug\CSharpXamlForHtml5.Bridge.TypeForwarding.dll");
-            string typeForwardingAssemblyPathForPackagedVersion = Path.Combine(folderOfThisVeryAssembly, @"CSharpXamlForHtml5.Bridge.TypeForwarding.dll");
-            if (File.Exists(typeForwardingAssemblyPathForDebugging))
-            {
-                _typeForwardingAssembly = Assembly.LoadFrom(typeForwardingAssemblyPathForDebugging);
-            }
-            else
-            {
-                _typeForwardingAssembly = Assembly.LoadFrom(typeForwardingAssemblyPathForPackagedVersion);
-            }
-#endif
             _browserUserDataDir = Path.GetFullPath(NAME_OF_TEMP_CACHE_FOLDER);
             Directory.CreateDirectory(_browserUserDataDir);
 
@@ -160,14 +112,9 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             //{
             //    StorageType = StorageType.DISK //Note: this is needed to remember the cookies
             //};
-            //BrowserContext context = new BrowserContext(parameters);
-            //context.NetworkService.NetworkDelegate = new ResourceInterceptor("http://cshtml5-simulator/");
-            //Browser browser = BrowserFactory.Create(context, BrowserType.LIGHTWEIGHT);
 
-#if OPENSILVER
             CookiesHelper.SetCustomCookies(MainWebBrowser, simulatorLaunchParameters?.CookiesData);
             simulatorLaunchParameters?.BrowserCreatedCallback?.Invoke(MainWebBrowser);
-#endif
 
             //Note: The following line was an attempt to persist the Microsoft login cookies (for use by user applications that required AAD login), but it is no longer necessary because we changed the DotNetBrowser "StorageType" from "MEMORY" to "DISK", so cookies are now automatically persisted.
             //CookiesHelper.LoadMicrosoftCookies(MainWebBrowser, NAME_FOR_STORING_COOKIES);
@@ -177,6 +124,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
 
             if (IS_LICENSE_CHECKER_ENABLED)
             {
+                //ams>evaluate
                 //LicenseChecker = new LicenseChecker();
                 //LicenseCheckerContainer.Child = LicenseChecker;
                 //if (!IsNetworkAvailable())
@@ -204,7 +152,6 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             this.Loaded += MainWindow_Loaded;
             KeyDown += (s, e) => { if (e.Key == Key.F12) MainWebBrowser.CoreWebView2.OpenDevToolsWindow(); };
 
-#if OPENSILVER
             ButtonRunInBrowser.Visibility = Visibility.Collapsed;
             CheckBoxUseHttpLocalhost.Visibility = Visibility.Collapsed;
             ButtonSeeOutputFolder.Visibility = Visibility.Collapsed;
@@ -213,7 +160,6 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             MenuButtonViewCompilationLog.Visibility = Visibility.Collapsed;
             WelcomeTextBlock.Text = "The Simulator below lets you debug in C# using Visual Studio. To view the final web version instead, run the project that ends with .Browser in your solution.";
             WelcomeTextBlock.Visibility = Visibility.Visible;
-#endif
         }
 
         void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
@@ -225,37 +171,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
         private void MainWindow_NetworkAvailabilityChanged(object sender, NetworkAvailabilityEventArgs e)
         {
             // we signal to the license checker that internet availability has changed to avoid the default error 404 page of the browser
+            //ams> ??
             //if (LicenseChecker != null)
             //    LicenseChecker.OnNetworkAvailabilityChanged(e.IsAvailable);
         }
 
-        //void MainWebBrowser_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        //{
-        //    var relativePosition = e.GetPosition(MainWebBrowser);
-        //    Test.Text = relativePosition.X + ", " + relativePosition.Y + " (PreviewMouseDown)";
-        //}
 
-        async Task RepositionHighlightElementIfNecessary()
-        {
-            // Update the position of the highlight rectangle (the element picker) in case that the XAML inspector is open:
-            if (HighlightElement.Visibility == Visibility.Visible && HighlightElement.Tag != null)
-            {
-                if (!_pendingRefreshOfHighlight)
-                {
-                    _pendingRefreshOfHighlight = true;
-                    await Task.Delay(DelayToUpdateThePositionOfTheHighlightAfterResize); // We give some time to the page to redraw based on the new size, so that elements are repositioned.
-
-                    // We need to check again because in the meantime the user could have closed the inspector:
-                    if (HighlightElement.Visibility == Visibility.Visible && HighlightElement.Tag != null)
-                    {
-                        XamlInspectionHelper.HighlightElement(HighlightElement.Tag, HighlightElement, MainWebBrowser);
-                    }
-                    _pendingRefreshOfHighlight = false;
-                }
-            }
-        }
-
-#if OPENSILVER
         Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             string assemblyLocalName = args.Name.IndexOf(',') >= 0 ? args.Name.Substring(0, args.Name.IndexOf(',')) : args.Name;
@@ -319,125 +240,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
                     return null;
             }
         }
-#elif BRIDGE
-        Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            string assemblyLocalName = args.Name.IndexOf(',') >= 0 ? args.Name.Substring(0, args.Name.IndexOf(',')) : args.Name;
 
-            // Note: this corresponds to the assembly produced by the project 
-            // "DotNetForHtml5.Bridge.TypesThatWillBeForwarded"
-            switch (assemblyLocalName.ToLower())
-            {
-                case "bridge":
-                case "cshtml5.stubs":
-                    return _typeForwardingAssembly;
-
-                default:
-                    if (args.RequestingAssembly != null)
-                    {
-                        string assemblyFileName = $"{assemblyLocalName}.dll";
-                        string invariantFullPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(args.RequestingAssembly.Location), assemblyFileName));
-                        string fullPath;
-
-                        if (!File.Exists(invariantFullPath))
-                        {
-                            string cultureName = Thread.CurrentThread.CurrentCulture.Name;
-                            fullPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(args.RequestingAssembly.Location), cultureName, assemblyFileName));
-                        }
-                        else
-                        {
-                            fullPath = invariantFullPath;
-                        }
-
-                        if (File.Exists(fullPath))
-                        {
-                            var assembly = Assembly.LoadFile(fullPath);
-                            return assembly;
-                        }
-                        else
-                            throw new FileNotFoundException($"Assembly {assemblyFileName} not found.\nSearched at:\n{invariantFullPath}\n{fullPath}");
-                    }
-                    return null;
-            }
-        }
-#else // JSIL, Obsolete, remove this
-        Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            string assemblyLocalName = args.Name.IndexOf(',') >= 0 ? args.Name.Substring(0, args.Name.IndexOf(',')) : args.Name;
-
-            switch (assemblyLocalName)
-            {
-                case Constants.NAME_OF_CORE_ASSEMBLY:
-                case Constants.NAME_OF_CORE_ASSEMBLY_SLMIGRATION:
-                    // If specified DLL has absolute path, look in same folder:
-                    string pathOfAssemblyThatContainsEntryPoint;
-                    string candidatePath;
-                    if (ReflectionInUserAssembliesHelper.TryGetPathOfAssemblyThatContainsEntryPoint(out pathOfAssemblyThatContainsEntryPoint))
-                    {
-                        if (pathOfAssemblyThatContainsEntryPoint.Contains("\\"))
-                        {
-                            candidatePath = $"{Path.GetDirectoryName(pathOfAssemblyThatContainsEntryPoint)}\\{assemblyLocalName}.dll";
-                            return Assembly.LoadFile(candidatePath);
-                        }
-                    }
-                    // Otherwise look in current execution folder:
-                    return Assembly.LoadFile($"{assemblyLocalName}.dll");
-
-                case "CSharpXamlForHtml5.System.dll":
-                case "SLMigration.CSharpXamlForHtml5.System.dll":
-                    return Assembly.GetAssembly(typeof(Queue<>)); // Note: Queue<> is defined in System.dll
-
-                case "CSharpXamlForHtml5.System.Xaml.dll":
-                case "SLMigration.CSharpXamlForHtml5.System.Xaml.dll":
-                    return Assembly.GetAssembly(typeof(XamlException)); // Note: XamlException is defined in System.Xaml.dll
-
-                case "CSharpXamlForHtml5.System.Xml.dll":
-                case "SLMigration.CSharpXamlForHtml5.System.Xml.dll":
-                    return Assembly.GetAssembly(typeof(XmlSerializer)); // Note: XmlSerializer is defined in System.Xml.dll
-
-                case "CSharpXamlForHtml5.System.Runtime.Serialization.dll":
-                case "SLMigration.CSharpXamlForHtml5.System.Runtime.Serialization.dll":
-                    return Assembly.GetAssembly(typeof(DataContractAttribute)); // Note: DataContractAttribute is defined in System.Runtime.Serialization.dll
-
-                case "CSharpXamlForHtml5.System.ServiceModel.dll":
-                case "SLMigration.CSharpXamlForHtml5.System.ServiceModel.dll":
-                    return Assembly.GetAssembly(typeof(EndpointAddress)); // Note: EndpointAddress is defined in System.ServiceModel.dll
-                
-                case "CSharpXamlForHtml5.ToBeReplacedAtRuntime.System.ServiceModel.dll":
-                case "SLMigration.CSharpXamlForHtml5.ToBeReplacedAtRuntime.System.ServiceModel.dll":
-                    return Assembly.GetAssembly(typeof(EndpointAddress)); // Note: EndpointAddress is defined in System.ServiceModel.dll
-
-                default:
-                    if (args.RequestingAssembly != null)
-                    {
-                        string assemblyFileName = $"{assemblyLocalName}.dll";
-                        string invariantFullPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(args.RequestingAssembly.Location), assemblyFileName));
-
-                        string fullPath;
-                        if (!File.Exists(invariantFullPath))
-                        {
-                            string cultureName = Thread.CurrentThread.CurrentCulture.Name;
-                            fullPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(args.RequestingAssembly.Location), cultureName, assemblyFileName));
-                        }
-                        else
-                        {
-                            fullPath = invariantFullPath;
-                        }
-
-                        if (File.Exists(fullPath))
-                        {
-                            var assembly = Assembly.LoadFile(fullPath);
-                            return assembly;
-                        }
-                        else
-                        {
-                            throw new FileNotFoundException($"Assembly {assemblyFileName} not found.\nSearched at:\n{invariantFullPath}\n{fullPath}");
-                        }
-                    }
-                    return null;
-            }
-        }
-#endif
 
         #region Events
         async void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -463,8 +266,6 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
         {
             base.OnClosed(e);
 
-            //WebCore.ResourceInterceptor = null;
-
             //Note: The following line was an attempt to persist the Microsoft login cookies (for use by user applications that required AAD login), but it is no longer necessary because we changed the DotNetBrowser "StorageType" from "MEMORY" to "DISK", so cookies are now automatically persisted.
             //CookiesHelper.SaveMicrosoftCookies(MainWebBrowser, NAME_FOR_STORING_COOKIES);
 
@@ -472,6 +273,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript
             MainWebBrowser.Dispose();
             if (IS_LICENSE_CHECKER_ENABLED)
             {
+                //ams>
                 //LicenseChecker.Dispose();
             }
 
@@ -647,14 +449,12 @@ Click OK to continue.";
             CookiesHelper.ClearCookies(MainWebBrowser, NAME_FOR_STORING_COOKIES);
             try
             {
-                if (!string.IsNullOrWhiteSpace(_browserUserDataDir)
-                    && Directory.Exists(_browserUserDataDir))
+                if (!string.IsNullOrWhiteSpace(_browserUserDataDir) && Directory.Exists(_browserUserDataDir))
                 {
-                    MessageBoxResult result
-                        = MessageBox.Show("To fully clear the Simulator cache, please close the Simulator and manually delete the following folder:" + Environment.NewLine + Environment.NewLine + _browserUserDataDir + Environment.NewLine + Environment.NewLine + "Click OK to see this folder in Windows Explorer.", "Confirm?", MessageBoxButton.OKCancel);
+                    MessageBoxResult result = MessageBox.Show("To fully clear the Simulator cache, please close the Simulator and manually delete the following folder:" + Environment.NewLine + Environment.NewLine + _browserUserDataDir + Environment.NewLine + Environment.NewLine + "Click OK to see this folder in Windows Explorer.", "Confirm?", MessageBoxButton.OKCancel);
                     if (result == MessageBoxResult.OK)
                     {
-                        System.Diagnostics.Process.Start(_browserUserDataDir);
+                        Process.Start(_browserUserDataDir);
                     }
                 }
             }
@@ -702,7 +502,7 @@ Click OK to continue.";
 
         void ButtonDebuggingTips_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://cshtml5.com/documentation/tips-for-debugging.aspx");
+            Process.Start("http://cshtml5.com/documentation/tips-for-debugging.aspx");
         }
 
         private void ButtonViewXamlTree_Click(object sender, RoutedEventArgs e)
@@ -715,9 +515,6 @@ Click OK to continue.";
                 ButtonViewXamlTree.Visibility = Visibility.Collapsed;
                 ContainerForXamlInspectorToolbar.Visibility = Visibility.Visible;
                 ButtonHideXamlTree.Visibility = Visibility.Visible;
-
-                // We hide the highlight until an item is selected in the TreeView:
-                HighlightElement.Visibility = Visibility.Collapsed;
 
                 // We activate the element picker by default:
                 StartElementPickerForInspection();
@@ -741,7 +538,6 @@ Click OK to continue.";
             ButtonViewXamlTree.Visibility = Visibility.Visible;
             ContainerForXamlInspectorToolbar.Visibility = Visibility.Collapsed;
             ButtonHideXamlTree.Visibility = Visibility.Collapsed;
-            HighlightElement.Visibility = Visibility.Collapsed;
             XamlPropertiesPaneInstance.Width = 0;
 
             // Reset columns in case they were modified by the GridSplitter:
@@ -828,7 +624,7 @@ Click OK to continue.";
         {
             if ((bool)LogInterop.IsChecked)
             {
-                LogInterop.Content = "Loggin Interops...";
+                LogInterop.Content = "Logging Interops...";
                 _openSilverRuntime.JavaScriptExecutionHandler.ClearInteropLog();
                 _openSilverRuntime.JavaScriptExecutionHandler.StartInteropLogging();
             }
@@ -839,12 +635,10 @@ Click OK to continue.";
             }
         }
 
-
         private void AllowContextMenu_Click(object sender, RoutedEventArgs e)
         {
             MainWebBrowser.AllowDenyContextMenu((bool)AllowContextMenu.IsChecked);
         }
-
 
         private void ViewInteropLog_Click(object sender, RoutedEventArgs e)
         {
@@ -880,7 +674,6 @@ Click OK to continue.";
             _rootPage = new RootPage(_clientAppAssembly);
             _rootPage.Create(_simulatorLaunchParameters);
             MainWebBrowser.Source = new Uri(_rootPage.ToUrl());
-            //MainWebBrowser.CoreWebView2.Navigate($"file:///{_rootPage.ToHtmlPath().Replace('\\', '/')}");
 
             //MainWebBrowser.Browser.LoadHTML(new LoadHTMLParams(simulatorRootHtml, "UTF-8", "http://cshtml5-simulator/" + ARBITRARY_FILE_NAME_WHEN_RUNNING_FROM_SIMULATOR + urlFragment)); // Note: we set the URL so that the simulator browser can find the JS files.
             //Note: (see commit c1f98763) the following line of commented code was in a #else (and the one above in a #if OPENSILVER) to fix an issue in FBC MM2 where Interop calls would return null or undefined when they shouldn't. It is probably a case where we are redirected to another context (for example when signing in a Microsoft account before being brought back).
@@ -994,7 +787,7 @@ Click OK to continue.";
                     Guid keyGuid;
                     DateTime currentVersionReleaseDate = VersionInformation.GetCurrentVersionReleaseDate();
 
-                    if (DotNetForHtml5.ActivationHelpers.IsFeatureEnabled(featureId))
+                    if (OpenSilver.ActivationHelpers.IsFeatureEnabled(featureId))
                     {
 
                         if (Guid.TryParse(RegistryHelpers.GetSetting("Feature_" + featureId, null), out keyGuid))
@@ -1872,9 +1665,6 @@ Click OK to continue.";
 
         void StopElementPickerForInspection()
         {
-            // Hide the area that is used to detect MouseMove:
-            ElementPickerForInspection.Visibility = Visibility.Collapsed;
-
             // Make sure the ToggleButton is in the correct state:
             if (ButtonViewHideElementPickerForInspector.IsChecked == true)
                 ButtonViewHideElementPickerForInspector.IsChecked = false;
@@ -1883,36 +1673,6 @@ Click OK to continue.";
             InformationAboutHowThePickerWorks.Visibility = Visibility.Collapsed;
 
             XamlInspectionHelper.StopInspection();
-        }
-
-        void ElementPickerForInspection_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            // Get the element at the specified position:
-            var element = XamlInspectionHelper.GetVisualElementAtPoint(e.GetPosition(MainWebBrowser));
-
-            // Highlight the element picker (or remove highlight if null):
-            XamlInspectionHelper.HighlightElement(element, ElementPickerHighlight, MainWebBrowser);
-        }
-
-        private void ElementPickerForInspection_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            StopElementPickerForInspection();
-
-            // Get the element at the specified position:
-            var element = XamlInspectionHelper.GetVisualElementAtPoint(e.GetPosition(MainWebBrowser));
-
-            if (element != null)
-            {
-                // Select the TreeNode in the Visual Tree Inspector that corresponds to the specified element:
-                if (!XamlInspectionTree.TrySelectTreeNode(element))
-                {
-                    MessageBox.Show("The selected element was not found in the visual tree. Please make sure that the visual tree is up to date by clicking the 'Refresh' button in the top-right corner of the window, and try again.");
-                }
-            }
-            else
-            {
-                MessageBox.Show("No item was selected by the XAML Visual Tree inspector.");
-            }
         }
 
         private void ButtonViewHideElementPickerForInspector_Click(object sender, RoutedEventArgs e)

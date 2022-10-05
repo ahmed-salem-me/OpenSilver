@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
+namespace OpenSilver.Simulator.LicensingServiceReference {
     using System.Runtime.Serialization;
     using System;
     
@@ -560,7 +560,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ArrayOfString KeyFeaturesField;
+        private OpenSilver.Simulator.LicensingServiceReference.ArrayOfString KeyFeaturesField;
         
         private System.DateTime ValidityLimitField;
         
@@ -575,7 +575,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ArrayOfString KeyFeatures {
+        public OpenSilver.Simulator.LicensingServiceReference.ArrayOfString KeyFeatures {
             get {
                 return this.KeyFeaturesField;
             }
@@ -619,7 +619,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
-        private DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.KeyState StateField;
+        private OpenSilver.Simulator.LicensingServiceReference.KeyState StateField;
         
         private System.DateTime ValidityLimitField;
         
@@ -637,7 +637,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.KeyState State {
+        public OpenSilver.Simulator.LicensingServiceReference.KeyState State {
             get {
                 return this.StateField;
             }
@@ -875,157 +875,157 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
         
         // CODEGEN: Generating message contract since element name username from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/LogIn", ReplyAction="http://tempuri.org/ILicensingService/LogInResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInResponse LogIn(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.LogInResponse LogIn(OpenSilver.Simulator.LicensingServiceReference.LogInRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/LogIn", ReplyAction="http://tempuri.org/ILicensingService/LogInResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInResponse> LogInAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.LogInResponse> LogInAsync(OpenSilver.Simulator.LicensingServiceReference.LogInRequest request);
         
         // CODEGEN: Generating message contract since element name sessionGuid from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/LogOut", ReplyAction="http://tempuri.org/ILicensingService/LogOutResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutResponse LogOut(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.LogOutResponse LogOut(OpenSilver.Simulator.LicensingServiceReference.LogOutRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/LogOut", ReplyAction="http://tempuri.org/ILicensingService/LogOutResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutResponse> LogOutAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.LogOutResponse> LogOutAsync(OpenSilver.Simulator.LicensingServiceReference.LogOutRequest request);
         
         // CODEGEN: Generating message contract since element name sessionGuid from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/GetCurrentUserInformation", ReplyAction="http://tempuri.org/ILicensingService/GetCurrentUserInformationResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationResponse GetCurrentUserInformation(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationResponse GetCurrentUserInformation(OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/GetCurrentUserInformation", ReplyAction="http://tempuri.org/ILicensingService/GetCurrentUserInformationResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationResponse> GetCurrentUserInformationAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationResponse> GetCurrentUserInformationAsync(OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationRequest request);
         
         // CODEGEN: Generating message contract since element name user from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/ModifyCurrentUserInformation", ReplyAction="http://tempuri.org/ILicensingService/ModifyCurrentUserInformationResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationResponse ModifyCurrentUserInformation(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationResponse ModifyCurrentUserInformation(OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/ModifyCurrentUserInformation", ReplyAction="http://tempuri.org/ILicensingService/ModifyCurrentUserInformationResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationResponse> ModifyCurrentUserInformationAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationResponse> ModifyCurrentUserInformationAsync(OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationRequest request);
         
         // CODEGEN: Generating message contract since element name oldPassword from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/ChangePassword", ReplyAction="http://tempuri.org/ILicensingService/ChangePasswordResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordResponse ChangePassword(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.ChangePasswordResponse ChangePassword(OpenSilver.Simulator.LicensingServiceReference.ChangePasswordRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/ChangePassword", ReplyAction="http://tempuri.org/ILicensingService/ChangePasswordResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordResponse> ChangePasswordAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.ChangePasswordResponse> ChangePasswordAsync(OpenSilver.Simulator.LicensingServiceReference.ChangePasswordRequest request);
         
         // CODEGEN: Generating message contract since element name sessionGuid from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/GetKeys", ReplyAction="http://tempuri.org/ILicensingService/GetKeysResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysResponse GetKeys(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.GetKeysResponse GetKeys(OpenSilver.Simulator.LicensingServiceReference.GetKeysRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/GetKeys", ReplyAction="http://tempuri.org/ILicensingService/GetKeysResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysResponse> GetKeysAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.GetKeysResponse> GetKeysAsync(OpenSilver.Simulator.LicensingServiceReference.GetKeysRequest request);
         
         // CODEGEN: Generating message contract since element name keyID from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/DeactivateKey", ReplyAction="http://tempuri.org/ILicensingService/DeactivateKeyResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyResponse DeactivateKey(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyResponse DeactivateKey(OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/DeactivateKey", ReplyAction="http://tempuri.org/ILicensingService/DeactivateKeyResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyResponse> DeactivateKeyAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyResponse> DeactivateKeyAsync(OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyRequest request);
         
         // CODEGEN: Generating message contract since element name keyGuid from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/ActivateKey", ReplyAction="http://tempuri.org/ILicensingService/ActivateKeyResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyResponse ActivateKey(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.ActivateKeyResponse ActivateKey(OpenSilver.Simulator.LicensingServiceReference.ActivateKeyRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/ActivateKey", ReplyAction="http://tempuri.org/ILicensingService/ActivateKeyResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyResponse> ActivateKeyAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.ActivateKeyResponse> ActivateKeyAsync(OpenSilver.Simulator.LicensingServiceReference.ActivateKeyRequest request);
         
         // CODEGEN: Generating message contract since element name keyGuid from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/ActivateKey_V2", ReplyAction="http://tempuri.org/ILicensingService/ActivateKey_V2Response")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2Response ActivateKey_V2(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2Request request);
+        OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2Response ActivateKey_V2(OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2Request request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/ActivateKey_V2", ReplyAction="http://tempuri.org/ILicensingService/ActivateKey_V2Response")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2Response> ActivateKey_V2Async(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2Request request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2Response> ActivateKey_V2Async(OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2Request request);
         
         // CODEGEN: Generating message contract since element name computerName from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/CheckLicenseValidity", ReplyAction="http://tempuri.org/ILicensingService/CheckLicenseValidityResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityResponse CheckLicenseValidity(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityResponse CheckLicenseValidity(OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/CheckLicenseValidity", ReplyAction="http://tempuri.org/ILicensingService/CheckLicenseValidityResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityResponse> CheckLicenseValidityAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityResponse> CheckLicenseValidityAsync(OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityRequest request);
         
         // CODEGEN: Generating message contract since element name sessionGuid from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/GetTransactions", ReplyAction="http://tempuri.org/ILicensingService/GetTransactionsResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsResponse GetTransactions(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.GetTransactionsResponse GetTransactions(OpenSilver.Simulator.LicensingServiceReference.GetTransactionsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/GetTransactions", ReplyAction="http://tempuri.org/ILicensingService/GetTransactionsResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsResponse> GetTransactionsAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.GetTransactionsResponse> GetTransactionsAsync(OpenSilver.Simulator.LicensingServiceReference.GetTransactionsRequest request);
         
         // CODEGEN: Generating message contract since element name email from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/HandlePasswordForgotten", ReplyAction="http://tempuri.org/ILicensingService/HandlePasswordForgottenResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenResponse HandlePasswordForgotten(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenResponse HandlePasswordForgotten(OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/HandlePasswordForgotten", ReplyAction="http://tempuri.org/ILicensingService/HandlePasswordForgottenResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenResponse> HandlePasswordForgottenAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenResponse> HandlePasswordForgottenAsync(OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenRequest request);
         
         // CODEGEN: Generating message contract since element name sessionGuid from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminGetListOfUsers", ReplyAction="http://tempuri.org/ILicensingService/AdminGetListOfUsersResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersResponse AdminGetListOfUsers(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersResponse AdminGetListOfUsers(OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminGetListOfUsers", ReplyAction="http://tempuri.org/ILicensingService/AdminGetListOfUsersResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersResponse> AdminGetListOfUsersAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersResponse> AdminGetListOfUsersAsync(OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersRequest request);
         
         // CODEGEN: Generating message contract since element name sessionGuid from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminUpdatePassword", ReplyAction="http://tempuri.org/ILicensingService/AdminUpdatePasswordResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordResponse AdminUpdatePassword(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordResponse AdminUpdatePassword(OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminUpdatePassword", ReplyAction="http://tempuri.org/ILicensingService/AdminUpdatePasswordResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordResponse> AdminUpdatePasswordAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordResponse> AdminUpdatePasswordAsync(OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordRequest request);
         
         // CODEGEN: Generating message contract since element name sessionGuid from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminEditUser", ReplyAction="http://tempuri.org/ILicensingService/AdminEditUserResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserResponse AdminEditUser(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.AdminEditUserResponse AdminEditUser(OpenSilver.Simulator.LicensingServiceReference.AdminEditUserRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminEditUser", ReplyAction="http://tempuri.org/ILicensingService/AdminEditUserResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserResponse> AdminEditUserAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminEditUserResponse> AdminEditUserAsync(OpenSilver.Simulator.LicensingServiceReference.AdminEditUserRequest request);
         
         // CODEGEN: Generating message contract since element name sessionGuid from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminCreateUser", ReplyAction="http://tempuri.org/ILicensingService/AdminCreateUserResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserResponse AdminCreateUser(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserResponse AdminCreateUser(OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminCreateUser", ReplyAction="http://tempuri.org/ILicensingService/AdminCreateUserResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserResponse> AdminCreateUserAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserResponse> AdminCreateUserAsync(OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserRequest request);
         
         // CODEGEN: Generating message contract since element name sessionGuid from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminGetKeys", ReplyAction="http://tempuri.org/ILicensingService/AdminGetKeysResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysResponse AdminGetKeys(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysResponse AdminGetKeys(OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminGetKeys", ReplyAction="http://tempuri.org/ILicensingService/AdminGetKeysResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysResponse> AdminGetKeysAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysResponse> AdminGetKeysAsync(OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysRequest request);
         
         // CODEGEN: Generating message contract since element name sessionGuid from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminGetTransactions", ReplyAction="http://tempuri.org/ILicensingService/AdminGetTransactionsResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsResponse AdminGetTransactions(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsResponse AdminGetTransactions(OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminGetTransactions", ReplyAction="http://tempuri.org/ILicensingService/AdminGetTransactionsResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsResponse> AdminGetTransactionsAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsResponse> AdminGetTransactionsAsync(OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsRequest request);
         
         // CODEGEN: Generating message contract since element name sessionGuid from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminDeactivateKey", ReplyAction="http://tempuri.org/ILicensingService/AdminDeactivateKeyResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyResponse AdminDeactivateKey(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyResponse AdminDeactivateKey(OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminDeactivateKey", ReplyAction="http://tempuri.org/ILicensingService/AdminDeactivateKeyResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyResponse> AdminDeactivateKeyAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyResponse> AdminDeactivateKeyAsync(OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyRequest request);
         
         // CODEGEN: Generating message contract since element name sessionGuid from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminCreateKey", ReplyAction="http://tempuri.org/ILicensingService/AdminCreateKeyResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyResponse AdminCreateKey(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyResponse AdminCreateKey(OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminCreateKey", ReplyAction="http://tempuri.org/ILicensingService/AdminCreateKeyResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyResponse> AdminCreateKeyAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyResponse> AdminCreateKeyAsync(OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyRequest request);
         
         // CODEGEN: Generating message contract since element name sessionGuid from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminEditKey", ReplyAction="http://tempuri.org/ILicensingService/AdminEditKeyResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyResponse AdminEditKey(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyResponse AdminEditKey(OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminEditKey", ReplyAction="http://tempuri.org/ILicensingService/AdminEditKeyResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyResponse> AdminEditKeyAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyResponse> AdminEditKeyAsync(OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyRequest request);
         
         // CODEGEN: Generating message contract since element name sessionGuid from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminGetActivityLogs", ReplyAction="http://tempuri.org/ILicensingService/AdminGetActivityLogsResponse")]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsResponse AdminGetActivityLogs(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsRequest request);
+        OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsResponse AdminGetActivityLogs(OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILicensingService/AdminGetActivityLogs", ReplyAction="http://tempuri.org/ILicensingService/AdminGetActivityLogsResponse")]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsResponse> AdminGetActivityLogsAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsRequest request);
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsResponse> AdminGetActivityLogsAsync(OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -1035,12 +1035,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class LogInRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="LogIn", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.LogInRequestBody Body;
         
         public LogInRequest() {
         }
         
-        public LogInRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInRequestBody Body) {
+        public LogInRequest(OpenSilver.Simulator.LicensingServiceReference.LogInRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -1073,12 +1073,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class LogInResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="LogInResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.LogInResponseBody Body;
         
         public LogInResponse() {
         }
         
-        public LogInResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInResponseBody Body) {
+        public LogInResponse(OpenSilver.Simulator.LicensingServiceReference.LogInResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -1107,12 +1107,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class LogOutRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="LogOut", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.LogOutRequestBody Body;
         
         public LogOutRequest() {
         }
         
-        public LogOutRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutRequestBody Body) {
+        public LogOutRequest(OpenSilver.Simulator.LicensingServiceReference.LogOutRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -1141,12 +1141,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class LogOutResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="LogOutResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.LogOutResponseBody Body;
         
         public LogOutResponse() {
         }
         
-        public LogOutResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutResponseBody Body) {
+        public LogOutResponse(OpenSilver.Simulator.LicensingServiceReference.LogOutResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -1168,12 +1168,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class GetCurrentUserInformationRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetCurrentUserInformation", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationRequestBody Body;
         
         public GetCurrentUserInformationRequest() {
         }
         
-        public GetCurrentUserInformationRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationRequestBody Body) {
+        public GetCurrentUserInformationRequest(OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -1202,12 +1202,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class GetCurrentUserInformationResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetCurrentUserInformationResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationResponseBody Body;
         
         public GetCurrentUserInformationResponse() {
         }
         
-        public GetCurrentUserInformationResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationResponseBody Body) {
+        public GetCurrentUserInformationResponse(OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -1219,12 +1219,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class GetCurrentUserInformationResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User GetCurrentUserInformationResult;
+        public OpenSilver.Simulator.LicensingServiceReference.User GetCurrentUserInformationResult;
         
         public GetCurrentUserInformationResponseBody() {
         }
         
-        public GetCurrentUserInformationResponseBody(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User GetCurrentUserInformationResult) {
+        public GetCurrentUserInformationResponseBody(OpenSilver.Simulator.LicensingServiceReference.User GetCurrentUserInformationResult) {
             this.GetCurrentUserInformationResult = GetCurrentUserInformationResult;
         }
     }
@@ -1236,12 +1236,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class ModifyCurrentUserInformationRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="ModifyCurrentUserInformation", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationRequestBody Body;
         
         public ModifyCurrentUserInformationRequest() {
         }
         
-        public ModifyCurrentUserInformationRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationRequestBody Body) {
+        public ModifyCurrentUserInformationRequest(OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -1253,7 +1253,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class ModifyCurrentUserInformationRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user;
+        public OpenSilver.Simulator.LicensingServiceReference.User user;
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
         public string sessionGuid;
@@ -1261,7 +1261,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
         public ModifyCurrentUserInformationRequestBody() {
         }
         
-        public ModifyCurrentUserInformationRequestBody(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user, string sessionGuid) {
+        public ModifyCurrentUserInformationRequestBody(OpenSilver.Simulator.LicensingServiceReference.User user, string sessionGuid) {
             this.user = user;
             this.sessionGuid = sessionGuid;
         }
@@ -1274,12 +1274,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class ModifyCurrentUserInformationResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="ModifyCurrentUserInformationResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationResponseBody Body;
         
         public ModifyCurrentUserInformationResponse() {
         }
         
-        public ModifyCurrentUserInformationResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationResponseBody Body) {
+        public ModifyCurrentUserInformationResponse(OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -1301,12 +1301,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class ChangePasswordRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="ChangePassword", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.ChangePasswordRequestBody Body;
         
         public ChangePasswordRequest() {
         }
         
-        public ChangePasswordRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordRequestBody Body) {
+        public ChangePasswordRequest(OpenSilver.Simulator.LicensingServiceReference.ChangePasswordRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -1343,12 +1343,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class ChangePasswordResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="ChangePasswordResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.ChangePasswordResponseBody Body;
         
         public ChangePasswordResponse() {
         }
         
-        public ChangePasswordResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordResponseBody Body) {
+        public ChangePasswordResponse(OpenSilver.Simulator.LicensingServiceReference.ChangePasswordResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -1370,12 +1370,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class GetKeysRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetKeys", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.GetKeysRequestBody Body;
         
         public GetKeysRequest() {
         }
         
-        public GetKeysRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysRequestBody Body) {
+        public GetKeysRequest(OpenSilver.Simulator.LicensingServiceReference.GetKeysRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -1404,12 +1404,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class GetKeysResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetKeysResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.GetKeysResponseBody Body;
         
         public GetKeysResponse() {
         }
         
-        public GetKeysResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysResponseBody Body) {
+        public GetKeysResponse(OpenSilver.Simulator.LicensingServiceReference.GetKeysResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -1421,12 +1421,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class GetKeysResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey[] GetKeysResult;
+        public OpenSilver.Simulator.LicensingServiceReference.LicenseKey[] GetKeysResult;
         
         public GetKeysResponseBody() {
         }
         
-        public GetKeysResponseBody(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey[] GetKeysResult) {
+        public GetKeysResponseBody(OpenSilver.Simulator.LicensingServiceReference.LicenseKey[] GetKeysResult) {
             this.GetKeysResult = GetKeysResult;
         }
     }
@@ -1438,12 +1438,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class DeactivateKeyRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="DeactivateKey", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyRequestBody Body;
         
         public DeactivateKeyRequest() {
         }
         
-        public DeactivateKeyRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyRequestBody Body) {
+        public DeactivateKeyRequest(OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -1472,12 +1472,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class DeactivateKeyResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="DeactivateKeyResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyResponseBody Body;
         
         public DeactivateKeyResponse() {
         }
         
-        public DeactivateKeyResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyResponseBody Body) {
+        public DeactivateKeyResponse(OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -1506,12 +1506,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class ActivateKeyRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="ActivateKey", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.ActivateKeyRequestBody Body;
         
         public ActivateKeyRequest() {
         }
         
-        public ActivateKeyRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyRequestBody Body) {
+        public ActivateKeyRequest(OpenSilver.Simulator.LicensingServiceReference.ActivateKeyRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -1552,12 +1552,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class ActivateKeyResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="ActivateKeyResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.ActivateKeyResponseBody Body;
         
         public ActivateKeyResponse() {
         }
         
-        public ActivateKeyResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyResponseBody Body) {
+        public ActivateKeyResponse(OpenSilver.Simulator.LicensingServiceReference.ActivateKeyResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -1569,12 +1569,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class ActivateKeyResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ArrayOfString ActivateKeyResult;
+        public OpenSilver.Simulator.LicensingServiceReference.ArrayOfString ActivateKeyResult;
         
         public ActivateKeyResponseBody() {
         }
         
-        public ActivateKeyResponseBody(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ArrayOfString ActivateKeyResult) {
+        public ActivateKeyResponseBody(OpenSilver.Simulator.LicensingServiceReference.ArrayOfString ActivateKeyResult) {
             this.ActivateKeyResult = ActivateKeyResult;
         }
     }
@@ -1586,12 +1586,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class ActivateKey_V2Request {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="ActivateKey_V2", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2RequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2RequestBody Body;
         
         public ActivateKey_V2Request() {
         }
         
-        public ActivateKey_V2Request(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2RequestBody Body) {
+        public ActivateKey_V2Request(OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2RequestBody Body) {
             this.Body = Body;
         }
     }
@@ -1632,12 +1632,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class ActivateKey_V2Response {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="ActivateKey_V2Response", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2ResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2ResponseBody Body;
         
         public ActivateKey_V2Response() {
         }
         
-        public ActivateKey_V2Response(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2ResponseBody Body) {
+        public ActivateKey_V2Response(OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2ResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -1649,12 +1649,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class ActivateKey_V2ResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.KeyActivationResult ActivateKey_V2Result;
+        public OpenSilver.Simulator.LicensingServiceReference.KeyActivationResult ActivateKey_V2Result;
         
         public ActivateKey_V2ResponseBody() {
         }
         
-        public ActivateKey_V2ResponseBody(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.KeyActivationResult ActivateKey_V2Result) {
+        public ActivateKey_V2ResponseBody(OpenSilver.Simulator.LicensingServiceReference.KeyActivationResult ActivateKey_V2Result) {
             this.ActivateKey_V2Result = ActivateKey_V2Result;
         }
     }
@@ -1666,12 +1666,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class CheckLicenseValidityRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="CheckLicenseValidity", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityRequestBody Body;
         
         public CheckLicenseValidityRequest() {
         }
         
-        public CheckLicenseValidityRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityRequestBody Body) {
+        public CheckLicenseValidityRequest(OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -1708,12 +1708,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class CheckLicenseValidityResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="CheckLicenseValidityResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityResponseBody Body;
         
         public CheckLicenseValidityResponse() {
         }
         
-        public CheckLicenseValidityResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityResponseBody Body) {
+        public CheckLicenseValidityResponse(OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -1725,12 +1725,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class CheckLicenseValidityResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.KeyValidity CheckLicenseValidityResult;
+        public OpenSilver.Simulator.LicensingServiceReference.KeyValidity CheckLicenseValidityResult;
         
         public CheckLicenseValidityResponseBody() {
         }
         
-        public CheckLicenseValidityResponseBody(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.KeyValidity CheckLicenseValidityResult) {
+        public CheckLicenseValidityResponseBody(OpenSilver.Simulator.LicensingServiceReference.KeyValidity CheckLicenseValidityResult) {
             this.CheckLicenseValidityResult = CheckLicenseValidityResult;
         }
     }
@@ -1742,12 +1742,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class GetTransactionsRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetTransactions", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.GetTransactionsRequestBody Body;
         
         public GetTransactionsRequest() {
         }
         
-        public GetTransactionsRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsRequestBody Body) {
+        public GetTransactionsRequest(OpenSilver.Simulator.LicensingServiceReference.GetTransactionsRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -1776,12 +1776,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class GetTransactionsResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetTransactionsResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.GetTransactionsResponseBody Body;
         
         public GetTransactionsResponse() {
         }
         
-        public GetTransactionsResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsResponseBody Body) {
+        public GetTransactionsResponse(OpenSilver.Simulator.LicensingServiceReference.GetTransactionsResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -1793,12 +1793,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class GetTransactionsResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.Transaction[] GetTransactionsResult;
+        public OpenSilver.Simulator.LicensingServiceReference.Transaction[] GetTransactionsResult;
         
         public GetTransactionsResponseBody() {
         }
         
-        public GetTransactionsResponseBody(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.Transaction[] GetTransactionsResult) {
+        public GetTransactionsResponseBody(OpenSilver.Simulator.LicensingServiceReference.Transaction[] GetTransactionsResult) {
             this.GetTransactionsResult = GetTransactionsResult;
         }
     }
@@ -1810,12 +1810,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class HandlePasswordForgottenRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="HandlePasswordForgotten", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenRequestBody Body;
         
         public HandlePasswordForgottenRequest() {
         }
         
-        public HandlePasswordForgottenRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenRequestBody Body) {
+        public HandlePasswordForgottenRequest(OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -1844,12 +1844,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class HandlePasswordForgottenResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="HandlePasswordForgottenResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenResponseBody Body;
         
         public HandlePasswordForgottenResponse() {
         }
         
-        public HandlePasswordForgottenResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenResponseBody Body) {
+        public HandlePasswordForgottenResponse(OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -1871,12 +1871,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminGetListOfUsersRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminGetListOfUsers", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersRequestBody Body;
         
         public AdminGetListOfUsersRequest() {
         }
         
-        public AdminGetListOfUsersRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersRequestBody Body) {
+        public AdminGetListOfUsersRequest(OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -1905,12 +1905,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminGetListOfUsersResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminGetListOfUsersResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersResponseBody Body;
         
         public AdminGetListOfUsersResponse() {
         }
         
-        public AdminGetListOfUsersResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersResponseBody Body) {
+        public AdminGetListOfUsersResponse(OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -1922,12 +1922,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminGetListOfUsersResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User[] AdminGetListOfUsersResult;
+        public OpenSilver.Simulator.LicensingServiceReference.User[] AdminGetListOfUsersResult;
         
         public AdminGetListOfUsersResponseBody() {
         }
         
-        public AdminGetListOfUsersResponseBody(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User[] AdminGetListOfUsersResult) {
+        public AdminGetListOfUsersResponseBody(OpenSilver.Simulator.LicensingServiceReference.User[] AdminGetListOfUsersResult) {
             this.AdminGetListOfUsersResult = AdminGetListOfUsersResult;
         }
     }
@@ -1939,12 +1939,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminUpdatePasswordRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminUpdatePassword", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordRequestBody Body;
         
         public AdminUpdatePasswordRequest() {
         }
         
-        public AdminUpdatePasswordRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordRequestBody Body) {
+        public AdminUpdatePasswordRequest(OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -1981,12 +1981,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminUpdatePasswordResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminUpdatePasswordResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordResponseBody Body;
         
         public AdminUpdatePasswordResponse() {
         }
         
-        public AdminUpdatePasswordResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordResponseBody Body) {
+        public AdminUpdatePasswordResponse(OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -2015,12 +2015,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminEditUserRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminEditUser", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminEditUserRequestBody Body;
         
         public AdminEditUserRequest() {
         }
         
-        public AdminEditUserRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserRequestBody Body) {
+        public AdminEditUserRequest(OpenSilver.Simulator.LicensingServiceReference.AdminEditUserRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -2038,12 +2038,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
         public string formerEmailAddress;
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user;
+        public OpenSilver.Simulator.LicensingServiceReference.User user;
         
         public AdminEditUserRequestBody() {
         }
         
-        public AdminEditUserRequestBody(string sessionGuid, string formerEmailAddress, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user) {
+        public AdminEditUserRequestBody(string sessionGuid, string formerEmailAddress, OpenSilver.Simulator.LicensingServiceReference.User user) {
             this.sessionGuid = sessionGuid;
             this.formerEmailAddress = formerEmailAddress;
             this.user = user;
@@ -2057,12 +2057,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminEditUserResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminEditUserResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminEditUserResponseBody Body;
         
         public AdminEditUserResponse() {
         }
         
-        public AdminEditUserResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserResponseBody Body) {
+        public AdminEditUserResponse(OpenSilver.Simulator.LicensingServiceReference.AdminEditUserResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -2091,12 +2091,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminCreateUserRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminCreateUser", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserRequestBody Body;
         
         public AdminCreateUserRequest() {
         }
         
-        public AdminCreateUserRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserRequestBody Body) {
+        public AdminCreateUserRequest(OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -2111,12 +2111,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
         public string sessionGuid;
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user;
+        public OpenSilver.Simulator.LicensingServiceReference.User user;
         
         public AdminCreateUserRequestBody() {
         }
         
-        public AdminCreateUserRequestBody(string sessionGuid, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user) {
+        public AdminCreateUserRequestBody(string sessionGuid, OpenSilver.Simulator.LicensingServiceReference.User user) {
             this.sessionGuid = sessionGuid;
             this.user = user;
         }
@@ -2129,12 +2129,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminCreateUserResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminCreateUserResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserResponseBody Body;
         
         public AdminCreateUserResponse() {
         }
         
-        public AdminCreateUserResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserResponseBody Body) {
+        public AdminCreateUserResponse(OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -2163,12 +2163,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminGetKeysRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminGetKeys", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysRequestBody Body;
         
         public AdminGetKeysRequest() {
         }
         
-        public AdminGetKeysRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysRequestBody Body) {
+        public AdminGetKeysRequest(OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -2201,12 +2201,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminGetKeysResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminGetKeysResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysResponseBody Body;
         
         public AdminGetKeysResponse() {
         }
         
-        public AdminGetKeysResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysResponseBody Body) {
+        public AdminGetKeysResponse(OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -2218,12 +2218,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminGetKeysResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey[] AdminGetKeysResult;
+        public OpenSilver.Simulator.LicensingServiceReference.LicenseKey[] AdminGetKeysResult;
         
         public AdminGetKeysResponseBody() {
         }
         
-        public AdminGetKeysResponseBody(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey[] AdminGetKeysResult) {
+        public AdminGetKeysResponseBody(OpenSilver.Simulator.LicensingServiceReference.LicenseKey[] AdminGetKeysResult) {
             this.AdminGetKeysResult = AdminGetKeysResult;
         }
     }
@@ -2235,12 +2235,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminGetTransactionsRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminGetTransactions", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsRequestBody Body;
         
         public AdminGetTransactionsRequest() {
         }
         
-        public AdminGetTransactionsRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsRequestBody Body) {
+        public AdminGetTransactionsRequest(OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -2273,12 +2273,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminGetTransactionsResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminGetTransactionsResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsResponseBody Body;
         
         public AdminGetTransactionsResponse() {
         }
         
-        public AdminGetTransactionsResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsResponseBody Body) {
+        public AdminGetTransactionsResponse(OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -2290,12 +2290,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminGetTransactionsResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.Transaction[] AdminGetTransactionsResult;
+        public OpenSilver.Simulator.LicensingServiceReference.Transaction[] AdminGetTransactionsResult;
         
         public AdminGetTransactionsResponseBody() {
         }
         
-        public AdminGetTransactionsResponseBody(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.Transaction[] AdminGetTransactionsResult) {
+        public AdminGetTransactionsResponseBody(OpenSilver.Simulator.LicensingServiceReference.Transaction[] AdminGetTransactionsResult) {
             this.AdminGetTransactionsResult = AdminGetTransactionsResult;
         }
     }
@@ -2307,12 +2307,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminDeactivateKeyRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminDeactivateKey", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyRequestBody Body;
         
         public AdminDeactivateKeyRequest() {
         }
         
-        public AdminDeactivateKeyRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyRequestBody Body) {
+        public AdminDeactivateKeyRequest(OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -2327,7 +2327,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
         public string sessionGuid;
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey key;
+        public OpenSilver.Simulator.LicensingServiceReference.LicenseKey key;
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
         public string userEmail;
@@ -2335,7 +2335,7 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
         public AdminDeactivateKeyRequestBody() {
         }
         
-        public AdminDeactivateKeyRequestBody(string sessionGuid, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey key, string userEmail) {
+        public AdminDeactivateKeyRequestBody(string sessionGuid, OpenSilver.Simulator.LicensingServiceReference.LicenseKey key, string userEmail) {
             this.sessionGuid = sessionGuid;
             this.key = key;
             this.userEmail = userEmail;
@@ -2349,12 +2349,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminDeactivateKeyResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminDeactivateKeyResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyResponseBody Body;
         
         public AdminDeactivateKeyResponse() {
         }
         
-        public AdminDeactivateKeyResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyResponseBody Body) {
+        public AdminDeactivateKeyResponse(OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -2383,12 +2383,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminCreateKeyRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminCreateKey", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyRequestBody Body;
         
         public AdminCreateKeyRequest() {
         }
         
-        public AdminCreateKeyRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyRequestBody Body) {
+        public AdminCreateKeyRequest(OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -2403,15 +2403,15 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
         public string sessionGuid;
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user;
+        public OpenSilver.Simulator.LicensingServiceReference.User user;
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey key;
+        public OpenSilver.Simulator.LicensingServiceReference.LicenseKey key;
         
         public AdminCreateKeyRequestBody() {
         }
         
-        public AdminCreateKeyRequestBody(string sessionGuid, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey key) {
+        public AdminCreateKeyRequestBody(string sessionGuid, OpenSilver.Simulator.LicensingServiceReference.User user, OpenSilver.Simulator.LicensingServiceReference.LicenseKey key) {
             this.sessionGuid = sessionGuid;
             this.user = user;
             this.key = key;
@@ -2425,12 +2425,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminCreateKeyResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminCreateKeyResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyResponseBody Body;
         
         public AdminCreateKeyResponse() {
         }
         
-        public AdminCreateKeyResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyResponseBody Body) {
+        public AdminCreateKeyResponse(OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -2459,12 +2459,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminEditKeyRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminEditKey", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyRequestBody Body;
         
         public AdminEditKeyRequest() {
         }
         
-        public AdminEditKeyRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyRequestBody Body) {
+        public AdminEditKeyRequest(OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -2482,15 +2482,15 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
         public string formerKey;
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user;
+        public OpenSilver.Simulator.LicensingServiceReference.User user;
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey key;
+        public OpenSilver.Simulator.LicensingServiceReference.LicenseKey key;
         
         public AdminEditKeyRequestBody() {
         }
         
-        public AdminEditKeyRequestBody(string sessionGuid, string formerKey, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey key) {
+        public AdminEditKeyRequestBody(string sessionGuid, string formerKey, OpenSilver.Simulator.LicensingServiceReference.User user, OpenSilver.Simulator.LicensingServiceReference.LicenseKey key) {
             this.sessionGuid = sessionGuid;
             this.formerKey = formerKey;
             this.user = user;
@@ -2505,12 +2505,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminEditKeyResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminEditKeyResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyResponseBody Body;
         
         public AdminEditKeyResponse() {
         }
         
-        public AdminEditKeyResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyResponseBody Body) {
+        public AdminEditKeyResponse(OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -2539,12 +2539,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminGetActivityLogsRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminGetActivityLogs", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsRequestBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsRequestBody Body;
         
         public AdminGetActivityLogsRequest() {
         }
         
-        public AdminGetActivityLogsRequest(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsRequestBody Body) {
+        public AdminGetActivityLogsRequest(OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -2573,12 +2573,12 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminGetActivityLogsResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AdminGetActivityLogsResponse", Namespace="http://tempuri.org/", Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsResponseBody Body;
+        public OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsResponseBody Body;
         
         public AdminGetActivityLogsResponse() {
         }
         
-        public AdminGetActivityLogsResponse(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsResponseBody Body) {
+        public AdminGetActivityLogsResponse(OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -2590,23 +2590,23 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
     public partial class AdminGetActivityLogsResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivityLog[] AdminGetActivityLogsResult;
+        public OpenSilver.Simulator.LicensingServiceReference.ActivityLog[] AdminGetActivityLogsResult;
         
         public AdminGetActivityLogsResponseBody() {
         }
         
-        public AdminGetActivityLogsResponseBody(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivityLog[] AdminGetActivityLogsResult) {
+        public AdminGetActivityLogsResponseBody(OpenSilver.Simulator.LicensingServiceReference.ActivityLog[] AdminGetActivityLogsResult) {
             this.AdminGetActivityLogsResult = AdminGetActivityLogsResult;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface ILicensingServiceChannel : DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService, System.ServiceModel.IClientChannel {
+    public interface ILicensingServiceChannel : OpenSilver.Simulator.LicensingServiceReference.ILicensingService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class LicensingServiceClient : System.ServiceModel.ClientBase<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService>, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService {
+    public partial class LicensingServiceClient : System.ServiceModel.ClientBase<OpenSilver.Simulator.LicensingServiceReference.ILicensingService>, OpenSilver.Simulator.LicensingServiceReference.ILicensingService {
         
         public LicensingServiceClient() {
         }
@@ -2628,601 +2628,601 @@ namespace DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.LogIn(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.LogInResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.LogIn(OpenSilver.Simulator.LicensingServiceReference.LogInRequest request) {
             return base.Channel.LogIn(request);
         }
         
         public string LogIn(string username, string password) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInRequestBody();
+            OpenSilver.Simulator.LicensingServiceReference.LogInRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.LogInRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.LogInRequestBody();
             inValue.Body.username = username;
             inValue.Body.password = password;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).LogIn(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.LogInResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).LogIn(inValue);
             return retVal.Body.LogInResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.LogInAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.LogInResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.LogInAsync(OpenSilver.Simulator.LicensingServiceReference.LogInRequest request) {
             return base.Channel.LogInAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInResponse> LogInAsync(string username, string password) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.LogInResponse> LogInAsync(string username, string password) {
+            OpenSilver.Simulator.LicensingServiceReference.LogInRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.LogInRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.LogInRequestBody();
             inValue.Body.username = username;
             inValue.Body.password = password;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).LogInAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).LogInAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.LogOut(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.LogOutResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.LogOut(OpenSilver.Simulator.LicensingServiceReference.LogOutRequest request) {
             return base.Channel.LogOut(request);
         }
         
         public void LogOut(string sessionGuid) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutRequestBody();
+            OpenSilver.Simulator.LicensingServiceReference.LogOutRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.LogOutRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.LogOutRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).LogOut(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.LogOutResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).LogOut(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.LogOutAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.LogOutResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.LogOutAsync(OpenSilver.Simulator.LicensingServiceReference.LogOutRequest request) {
             return base.Channel.LogOutAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutResponse> LogOutAsync(string sessionGuid) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.LogOutResponse> LogOutAsync(string sessionGuid) {
+            OpenSilver.Simulator.LicensingServiceReference.LogOutRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.LogOutRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.LogOutRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).LogOutAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).LogOutAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.GetCurrentUserInformation(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.GetCurrentUserInformation(OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationRequest request) {
             return base.Channel.GetCurrentUserInformation(request);
         }
         
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User GetCurrentUserInformation(string sessionGuid) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationRequestBody();
+        public OpenSilver.Simulator.LicensingServiceReference.User GetCurrentUserInformation(string sessionGuid) {
+            OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).GetCurrentUserInformation(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).GetCurrentUserInformation(inValue);
             return retVal.Body.GetCurrentUserInformationResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.GetCurrentUserInformationAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.GetCurrentUserInformationAsync(OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationRequest request) {
             return base.Channel.GetCurrentUserInformationAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationResponse> GetCurrentUserInformationAsync(string sessionGuid) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationResponse> GetCurrentUserInformationAsync(string sessionGuid) {
+            OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.GetCurrentUserInformationRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).GetCurrentUserInformationAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).GetCurrentUserInformationAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.ModifyCurrentUserInformation(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.ModifyCurrentUserInformation(OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationRequest request) {
             return base.Channel.ModifyCurrentUserInformation(request);
         }
         
-        public void ModifyCurrentUserInformation(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user, string sessionGuid) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationRequestBody();
+        public void ModifyCurrentUserInformation(OpenSilver.Simulator.LicensingServiceReference.User user, string sessionGuid) {
+            OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationRequestBody();
             inValue.Body.user = user;
             inValue.Body.sessionGuid = sessionGuid;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).ModifyCurrentUserInformation(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).ModifyCurrentUserInformation(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.ModifyCurrentUserInformationAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.ModifyCurrentUserInformationAsync(OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationRequest request) {
             return base.Channel.ModifyCurrentUserInformationAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationResponse> ModifyCurrentUserInformationAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user, string sessionGuid) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationResponse> ModifyCurrentUserInformationAsync(OpenSilver.Simulator.LicensingServiceReference.User user, string sessionGuid) {
+            OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.ModifyCurrentUserInformationRequestBody();
             inValue.Body.user = user;
             inValue.Body.sessionGuid = sessionGuid;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).ModifyCurrentUserInformationAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).ModifyCurrentUserInformationAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.ChangePassword(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.ChangePasswordResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.ChangePassword(OpenSilver.Simulator.LicensingServiceReference.ChangePasswordRequest request) {
             return base.Channel.ChangePassword(request);
         }
         
         public void ChangePassword(string oldPassword, string newPassword, string sessionGuid) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordRequestBody();
+            OpenSilver.Simulator.LicensingServiceReference.ChangePasswordRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.ChangePasswordRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.ChangePasswordRequestBody();
             inValue.Body.oldPassword = oldPassword;
             inValue.Body.newPassword = newPassword;
             inValue.Body.sessionGuid = sessionGuid;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).ChangePassword(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.ChangePasswordResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).ChangePassword(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.ChangePasswordAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.ChangePasswordResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.ChangePasswordAsync(OpenSilver.Simulator.LicensingServiceReference.ChangePasswordRequest request) {
             return base.Channel.ChangePasswordAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordResponse> ChangePasswordAsync(string oldPassword, string newPassword, string sessionGuid) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.ChangePasswordResponse> ChangePasswordAsync(string oldPassword, string newPassword, string sessionGuid) {
+            OpenSilver.Simulator.LicensingServiceReference.ChangePasswordRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.ChangePasswordRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.ChangePasswordRequestBody();
             inValue.Body.oldPassword = oldPassword;
             inValue.Body.newPassword = newPassword;
             inValue.Body.sessionGuid = sessionGuid;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).ChangePasswordAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).ChangePasswordAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.GetKeys(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.GetKeysResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.GetKeys(OpenSilver.Simulator.LicensingServiceReference.GetKeysRequest request) {
             return base.Channel.GetKeys(request);
         }
         
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey[] GetKeys(string sessionGuid) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysRequestBody();
+        public OpenSilver.Simulator.LicensingServiceReference.LicenseKey[] GetKeys(string sessionGuid) {
+            OpenSilver.Simulator.LicensingServiceReference.GetKeysRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.GetKeysRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.GetKeysRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).GetKeys(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.GetKeysResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).GetKeys(inValue);
             return retVal.Body.GetKeysResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.GetKeysAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.GetKeysResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.GetKeysAsync(OpenSilver.Simulator.LicensingServiceReference.GetKeysRequest request) {
             return base.Channel.GetKeysAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysResponse> GetKeysAsync(string sessionGuid) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.GetKeysResponse> GetKeysAsync(string sessionGuid) {
+            OpenSilver.Simulator.LicensingServiceReference.GetKeysRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.GetKeysRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.GetKeysRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).GetKeysAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).GetKeysAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.DeactivateKey(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.DeactivateKey(OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyRequest request) {
             return base.Channel.DeactivateKey(request);
         }
         
         public bool DeactivateKey(string keyID) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyRequestBody();
+            OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyRequestBody();
             inValue.Body.keyID = keyID;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).DeactivateKey(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).DeactivateKey(inValue);
             return retVal.Body.DeactivateKeyResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.DeactivateKeyAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.DeactivateKeyAsync(OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyRequest request) {
             return base.Channel.DeactivateKeyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyResponse> DeactivateKeyAsync(string keyID) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyResponse> DeactivateKeyAsync(string keyID) {
+            OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.DeactivateKeyRequestBody();
             inValue.Body.keyID = keyID;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).DeactivateKeyAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).DeactivateKeyAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.ActivateKey(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.ActivateKeyResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.ActivateKey(OpenSilver.Simulator.LicensingServiceReference.ActivateKeyRequest request) {
             return base.Channel.ActivateKey(request);
         }
         
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ArrayOfString ActivateKey(string keyGuid, string featureID, string computerName, double versionOnComputerReleaseDate) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyRequestBody();
+        public OpenSilver.Simulator.LicensingServiceReference.ArrayOfString ActivateKey(string keyGuid, string featureID, string computerName, double versionOnComputerReleaseDate) {
+            OpenSilver.Simulator.LicensingServiceReference.ActivateKeyRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.ActivateKeyRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.ActivateKeyRequestBody();
             inValue.Body.keyGuid = keyGuid;
             inValue.Body.featureID = featureID;
             inValue.Body.computerName = computerName;
             inValue.Body.versionOnComputerReleaseDate = versionOnComputerReleaseDate;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).ActivateKey(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.ActivateKeyResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).ActivateKey(inValue);
             return retVal.Body.ActivateKeyResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.ActivateKeyAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.ActivateKeyResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.ActivateKeyAsync(OpenSilver.Simulator.LicensingServiceReference.ActivateKeyRequest request) {
             return base.Channel.ActivateKeyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyResponse> ActivateKeyAsync(string keyGuid, string featureID, string computerName, double versionOnComputerReleaseDate) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.ActivateKeyResponse> ActivateKeyAsync(string keyGuid, string featureID, string computerName, double versionOnComputerReleaseDate) {
+            OpenSilver.Simulator.LicensingServiceReference.ActivateKeyRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.ActivateKeyRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.ActivateKeyRequestBody();
             inValue.Body.keyGuid = keyGuid;
             inValue.Body.featureID = featureID;
             inValue.Body.computerName = computerName;
             inValue.Body.versionOnComputerReleaseDate = versionOnComputerReleaseDate;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).ActivateKeyAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).ActivateKeyAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2Response DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.ActivateKey_V2(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2Request request) {
+        OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2Response OpenSilver.Simulator.LicensingServiceReference.ILicensingService.ActivateKey_V2(OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2Request request) {
             return base.Channel.ActivateKey_V2(request);
         }
         
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.KeyActivationResult ActivateKey_V2(string keyGuid, string featureID, string computerName, double versionOnComputerReleaseDate) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2Request inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2Request();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2RequestBody();
+        public OpenSilver.Simulator.LicensingServiceReference.KeyActivationResult ActivateKey_V2(string keyGuid, string featureID, string computerName, double versionOnComputerReleaseDate) {
+            OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2Request inValue = new OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2Request();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2RequestBody();
             inValue.Body.keyGuid = keyGuid;
             inValue.Body.featureID = featureID;
             inValue.Body.computerName = computerName;
             inValue.Body.versionOnComputerReleaseDate = versionOnComputerReleaseDate;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2Response retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).ActivateKey_V2(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2Response retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).ActivateKey_V2(inValue);
             return retVal.Body.ActivateKey_V2Result;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2Response> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.ActivateKey_V2Async(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2Request request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2Response> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.ActivateKey_V2Async(OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2Request request) {
             return base.Channel.ActivateKey_V2Async(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2Response> ActivateKey_V2Async(string keyGuid, string featureID, string computerName, double versionOnComputerReleaseDate) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2Request inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2Request();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2RequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2Response> ActivateKey_V2Async(string keyGuid, string featureID, string computerName, double versionOnComputerReleaseDate) {
+            OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2Request inValue = new OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2Request();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.ActivateKey_V2RequestBody();
             inValue.Body.keyGuid = keyGuid;
             inValue.Body.featureID = featureID;
             inValue.Body.computerName = computerName;
             inValue.Body.versionOnComputerReleaseDate = versionOnComputerReleaseDate;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).ActivateKey_V2Async(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).ActivateKey_V2Async(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.CheckLicenseValidity(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.CheckLicenseValidity(OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityRequest request) {
             return base.Channel.CheckLicenseValidity(request);
         }
         
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.KeyValidity CheckLicenseValidity(System.Guid keyGuid, string computerName, double versionOnComputerReleaseDate) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityRequestBody();
+        public OpenSilver.Simulator.LicensingServiceReference.KeyValidity CheckLicenseValidity(System.Guid keyGuid, string computerName, double versionOnComputerReleaseDate) {
+            OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityRequestBody();
             inValue.Body.keyGuid = keyGuid;
             inValue.Body.computerName = computerName;
             inValue.Body.versionOnComputerReleaseDate = versionOnComputerReleaseDate;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).CheckLicenseValidity(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).CheckLicenseValidity(inValue);
             return retVal.Body.CheckLicenseValidityResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.CheckLicenseValidityAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.CheckLicenseValidityAsync(OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityRequest request) {
             return base.Channel.CheckLicenseValidityAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityResponse> CheckLicenseValidityAsync(System.Guid keyGuid, string computerName, double versionOnComputerReleaseDate) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityResponse> CheckLicenseValidityAsync(System.Guid keyGuid, string computerName, double versionOnComputerReleaseDate) {
+            OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.CheckLicenseValidityRequestBody();
             inValue.Body.keyGuid = keyGuid;
             inValue.Body.computerName = computerName;
             inValue.Body.versionOnComputerReleaseDate = versionOnComputerReleaseDate;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).CheckLicenseValidityAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).CheckLicenseValidityAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.GetTransactions(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.GetTransactionsResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.GetTransactions(OpenSilver.Simulator.LicensingServiceReference.GetTransactionsRequest request) {
             return base.Channel.GetTransactions(request);
         }
         
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.Transaction[] GetTransactions(string sessionGuid) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsRequestBody();
+        public OpenSilver.Simulator.LicensingServiceReference.Transaction[] GetTransactions(string sessionGuid) {
+            OpenSilver.Simulator.LicensingServiceReference.GetTransactionsRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.GetTransactionsRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.GetTransactionsRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).GetTransactions(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.GetTransactionsResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).GetTransactions(inValue);
             return retVal.Body.GetTransactionsResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.GetTransactionsAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.GetTransactionsResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.GetTransactionsAsync(OpenSilver.Simulator.LicensingServiceReference.GetTransactionsRequest request) {
             return base.Channel.GetTransactionsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsResponse> GetTransactionsAsync(string sessionGuid) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.GetTransactionsResponse> GetTransactionsAsync(string sessionGuid) {
+            OpenSilver.Simulator.LicensingServiceReference.GetTransactionsRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.GetTransactionsRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.GetTransactionsRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).GetTransactionsAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).GetTransactionsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.HandlePasswordForgotten(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.HandlePasswordForgotten(OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenRequest request) {
             return base.Channel.HandlePasswordForgotten(request);
         }
         
         public void HandlePasswordForgotten(string email) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenRequestBody();
+            OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenRequestBody();
             inValue.Body.email = email;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).HandlePasswordForgotten(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).HandlePasswordForgotten(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.HandlePasswordForgottenAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.HandlePasswordForgottenAsync(OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenRequest request) {
             return base.Channel.HandlePasswordForgottenAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenResponse> HandlePasswordForgottenAsync(string email) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenResponse> HandlePasswordForgottenAsync(string email) {
+            OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.HandlePasswordForgottenRequestBody();
             inValue.Body.email = email;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).HandlePasswordForgottenAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).HandlePasswordForgottenAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminGetListOfUsers(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminGetListOfUsers(OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersRequest request) {
             return base.Channel.AdminGetListOfUsers(request);
         }
         
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User[] AdminGetListOfUsers(string sessionGuid) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersRequestBody();
+        public OpenSilver.Simulator.LicensingServiceReference.User[] AdminGetListOfUsers(string sessionGuid) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminGetListOfUsers(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminGetListOfUsers(inValue);
             return retVal.Body.AdminGetListOfUsersResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminGetListOfUsersAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminGetListOfUsersAsync(OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersRequest request) {
             return base.Channel.AdminGetListOfUsersAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersResponse> AdminGetListOfUsersAsync(string sessionGuid) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersResponse> AdminGetListOfUsersAsync(string sessionGuid) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminGetListOfUsersRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminGetListOfUsersAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminGetListOfUsersAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminUpdatePassword(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminUpdatePassword(OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordRequest request) {
             return base.Channel.AdminUpdatePassword(request);
         }
         
         public bool AdminUpdatePassword(string sessionGuid, string userEmail, string newPassword) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordRequestBody();
+            OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
             inValue.Body.userEmail = userEmail;
             inValue.Body.newPassword = newPassword;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminUpdatePassword(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminUpdatePassword(inValue);
             return retVal.Body.AdminUpdatePasswordResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminUpdatePasswordAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminUpdatePasswordAsync(OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordRequest request) {
             return base.Channel.AdminUpdatePasswordAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordResponse> AdminUpdatePasswordAsync(string sessionGuid, string userEmail, string newPassword) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordResponse> AdminUpdatePasswordAsync(string sessionGuid, string userEmail, string newPassword) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminUpdatePasswordRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
             inValue.Body.userEmail = userEmail;
             inValue.Body.newPassword = newPassword;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminUpdatePasswordAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminUpdatePasswordAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminEditUser(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.AdminEditUserResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminEditUser(OpenSilver.Simulator.LicensingServiceReference.AdminEditUserRequest request) {
             return base.Channel.AdminEditUser(request);
         }
         
-        public bool AdminEditUser(string sessionGuid, string formerEmailAddress, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserRequestBody();
+        public bool AdminEditUser(string sessionGuid, string formerEmailAddress, OpenSilver.Simulator.LicensingServiceReference.User user) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminEditUserRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminEditUserRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminEditUserRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
             inValue.Body.formerEmailAddress = formerEmailAddress;
             inValue.Body.user = user;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminEditUser(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.AdminEditUserResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminEditUser(inValue);
             return retVal.Body.AdminEditUserResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminEditUserAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminEditUserResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminEditUserAsync(OpenSilver.Simulator.LicensingServiceReference.AdminEditUserRequest request) {
             return base.Channel.AdminEditUserAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserResponse> AdminEditUserAsync(string sessionGuid, string formerEmailAddress, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminEditUserResponse> AdminEditUserAsync(string sessionGuid, string formerEmailAddress, OpenSilver.Simulator.LicensingServiceReference.User user) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminEditUserRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminEditUserRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminEditUserRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
             inValue.Body.formerEmailAddress = formerEmailAddress;
             inValue.Body.user = user;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminEditUserAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminEditUserAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminCreateUser(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminCreateUser(OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserRequest request) {
             return base.Channel.AdminCreateUser(request);
         }
         
-        public bool AdminCreateUser(string sessionGuid, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserRequestBody();
+        public bool AdminCreateUser(string sessionGuid, OpenSilver.Simulator.LicensingServiceReference.User user) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
             inValue.Body.user = user;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminCreateUser(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminCreateUser(inValue);
             return retVal.Body.AdminCreateUserResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminCreateUserAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminCreateUserAsync(OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserRequest request) {
             return base.Channel.AdminCreateUserAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserResponse> AdminCreateUserAsync(string sessionGuid, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserResponse> AdminCreateUserAsync(string sessionGuid, OpenSilver.Simulator.LicensingServiceReference.User user) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminCreateUserRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
             inValue.Body.user = user;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminCreateUserAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminCreateUserAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminGetKeys(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminGetKeys(OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysRequest request) {
             return base.Channel.AdminGetKeys(request);
         }
         
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey[] AdminGetKeys(string sessionGuid, string userEmail) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysRequestBody();
+        public OpenSilver.Simulator.LicensingServiceReference.LicenseKey[] AdminGetKeys(string sessionGuid, string userEmail) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
             inValue.Body.userEmail = userEmail;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminGetKeys(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminGetKeys(inValue);
             return retVal.Body.AdminGetKeysResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminGetKeysAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminGetKeysAsync(OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysRequest request) {
             return base.Channel.AdminGetKeysAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysResponse> AdminGetKeysAsync(string sessionGuid, string userEmail) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysResponse> AdminGetKeysAsync(string sessionGuid, string userEmail) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminGetKeysRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
             inValue.Body.userEmail = userEmail;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminGetKeysAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminGetKeysAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminGetTransactions(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminGetTransactions(OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsRequest request) {
             return base.Channel.AdminGetTransactions(request);
         }
         
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.Transaction[] AdminGetTransactions(string sessionGuid, string userEmail) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsRequestBody();
+        public OpenSilver.Simulator.LicensingServiceReference.Transaction[] AdminGetTransactions(string sessionGuid, string userEmail) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
             inValue.Body.userEmail = userEmail;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminGetTransactions(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminGetTransactions(inValue);
             return retVal.Body.AdminGetTransactionsResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminGetTransactionsAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminGetTransactionsAsync(OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsRequest request) {
             return base.Channel.AdminGetTransactionsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsResponse> AdminGetTransactionsAsync(string sessionGuid, string userEmail) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsResponse> AdminGetTransactionsAsync(string sessionGuid, string userEmail) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminGetTransactionsRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
             inValue.Body.userEmail = userEmail;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminGetTransactionsAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminGetTransactionsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminDeactivateKey(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminDeactivateKey(OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyRequest request) {
             return base.Channel.AdminDeactivateKey(request);
         }
         
-        public bool AdminDeactivateKey(string sessionGuid, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey key, string userEmail) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyRequestBody();
+        public bool AdminDeactivateKey(string sessionGuid, OpenSilver.Simulator.LicensingServiceReference.LicenseKey key, string userEmail) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
             inValue.Body.key = key;
             inValue.Body.userEmail = userEmail;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminDeactivateKey(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminDeactivateKey(inValue);
             return retVal.Body.AdminDeactivateKeyResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminDeactivateKeyAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminDeactivateKeyAsync(OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyRequest request) {
             return base.Channel.AdminDeactivateKeyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyResponse> AdminDeactivateKeyAsync(string sessionGuid, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey key, string userEmail) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyResponse> AdminDeactivateKeyAsync(string sessionGuid, OpenSilver.Simulator.LicensingServiceReference.LicenseKey key, string userEmail) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminDeactivateKeyRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
             inValue.Body.key = key;
             inValue.Body.userEmail = userEmail;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminDeactivateKeyAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminDeactivateKeyAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminCreateKey(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminCreateKey(OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyRequest request) {
             return base.Channel.AdminCreateKey(request);
         }
         
-        public bool AdminCreateKey(string sessionGuid, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey key) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyRequestBody();
+        public bool AdminCreateKey(string sessionGuid, OpenSilver.Simulator.LicensingServiceReference.User user, OpenSilver.Simulator.LicensingServiceReference.LicenseKey key) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
             inValue.Body.user = user;
             inValue.Body.key = key;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminCreateKey(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminCreateKey(inValue);
             return retVal.Body.AdminCreateKeyResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminCreateKeyAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminCreateKeyAsync(OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyRequest request) {
             return base.Channel.AdminCreateKeyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyResponse> AdminCreateKeyAsync(string sessionGuid, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey key) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyResponse> AdminCreateKeyAsync(string sessionGuid, OpenSilver.Simulator.LicensingServiceReference.User user, OpenSilver.Simulator.LicensingServiceReference.LicenseKey key) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminCreateKeyRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
             inValue.Body.user = user;
             inValue.Body.key = key;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminCreateKeyAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminCreateKeyAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminEditKey(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminEditKey(OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyRequest request) {
             return base.Channel.AdminEditKey(request);
         }
         
-        public bool AdminEditKey(string sessionGuid, string formerKey, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey key) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyRequestBody();
+        public bool AdminEditKey(string sessionGuid, string formerKey, OpenSilver.Simulator.LicensingServiceReference.User user, OpenSilver.Simulator.LicensingServiceReference.LicenseKey key) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
             inValue.Body.formerKey = formerKey;
             inValue.Body.user = user;
             inValue.Body.key = key;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminEditKey(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminEditKey(inValue);
             return retVal.Body.AdminEditKeyResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminEditKeyAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminEditKeyAsync(OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyRequest request) {
             return base.Channel.AdminEditKeyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyResponse> AdminEditKeyAsync(string sessionGuid, string formerKey, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User user, DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey key) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyResponse> AdminEditKeyAsync(string sessionGuid, string formerKey, OpenSilver.Simulator.LicensingServiceReference.User user, OpenSilver.Simulator.LicensingServiceReference.LicenseKey key) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminEditKeyRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
             inValue.Body.formerKey = formerKey;
             inValue.Body.user = user;
             inValue.Body.key = key;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminEditKeyAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminEditKeyAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsResponse DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminGetActivityLogs(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsRequest request) {
+        OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsResponse OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminGetActivityLogs(OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsRequest request) {
             return base.Channel.AdminGetActivityLogs(request);
         }
         
-        public DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivityLog[] AdminGetActivityLogs(string sessionGuid) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsRequestBody();
+        public OpenSilver.Simulator.LicensingServiceReference.ActivityLog[] AdminGetActivityLogs(string sessionGuid) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsResponse retVal = ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminGetActivityLogs(inValue);
+            OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsResponse retVal = ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminGetActivityLogs(inValue);
             return retVal.Body.AdminGetActivityLogsResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsResponse> DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService.AdminGetActivityLogsAsync(DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsRequest request) {
+        System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsResponse> OpenSilver.Simulator.LicensingServiceReference.ILicensingService.AdminGetActivityLogsAsync(OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsRequest request) {
             return base.Channel.AdminGetActivityLogsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsResponse> AdminGetActivityLogsAsync(string sessionGuid) {
-            DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsRequest inValue = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsRequest();
-            inValue.Body = new DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsRequestBody();
+        public System.Threading.Tasks.Task<OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsResponse> AdminGetActivityLogsAsync(string sessionGuid) {
+            OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsRequest inValue = new OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsRequest();
+            inValue.Body = new OpenSilver.Simulator.LicensingServiceReference.AdminGetActivityLogsRequestBody();
             inValue.Body.sessionGuid = sessionGuid;
-            return ((DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ILicensingService)(this)).AdminGetActivityLogsAsync(inValue);
+            return ((OpenSilver.Simulator.LicensingServiceReference.ILicensingService)(this)).AdminGetActivityLogsAsync(inValue);
         }
     }
 }

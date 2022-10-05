@@ -1,9 +1,9 @@
-﻿<mahapps:MetroWindow x:Class="DotNetForHtml5.EmulatorWithoutJavascript.MainWindow"
+﻿<mahapps:MetroWindow x:Class="OpenSilver.Simulator.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mahapps="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        xmlns:xamlinspection="clr-namespace:DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection"
-        xmlns:console="clr-namespace:DotNetForHtml5.EmulatorWithoutJavascript.Console"
+        xmlns:xamlinspection="clr-namespace:OpenSilver.Simulator.XamlInspection"
+        xmlns:console="clr-namespace:OpenSilver.Simulator.Console"
         SizeToContent="WidthAndHeight"
         ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen"
@@ -208,13 +208,6 @@
                                 <Border x:Name="PhoneDecoration2" Visibility="Collapsed" Background="#FF333333" Height="40" Width="40" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10"/>
                                 <Grid x:Name="ContainerForMainWebBrowserAndHighlightElement" Margin="0,0,0,0">
                                     <Border x:Name="BrowserContainer"/>
-                                    <Canvas x:Name="ContainerForHighlightElement">
-                                        <Rectangle x:Name="HighlightElement" Visibility="Collapsed" Stroke="Red" StrokeDashArray="4 2" StrokeThickness="2"/>
-                                    </Canvas>
-                                    <Canvas x:Name="ContainerForElementPickerHighlight">
-                                        <Rectangle x:Name="ElementPickerHighlight" Visibility="Collapsed" Stroke="Blue" StrokeDashArray="4 2" StrokeThickness="2"/>
-                                    </Canvas>
-                                    <Rectangle x:Name="ElementPickerForInspection" Visibility="Collapsed" Fill="Ivory" MouseMove="ElementPickerForInspection_MouseMove" MouseDown="ElementPickerForInspection_MouseDown"/>
                                 </Grid>
                                 <Border x:Name="ContainerOfLoadingMessage" CornerRadius="5" Background="#88000000" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
                                     <TextBlock Text="Launching the application Please wait..."  Width="200" Foreground="White" FontSize="16" Margin="15,10" TextWrapping="Wrap" TextAlignment="Center"/>

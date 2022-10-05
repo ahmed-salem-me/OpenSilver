@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace DotNetForHtml5.EmulatorWithoutJavascript.XamlInspection
+namespace OpenSilver.Simulator.XamlInspection
 {
     [ClassInterface(ClassInterfaceType.AutoDual)]
     [ComVisible(true)]
