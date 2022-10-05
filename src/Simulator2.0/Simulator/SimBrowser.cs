@@ -1,6 +1,7 @@
 ﻿using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Core.DevToolsProtocolExtension;
 using Microsoft.Web.WebView2.Wpf;
+using OpenSilver.Simulator.Console;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -110,51 +111,41 @@ namespace OpenSilver.Simulator
 
         private void OnConsoleMessage(object sender, Runtime.ConsoleAPICalledEventArgs e)
         {
+            var logMsg = string.Join("\n", e.Args.Select(arg => arg.Value.ToString()));
+            var callFrame = e.StackTrace.CallFrames[0];
+            var fileSource = new FileSource(callFrame.Url, callFrame.FunctionName, callFrame.LineNumber);
 
-            //            switch (args.Level)
-            //            {
-            //#if DEBUG
-            //                case ConsoleEventArgs.MessageLevel.DEBUG:
-            //#endif
-            //                case ConsoleEventArgs.MessageLevel.LOG:
-            //                    Console.AddMessage(new ConsoleMessage(args.Message, ConsoleMessage.MessageLevel.Log));
-            //                    break;
-            //                case ConsoleEventArgs.MessageLevel.WARNING:
-            //                    if (!string.IsNullOrEmpty(args.Source))
-            //                    {
-            //                        Console.AddMessage(new ConsoleMessage(
-            //                            args.Message,
-            //                            ConsoleMessage.MessageLevel.Warning,
-            //                            new FileSource(args.Source, args.LineNumber)
-            //                            ));
-            //                    }
-            //                    else
-            //                    {
-            //                        Console.AddMessage(new ConsoleMessage(
-            //                            args.Message,
-            //                            ConsoleMessage.MessageLevel.Warning
-            //                            ));
-            //                    }
-            //                    break;
-            //                case ConsoleEventArgs.MessageLevel.ERROR:
-            //                    if (!string.IsNullOrEmpty(args.Source))
-            //                    {
-            //                        Console.AddMessage(new ConsoleMessage(
-            //                            args.Message,
-            //                            ConsoleMessage.MessageLevel.Error,
-            //                            new FileSource(args.Source, args.LineNumber)
-            //                            ));
-            //                    }
-            //                    else
-            //                    {
-            //                        Console.AddMessage(new ConsoleMessage(
-            //                            args.Message,
-            //                            ConsoleMessage.MessageLevel.Error
-            //                            ));
-            //                    }
-            //                    break;
-            //            }
-
+            switch (e.Type)
+            {
+#if DEBUG
+                case "debug":
+#endif
+                case "log":
+                    MainWindow.Instance.Console.AddMessage(new ConsoleMessage(logMsg, ConsoleMessage.MessageLevel.Log, fileSource));
+                    break;
+                case "warning":
+                    if (!string.IsNullOrEmpty(callFrame.Url))
+                    {
+                        MainWindow.Instance.Console.AddMessage(new ConsoleMessage(logMsg, ConsoleMessage.MessageLevel.Warning, fileSource));
+                    }
+                    else
+                    {
+                        MainWindow.Instance.Console.AddMessage(
+                            new ConsoleMessage(logMsg, ConsoleMessage.MessageLevel.Warning));
+                    }
+                    break;
+                case "error":
+                    if (!string.IsNullOrEmpty(callFrame.Url))
+                    {
+                        MainWindow.Instance.Console.AddMessage(
+                            new ConsoleMessage(logMsg, ConsoleMessage.MessageLevel.Error, fileSource));
+                    }
+                    else
+                    {
+                        MainWindow.Instance.Console.AddMessage(new ConsoleMessage(logMsg, ConsoleMessage.MessageLevel.Error));
+                    }
+                    break;
+            }
         }
 
         private void CoreWebView_ContextMenuRequested(object sender, CoreWebView2ContextMenuRequestedEventArgs e)

@@ -258,8 +258,6 @@
                 </Border>
             </Grid>
         </Border>
-        <Border x:Name="LicenseCheckerContainer">
-        </Border>
         <StackPanel Grid.Row="2" Grid.Column="0"  Orientation="Vertical" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0, 0, 32, 24">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Border}">

@@ -11,9 +11,12 @@ namespace OpenSilver.Simulator.Console
         public string Path { get; }
         public int Line { get; }
 
-        public FileSource(string path, int line)
+        public string FunctionName { get; }
+
+        public FileSource(string path, string functionName, int line)
         {
             Path = path;
+            FunctionName = functionName;
             Line = line;
         }
     }

@@ -65,7 +65,7 @@ namespace OpenSilver.Simulator.Console
                 Expander.Visibility = System.Windows.Visibility.Visible;
 
                 ExpanderHeader.Text = message.Message;
-                ExpanderContent.Text = $"at: {fileSource.Path}:{fileSource.Line}";
+                ExpanderContent.Text = $"at: {fileSource.Path}>>func:{fileSource.FunctionName}>>Line:{fileSource.Line}";
             }
             else if (message.Source is InteropSource interopSource)
             {

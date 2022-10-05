@@ -17,8 +17,9 @@
         <Border x:Name="ShowConsoleBanner" Grid.Row="0" Background="Gray" Cursor="Hand" MouseLeftButtonUp="ShowConsole">
             <TextBlock Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White">
                 <TextBlock.Text>
-                    <MultiBinding StringFormat="There are {0} JavaScript errors ({1} new). Click here to view them.">
+                    <MultiBinding StringFormat="There are {0} JavaScript errors and {1} messages ({2} new). Click here to view them.">
                         <Binding Path="ErrorCount"/>
+                        <Binding Path="MessageCount"/>
                         <Binding Path="UnseenErrorCount"/>
                     </MultiBinding>
                 </TextBlock.Text>
@@ -50,7 +51,8 @@
 
                         <!-- Left stuff -->
                         <StackPanel Grid.Column="0" Orientation="Horizontal">
-                            <TextBlock FontSize="14" FontWeight="Bold" Margin="8,3,3,3" VerticalAlignment="Center" Text="{Binding ErrorCount, StringFormat=JavaScript Output ({0} errors)}" />
+                            <TextBlock FontSize="14" FontWeight="Bold" Margin="8,3,3,3" VerticalAlignment="Center" Text="{Binding ErrorCount, StringFormat=JavaScript Output ({0} errors }" />
+                            <TextBlock FontSize="14" FontWeight="Bold" Margin="8,3,3,3" VerticalAlignment="Center" Text="{Binding MessageCount, StringFormat=and {0} messages)}" />
                         </StackPanel>
 
                         <!-- Right stuff -->
@@ -74,8 +76,8 @@
                     </ItemsControl>
                 </ScrollViewer>
             </Grid>
-            
+
         </Grid>
-        
+
     </Grid>
 </UserControl>

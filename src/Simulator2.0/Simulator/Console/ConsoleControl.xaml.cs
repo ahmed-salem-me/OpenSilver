@@ -33,6 +33,16 @@ namespace OpenSilver.Simulator.Console
         // Using a DependencyProperty as the backing store for ErrorCount.  This enables animation, styling, binding, etc...
         private static readonly DependencyProperty ErrorCountProperty =
             DependencyProperty.Register("ErrorCount", typeof(int), typeof(ConsoleControl), new PropertyMetadata(0));
+
+        private int MessageCount
+        {
+            get { return (int)GetValue(MessageCountProperty); }
+            set { SetValue(MessageCountProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MessageCount.  This enables animation, styling, binding, etc...
+        private static readonly DependencyProperty MessageCountProperty =
+            DependencyProperty.Register("MessageCount", typeof(int), typeof(ConsoleControl), new PropertyMetadata(0));
         #endregion
 
         #region UnseenErrorCount
@@ -65,6 +75,7 @@ namespace OpenSilver.Simulator.Console
 
                 Console.Items.Add(message);
 
+
                 if (message.Level == ConsoleMessage.MessageLevel.Error)
                 {
                     ErrorCount++;
@@ -73,6 +84,8 @@ namespace OpenSilver.Simulator.Console
                         UnseenErrorCount++;
                     }
                 }
+                else
+                    MessageCount++;
 
                 ConsoleScrollViewer.ScrollToEnd();
             });
@@ -104,7 +117,7 @@ namespace OpenSilver.Simulator.Console
                 console.ShowConsoleBanner.Visibility = Visibility.Visible;
                 console.ConsoleRoot.Visibility = Visibility.Collapsed;
             }
-            
+
         }
 
         private void ShowConsole(object sender, MouseButtonEventArgs e)
