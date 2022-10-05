@@ -15,6 +15,7 @@ namespace OpenSilver.Simulator
     public class SimBrowser : WebView2
     {
         private bool _ReloadApp;
+        public IList<CookieData> Cookies;
         public static SimBrowser Instance { get; }
         public Action OnNavigationCompleted { get; set; }
         public Action OnInitialized { get; set; }
@@ -25,17 +26,6 @@ namespace OpenSilver.Simulator
         {
             Loaded += SimBrowser_Loaded;
             CoreWebView2InitializationCompleted += SimBrowser_CoreWebView2InitializationCompleted;
-
-            //_NavigationCompletedCheckTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(10) };
-            //_NavigationCompletedCheckTimer.Tick += (s, e) =>
-            //{
-            //    if (_IsNavigationCompleted)
-            //    {
-            //        _NavigationCompletedCheckTimer.Stop();
-            //        OnNavigationCompleted();
-            //    }
-            //};
-            //_NavigationCompletedCheckTimer.Start();
         }
 
         private async void SimBrowser_Loaded(object sender, System.Windows.RoutedEventArgs e)
@@ -47,8 +37,7 @@ namespace OpenSilver.Simulator
         {
             CoreWebView2EnvironmentOptions options = new CoreWebView2EnvironmentOptions();
 
-            options.AdditionalBrowserArguments = "--disable-web-security";
-            //options.AdditionalBrowserArguments = "--disable-web-security --user-data-dir=\"c:/ chromedev\" --disable-features=SameSiteByDefaultCookies";
+            options.AdditionalBrowserArguments = "--disable-web-security --user-data-dir=\"c:/ chromedev\" --disable-features=SameSiteByDefaultCookies";
             options.AdditionalBrowserArguments += " --allow-file-access-from-file";
             options.AdditionalBrowserArguments += " --allow-file-access";
             options.AdditionalBrowserArguments += " --remote-debugging-port=9222";
@@ -78,8 +67,10 @@ namespace OpenSilver.Simulator
             await helper.Runtime.EnableAsync();
             helper.Runtime.ConsoleAPICalled += OnConsoleMessage;
 
-            if (OpenSilver.Simulator.Properties.Settings.Default.IsDevToolsOpened)
+            if (Properties.Settings.Default.IsDevToolsOpened)
                 coreWebView.OpenDevToolsWindow();
+
+            CookiesHelper.SetCustomCookies(this, Cookies);
 
             if (OnInitialized != null)
                 OnInitialized();
@@ -107,21 +98,6 @@ namespace OpenSilver.Simulator
 
         private void CoreWebView_NavigationStarting(object sender, CoreWebView2NavigationStartingEventArgs e)
         {
-            if (e.Uri.Contains(@"http://cshtml5-fbc-mm2-preview.azurewebsites.net"))
-            {
-                e.Cancel = true;
-                string urlFragment = "";
-                int hashIndex = e.Uri.IndexOf('#');
-                if (hashIndex != -1)
-                    urlFragment = e.Uri.Substring(hashIndex);
-
-                //ams> rethink-rewrite
-                // We use a dispatcher to go back to the main thread so that the CurrentCulture remains the same (otherwise, for example on French systems we get an exception during Double.Parse when processing the <Path Data="..."/> control).
-                Dispatcher.BeginInvoke((Action)(() =>
-                {
-                    _ReloadApp = true;
-                }));
-            }
         }
 
         private void CoreWebView_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
@@ -129,26 +105,6 @@ namespace OpenSilver.Simulator
             AllowDenyContextMenu(false);
 
             OnNavigationCompleted();
-            if (_ReloadApp && OnNavigationCompleted != null) ;
-            else
-            {
-                //        Dispatcher.BeginInvoke((Action)(() =>
-                //        {
-                //            //if (_javaScriptExecutionHandler == null)
-                //            //    _javaScriptExecutionHandler = new JavaScriptExecutionHandler(MainWebBrowser);
-
-                //            //dynamic rootElement = _javaScriptExecutionHandler.ExecuteJavaScriptWithResult(@"document.getElementByIdSafe(""cshtml5-root"");");
-
-                //            //MessageBox.Show(rootElement.ToString());
-
-                //            //todo: verify that we are not on an outside page (eg. Azure Active Directory login page)
-                //            OnLoaded();
-                //        }), DispatcherPriority.ApplicationIdle);
-                //    };
-                //    //ams>could/should be replaced?
-                //    //MainWebBrowser.ConsoleMessageEvent += OnConsoleMessageEvent;
-
-            }
         }
 
         private void OnConsoleMessage(object sender, Runtime.ConsoleAPICalledEventArgs e)

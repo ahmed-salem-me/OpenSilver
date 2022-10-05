@@ -107,7 +107,7 @@ namespace OpenSilver.Simulator
             //    StorageType = StorageType.DISK //Note: this is needed to remember the cookies
             //};
 
-            CookiesHelper.SetCustomCookies(MainWebBrowser, simulatorLaunchParameters?.CookiesData);
+            MainWebBrowser.Cookies = simulatorLaunchParameters?.CookiesData;
             simulatorLaunchParameters?.BrowserCreatedCallback?.Invoke(MainWebBrowser);
 
             //Note: The following line was an attempt to persist the Microsoft login cookies (for use by user applications that required AAD login), but it is no longer necessary because we changed the DotNetBrowser "StorageType" from "MEMORY" to "DISK", so cookies are now automatically persisted.
