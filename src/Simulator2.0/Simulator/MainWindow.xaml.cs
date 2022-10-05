@@ -642,6 +642,7 @@ Click OK to continue.";
             _rootPage.Create(_simulatorLaunchParameters);
             MainWebBrowser.Source = new Uri(_rootPage.ToUrl());
 
+            //ams> understand ARBITRARY_FILE_NAME_WHEN_RUNNING_FROM_SIMULATOR and fragmentUrl and when and how they are needed
             //MainWebBrowser.Browser.LoadHTML(new LoadHTMLParams(simulatorRootHtml, "UTF-8", "http://cshtml5-simulator/" + ARBITRARY_FILE_NAME_WHEN_RUNNING_FROM_SIMULATOR + urlFragment)); // Note: we set the URL so that the simulator browser can find the JS files.
         }
 
@@ -655,9 +656,6 @@ Click OK to continue.";
                 // Start the app:
                 ShowLoadingMessage();
 
-                //We check if the key used by the user is still valid:
-                CheckKeysValidity();
-
                 GoToAppropriateCompilationState();
 
                 bool success = _openSilverRuntime.Start(_clientAppStartup);
@@ -670,20 +668,6 @@ Click OK to continue.";
                     UpdateWebBrowserAndWebPageSizeBasedOnCurrentState();
                 }
             }
-        }
-
-        private void CheckKeysValidity()
-        {
-            Thread thread = new Thread(() =>
-            {
-                bool isAllOK = CheckFeatureValidity(Constants.ENTERPRISE_EDITION_FEATURE_ID, Constants.ENTERPRISE_EDITION_FRIENDLY_NAME);
-                isAllOK = isAllOK && CheckFeatureValidity(Constants.SL_MIGRATION_EDITION_FEATURE_ID, Constants.SL_MIGRATION_EDITION_FRIENDLY_NAME);
-                isAllOK = isAllOK && CheckFeatureValidity(Constants.PROFESSIONAL_EDITION_FEATURE_ID, Constants.PROFESSIONAL_EDITION_FRIENDLY_NAME);
-                isAllOK = isAllOK && CheckFeatureValidity(Constants.COMMERCIAL_EDITION_S_FEATURE_ID, Constants.COMMERCIAL_EDITION_S_FRIENDLY_NAME);
-                isAllOK = isAllOK && CheckFeatureValidity(Constants.COMMERCIAL_EDITION_L_FEATURE_ID, Constants.COMMERCIAL_EDITION_L_FRIENDLY_NAME);
-                isAllOK = isAllOK && CheckFeatureValidity(Constants.PREMIUM_SUPPORT_EDITION_FEATURE_ID, Constants.PREMIUM_SUPPORT_EDITION_FRIENDLY_NAME);
-            });
-            thread.Start();
         }
 
         private string getHtmlSnapshot(bool osRootOnly = false, string htmlElementId = null, string xamlElementName = null)
