@@ -27,8 +27,6 @@ using System.Globalization;
 using OpenSilver.Simulator.XamlInspection;
 using Microsoft.Win32;
 using OpenSilver.Simulator.LicensingServiceReference;
-//ams>could/shoud replace
-//using DotNetForHtml5.EmulatorWithoutJavascript.LicenseChecking;
 using DotNetForHtml5.Compiler;
 using System.Threading;
 using System.Windows.Threading;
@@ -69,11 +67,9 @@ namespace OpenSilver.Simulator
         string _browserUserDataDir;
         OpenSilverRuntime _openSilverRuntime;
 
-        const bool IS_LICENSE_CHECKER_ENABLED = false;
         const string NAME_FOR_STORING_COOKIES = "ms_cookies_for_user_application"; // This is an arbitrary name used to store the cookies in the registry
         const string NAME_OF_TEMP_CACHE_FOLDER = "simulator-temp-cache";
 
-        //LicenseChecker LicenseChecker = null;
 
 #if OPENSILVER
         public MainWindow(Action entryAppCreator, Assembly appAssembly, SimulatorLaunchParameters simulatorLaunchParameters)
@@ -120,19 +116,6 @@ namespace OpenSilver.Simulator
             MainWebBrowser = PrepareSimBrowser();
             BrowserContainer.Child = MainWebBrowser;
 
-            if (IS_LICENSE_CHECKER_ENABLED)
-            {
-                //ams>evaluate
-                //LicenseChecker = new LicenseChecker();
-                //LicenseCheckerContainer.Child = LicenseChecker;
-                //if (!IsNetworkAvailable())
-                //    LicenseChecker.OnNetworkNotAvailable();
-            }
-            else
-            {
-                ButtonProfil.Visibility = Visibility.Collapsed;
-            }
-
             CheckBoxCORS.IsChecked = CrossDomainCallsHelper.IsBypassCORSErrors;
             CheckBoxCORS.Checked += CheckBoxCORS_Checked;
             CheckBoxCORS.Unchecked += CheckBoxCORS_Unchecked;
@@ -145,7 +128,7 @@ namespace OpenSilver.Simulator
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
             // Custom load handler to reload the app after redirection, for example in case of authentication scenarios (eg. Azure Active Directory login redirection):
-            NetworkChange.NetworkAvailabilityChanged += MainWindow_NetworkAvailabilityChanged;
+            //NetworkChange.NetworkAvailabilityChanged += MainWindow_NetworkAvailabilityChanged;
 
             this.Loaded += MainWindow_Loaded;
             KeyDown += (s, e) => { if (e.Key == Key.F12) MainWebBrowser.CoreWebView2.OpenDevToolsWindow(); };
@@ -164,14 +147,6 @@ namespace OpenSilver.Simulator
         {
             SimulatorProxy.ShowExceptionStatic(e.Exception);
             e.Handled = true;
-        }
-
-        private void MainWindow_NetworkAvailabilityChanged(object sender, NetworkAvailabilityEventArgs e)
-        {
-            // we signal to the license checker that internet availability has changed to avoid the default error 404 page of the browser
-            //ams> ??
-            //if (LicenseChecker != null)
-            //    LicenseChecker.OnNetworkAvailabilityChanged(e.IsAvailable);
         }
 
 
@@ -269,11 +244,6 @@ namespace OpenSilver.Simulator
 
             // Destroy the WebControl and its underlying view:
             MainWebBrowser.Dispose();
-            if (IS_LICENSE_CHECKER_ENABLED)
-            {
-                //ams>
-                //LicenseChecker.Dispose();
-            }
 
             // Kill the process to avoid having the Simulator process that remains open due to a MessageBox or something else:
             Application.Current.Shutdown();
@@ -594,7 +564,6 @@ Click OK to continue.";
 
         private void ButtonLogout_Click(object sender, RoutedEventArgs e)
         {
-            //LicenseChecker.LogOut();
         }
 
         private void LaunchOptimizerButton_Click(object sender, RoutedEventArgs e)
@@ -715,132 +684,6 @@ Click OK to continue.";
                 isAllOK = isAllOK && CheckFeatureValidity(Constants.PREMIUM_SUPPORT_EDITION_FEATURE_ID, Constants.PREMIUM_SUPPORT_EDITION_FRIENDLY_NAME);
             });
             thread.Start();
-        }
-
-        private bool CheckFeatureValidity(string featureId, string editionName)
-        {
-            string computerName = System.Environment.MachineName;
-            try
-            {
-                //We get the correponding key (or above):
-                if (featureId != null)
-                {
-                    Guid keyGuid;
-                    DateTime currentVersionReleaseDate = VersionInformation.GetCurrentVersionReleaseDate();
-
-                    if (DotNetForHtml5.ActivationHelpers.IsFeatureEnabled(featureId))
-                    {
-
-                        if (Guid.TryParse(RegistryHelpers.GetSetting("Feature_" + featureId, null), out keyGuid))
-                        {
-                            LicensingServiceReference.LicensingServiceClient licensingServiceClient;
-                            //licensingServiceClient = new LicensingServiceReference.LicensingServiceClient("LocalTestBinding_ILicensingService"); //Testing version.
-                            //todo: BEFORE THE RELEASE put the following back and comment the line above.
-                            licensingServiceClient = new LicensingServiceReference.LicensingServiceClient(
-                    new BasicHttpBinding(BasicHttpSecurityMode.Transport),
-                    new EndpointAddress(new Uri(@"https://myaccount.cshtml5.com/LicensingService.svc"))); //Normal version.
-
-                            KeyValidity keyValidity = licensingServiceClient.CheckLicenseValidity(keyGuid, computerName, currentVersionReleaseDate.ToOADate());
-                            //Note: we get an EndpointNotFoundException (which is caught and dealt with a bit lower in the code) if there is no internet.
-
-                            //We refresh the validity date:
-                            if (keyValidity.ValidityLimit != DateTime.MinValue)
-                            {
-                                ValidityHelpers.SetValidityLimit(featureId, keyValidity.ValidityLimit);
-                            }
-                            else
-                            {
-                                ValidityHelpers.RemoveKeyValidity(featureId);
-                            }
-
-                            switch (keyValidity.State) //NOTE: keyValidity is not supposed to be null
-                            {
-                                case KeyState.Valid:
-                                    return true;
-                                case KeyState.Expired:
-                                    //licensingServiceClient.DeactivateKey(keyGuid.ToString());
-                                    bool isDeactivated = licensingServiceClient.DeactivateKey(keyGuid.ToString());
-
-                                    // We remove the key from the registry:
-                                    if (isDeactivated)
-                                    {
-                                        if (ActivationHelpers.IsFeatureEnabled(featureId))
-                                        {
-                                            RegistryHelpers.DeleteSetting("Feature_" + featureId); //remove the key itself
-                                            RegistryHelpers.DeleteSetting("Validity_" + featureId); //remove the validity date for the key
-                                        }
-                                    }
-
-                                    Dispatcher.BeginInvoke((Action)(() =>
-                                    {
-                                        MessageBox.Show("The key for the " + editionName + " is no longer valid and has been deactivated.");
-                                    }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
-
-                                    return false;
-                                case KeyState.AlmostExpired:
-                                    if (!ValidityHelpers.WasTheKeyAlmostExpiredMessageAlreadyDisplayedToday)
-                                    {
-                                        //MessageBox.Show(this, keyValidity.Message);
-                                        Dispatcher.BeginInvoke((Action)(() =>
-                                        {
-                                            MessageBox.Show(keyValidity.Message);
-                                        }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
-
-                                        ValidityHelpers.RememberThatTheKeyAlmostExpiredMessageWasDisplayedToday();
-                                    }
-                                    return true;
-                                default:
-                                    throw new Exception("Invalid Key validity state."); //No idea how we would arrive here.
-                            }
-                        }
-                        else
-                        {
-                            throw new FaultException("The key for the " + editionName + " could not be retrieved. Please try to reactivate the associated key and if it does not fix your issue, please contact us at support@cshtml5.com");
-                            //I don't like the fact that it is a FaultException since it wasn't thrown by the WebService but the behaviour fits.
-                        }
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    throw new Exception("Could not check validity: feature is null");
-                }
-            }
-            catch (Exception ex) // Note: we have only one "catch" because C# does not allow putting multiple exception types in a single block.
-            {
-                if (ex is EndpointNotFoundException || (ex.Message.Contains("LicensingService"))) // Note: this second condition can catch errors obtained for example when Fiddler is running.
-                {
-                    //we could not get the information on the internet so we rely on the registry:
-                    if (!ValidityHelpers.IsTheKeyValid(featureId))
-                    {
-                        Dispatcher.BeginInvoke((Action)(() =>
-                        {
-                            MessageBox.Show("The key for the " + editionName + " is no longer considered valid on this computer and there doesn't seem to be an internet connection to refresh its validity date. If you are currently connected to the internet, please contact us at support@cshtml5.com.");
-                        }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
-                        return false;
-                    }
-                    return true; //todo: display something in the Simulator to tell the user that we were unable to connect.
-                }
-                else if (ex is FaultException)
-                {
-                    Dispatcher.BeginInvoke((Action)(() =>
-                    {
-                        MessageBox.Show(ex.Message, "", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
-                    return false;
-                }
-                else
-                {
-                    Dispatcher.BeginInvoke((Action)(() =>
-                    {
-                        MessageBox.Show("An error has occurred. Please contact support at: support@cshtml5.com\r\n\r\n-------------------\r\n\r\nError details:\r\n" + ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
-                    return false;
-                }
-            }
         }
 
         private string getHtmlSnapshot(bool osRootOnly = false, string htmlElementId = null, string xamlElementName = null)
