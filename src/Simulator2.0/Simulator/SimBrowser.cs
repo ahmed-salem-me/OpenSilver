@@ -14,8 +14,9 @@ namespace OpenSilver.Simulator
 {
     public class SimBrowser : WebView2
     {
-        private bool _ReloadApp;
         public IList<CookieData> Cookies;
+        public string CacheFolderName { get { return "simulator-temp-cache"; } }
+
         public static SimBrowser Instance { get; }
         public Action OnNavigationCompleted { get; set; }
         public Action OnInitialized { get; set; }
@@ -42,7 +43,7 @@ namespace OpenSilver.Simulator
             options.AdditionalBrowserArguments += " --allow-file-access";
             options.AdditionalBrowserArguments += " --remote-debugging-port=9222";
 
-            CoreWebView2Environment environment = CoreWebView2Environment.CreateAsync(null, null, options).Result;
+            CoreWebView2Environment environment = CoreWebView2Environment.CreateAsync(null, Path.GetFullPath(CacheFolderName), options).Result;
             return environment;
         }
 

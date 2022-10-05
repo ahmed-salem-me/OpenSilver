@@ -61,21 +61,14 @@ namespace OpenSilver.Simulator
         string _compilationLog;
         RootPage _rootPage;
         bool _isFirstTimeJavaScriptCompilation = false;
-        SimBrowser MainWebBrowser;
+        SimBrowser TheSimBrowser;
         bool _pendingRefreshOfHighlight = false;
-        Assembly _coreAssembly;
-        string _browserUserDataDir;
+        Assembly _openSilverRuntimeAssembly;
         OpenSilverRuntime _openSilverRuntime;
 
         const string NAME_FOR_STORING_COOKIES = "ms_cookies_for_user_application"; // This is an arbitrary name used to store the cookies in the registry
-        const string NAME_OF_TEMP_CACHE_FOLDER = "simulator-temp-cache";
 
-
-#if OPENSILVER
         public MainWindow(Action entryAppCreator, Assembly appAssembly, SimulatorLaunchParameters simulatorLaunchParameters)
-#elif BRIDGE
-        public MainWindow()
-#endif
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
@@ -94,27 +87,19 @@ namespace OpenSilver.Simulator
             WelcomeTextBlock.Visibility = Visibility.Collapsed; // In version 1.x, we do not display the welcome text because there is already a similar text while the JS generation is taking place.
             _clientAppStartup = entryAppCreator ?? throw new ArgumentNullException(nameof(entryAppCreator));
             _simulatorLaunchParameters = simulatorLaunchParameters;
-            ReflectionInUserAssembliesHelper.TryGetCoreAssembly(out _coreAssembly);
+            ReflectionInUserAssembliesHelper.TryGetCoreAssembly(out _openSilverRuntimeAssembly);
             _clientAppAssembly = appAssembly;
             _pathOfAssemblyThatContainsEntryPoint = _clientAppAssembly.Location;
 
-            _browserUserDataDir = Path.GetFullPath(NAME_OF_TEMP_CACHE_FOLDER);
-            Directory.CreateDirectory(_browserUserDataDir);
-
-            //ams>could/should replace
-            //BrowserContextParams parameters = new BrowserContextParams(_browserUserDataDir)
-            //{
-            //    StorageType = StorageType.DISK //Note: this is needed to remember the cookies
-            //};
-
-            MainWebBrowser.Cookies = simulatorLaunchParameters?.CookiesData;
-            simulatorLaunchParameters?.BrowserCreatedCallback?.Invoke(MainWebBrowser);
 
             //Note: The following line was an attempt to persist the Microsoft login cookies (for use by user applications that required AAD login), but it is no longer necessary because we changed the DotNetBrowser "StorageType" from "MEMORY" to "DISK", so cookies are now automatically persisted.
             //CookiesHelper.LoadMicrosoftCookies(MainWebBrowser, NAME_FOR_STORING_COOKIES);
 
-            MainWebBrowser = PrepareSimBrowser();
-            BrowserContainer.Child = MainWebBrowser;
+            TheSimBrowser = PrepareSimBrowser();
+            BrowserContainer.Child = TheSimBrowser;
+
+            TheSimBrowser.Cookies = simulatorLaunchParameters?.CookiesData;
+            simulatorLaunchParameters?.BrowserCreatedCallback?.Invoke(TheSimBrowser);
 
             CheckBoxCORS.IsChecked = CrossDomainCallsHelper.IsBypassCORSErrors;
             CheckBoxCORS.Checked += CheckBoxCORS_Checked;
@@ -131,7 +116,7 @@ namespace OpenSilver.Simulator
             //NetworkChange.NetworkAvailabilityChanged += MainWindow_NetworkAvailabilityChanged;
 
             this.Loaded += MainWindow_Loaded;
-            KeyDown += (s, e) => { if (e.Key == Key.F12) MainWebBrowser.CoreWebView2.OpenDevToolsWindow(); };
+            KeyDown += (s, e) => { if (e.Key == Key.F12) TheSimBrowser.CoreWebView2.OpenDevToolsWindow(); };
 
             ButtonRunInBrowser.Visibility = Visibility.Collapsed;
             CheckBoxUseHttpLocalhost.Visibility = Visibility.Collapsed;
@@ -243,7 +228,7 @@ namespace OpenSilver.Simulator
             //CookiesHelper.SaveMicrosoftCookies(MainWebBrowser, NAME_FOR_STORING_COOKIES);
 
             // Destroy the WebControl and its underlying view:
-            MainWebBrowser.Dispose();
+            TheSimBrowser.Dispose();
 
             // Kill the process to avoid having the Simulator process that remains open due to a MessageBox or something else:
             Application.Current.Shutdown();
@@ -257,10 +242,10 @@ namespace OpenSilver.Simulator
 
         private void ButtonStats_Click(object sender, RoutedEventArgs e)
         {
-            MainWebBrowser.Source = new Uri("http://www.google.com");
+            TheSimBrowser.Source = new Uri("http://www.google.com");
 
             // Count the number of DOM elements:
-            var count = MainWebBrowser.ExecuteScriptAsync(@"document.getElementsByTagName(""*"").length").Result.ToString();
+            var count = TheSimBrowser.ExecuteScriptAsync(@"document.getElementsByTagName(""*"").length").Result.ToString();
 
             // Display the result
             MessageBox.Show("Number of DOM elements: " + count
@@ -414,15 +399,15 @@ Click OK to continue.";
 
         void ButtonClearCookiesAndCache_Click(object sender, RoutedEventArgs e)
         {
-            CookiesHelper.ClearCookies(MainWebBrowser, NAME_FOR_STORING_COOKIES);
+            CookiesHelper.ClearCookies(TheSimBrowser, NAME_FOR_STORING_COOKIES);
             try
             {
-                if (!string.IsNullOrWhiteSpace(_browserUserDataDir) && Directory.Exists(_browserUserDataDir))
+                if (!string.IsNullOrWhiteSpace(TheSimBrowser.CacheFolderName) && Directory.Exists(TheSimBrowser.CacheFolderName))
                 {
-                    MessageBoxResult result = MessageBox.Show("To fully clear the Simulator cache, please close the Simulator and manually delete the following folder:" + Environment.NewLine + Environment.NewLine + _browserUserDataDir + Environment.NewLine + Environment.NewLine + "Click OK to see this folder in Windows Explorer.", "Confirm?", MessageBoxButton.OKCancel);
+                    MessageBoxResult result = MessageBox.Show("To fully clear the Simulator cache, please close the Simulator and manually delete the following folder:" + Environment.NewLine + Environment.NewLine + TheSimBrowser.CacheFolderName + Environment.NewLine + Environment.NewLine + "Click OK to see this folder in Windows Explorer.", "Confirm?", MessageBoxButton.OKCancel);
                     if (result == MessageBoxResult.OK)
                     {
-                        Process.Start(_browserUserDataDir);
+                        Process.Start(TheSimBrowser.CacheFolderName);
                     }
                 }
             }
@@ -496,7 +481,7 @@ Click OK to continue.";
 
         private void ButtonOpenDevTools_Click(object sender, RoutedEventArgs e)
         {
-            MainWebBrowser.CoreWebView2.OpenDevToolsWindow();
+            TheSimBrowser.CoreWebView2.OpenDevToolsWindow();
         }
 
         private void ButtonHideXamlTree_Click(object sender, RoutedEventArgs e)
@@ -604,7 +589,7 @@ Click OK to continue.";
 
         private void AllowContextMenu_Click(object sender, RoutedEventArgs e)
         {
-            MainWebBrowser.AllowDenyContextMenu((bool)AllowContextMenu.IsChecked);
+            TheSimBrowser.AllowDenyContextMenu((bool)AllowContextMenu.IsChecked);
         }
 
         private void ViewInteropLog_Click(object sender, RoutedEventArgs e)
@@ -640,7 +625,7 @@ Click OK to continue.";
         {
             _rootPage = new RootPage(_clientAppAssembly);
             _rootPage.Create(_simulatorLaunchParameters);
-            MainWebBrowser.Source = new Uri(_rootPage.ToUrl());
+            TheSimBrowser.Source = new Uri(_rootPage.ToUrl());
 
             //ams> understand ARBITRARY_FILE_NAME_WHEN_RUNNING_FROM_SIMULATOR and fragmentUrl and when and how they are needed
             //MainWebBrowser.Browser.LoadHTML(new LoadHTMLParams(simulatorRootHtml, "UTF-8", "http://cshtml5-simulator/" + ARBITRARY_FILE_NAME_WHEN_RUNNING_FROM_SIMULATOR + urlFragment)); // Note: we set the URL so that the simulator browser can find the JS files.
@@ -675,19 +660,19 @@ Click OK to continue.";
             string html;
             if (htmlElementId != null)
             {
-                html = MainWebBrowser.ExecuteScriptAsync($"document.getElementById('{htmlElementId}').outerHTML").Result.ToString();
+                html = TheSimBrowser.ExecuteScriptAsync($"document.getElementById('{htmlElementId}').outerHTML").Result.ToString();
             }
             else if (xamlElementName != null)
             {
-                html = MainWebBrowser.ExecuteScriptAsync($"document.querySelectorAll('[dataid=\"{xamlElementName}\"]')[0].outerHTML").Result.ToString();
+                html = TheSimBrowser.ExecuteScriptAsync($"document.querySelectorAll('[dataid=\"{xamlElementName}\"]')[0].outerHTML").Result.ToString();
             }
             else if (osRootOnly)
             {
-                html = MainWebBrowser.ExecuteScriptAsync("document.getElementById('opensilver-root').outerHTML").Result.ToString();
+                html = TheSimBrowser.ExecuteScriptAsync("document.getElementById('opensilver-root').outerHTML").Result.ToString();
             }
             else
             {
-                html = MainWebBrowser.ExecuteScriptAsync("document.documentElement.outerHTML").Result.ToString();
+                html = TheSimBrowser.ExecuteScriptAsync("document.documentElement.outerHTML").Result.ToString();
             }
             return html ?? "";
         }
@@ -737,8 +722,8 @@ Click OK to continue.";
                 // We take into account the "Font Size" (DPI) setting of Windows: //cf. http://answers.awesomium.com/questions/321/non-standard-dpi-rendering-is-broken-in-webcontrol.html
                 double correctedWidth = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(width);
                 double correctedHeight = ScreenCoordinatesHelper.ConvertHeightOrNaNToDpiAwareHeightOrNaN(height);
-                MainWebBrowser.Width = correctedWidth;
-                MainWebBrowser.Height = correctedHeight;
+                TheSimBrowser.Width = correctedWidth;
+                TheSimBrowser.Height = correctedHeight;
 
 
                 Dispatcher.BeginInvoke((Action)(() =>
@@ -756,8 +741,8 @@ Click OK to continue.";
         {
             try
             {
-                double width = double.IsNaN(MainWebBrowser.Width) ? MainWebBrowser.ActualWidth : MainWebBrowser.Width;
-                double height = double.IsNaN(MainWebBrowser.Height) ? MainWebBrowser.ActualHeight : MainWebBrowser.Height;
+                double width = double.IsNaN(TheSimBrowser.Width) ? TheSimBrowser.ActualWidth : TheSimBrowser.Width;
+                double height = double.IsNaN(TheSimBrowser.Height) ? TheSimBrowser.ActualHeight : TheSimBrowser.Height;
 
                 // Take into account screen DPI:
                 width = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(width, invert: true); // Supports "NaN"
@@ -766,7 +751,7 @@ Click OK to continue.";
                 var widthStr = !double.IsNaN(width) ? width.ToString(CultureInfo.InvariantCulture) + "px" : "100%";
                 var heightStr = !double.IsNaN(height) ? height.ToString(CultureInfo.InvariantCulture) + "px" : "100%";
 
-                MainWebBrowser.ExecuteScriptAsync($"var xmlRoot=document.getXamlRoot(); xmlRoot.style.width={widthStr}; xmlRoot.style.height={heightStr}");
+                TheSimBrowser.ExecuteScriptAsync($"var xmlRoot=document.getXamlRoot(); xmlRoot.style.width={widthStr}; xmlRoot.style.height={heightStr}");
             }
             catch (Exception ex)
             {
