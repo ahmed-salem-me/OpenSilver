@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Windows;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
+using DotNetForHtml5;
 
 namespace OpenSilver.Simulator
 {

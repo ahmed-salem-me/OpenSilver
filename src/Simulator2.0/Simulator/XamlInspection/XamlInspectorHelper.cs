@@ -23,7 +23,7 @@ using System.Linq;
 using System.Windows;
 using System.Collections;
 using System.Windows.Shapes;
-using OpenSilver.Compiler;
+using DotNetForHtml5.Compiler;
 using Microsoft.Web.WebView2.Wpf;
 using OpenSilver.Simulator;
 using System.Runtime.InteropServices;

@@ -1,10 +1,9 @@
-﻿using OpenSilver;
-using OpenSilver.Simulator;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 using System.Linq;
+using DotNetForHtml5;
 
 namespace OpenSilver.Simulator
 {

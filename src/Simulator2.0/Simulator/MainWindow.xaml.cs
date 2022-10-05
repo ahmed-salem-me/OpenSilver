@@ -29,16 +29,14 @@ using Microsoft.Win32;
 using OpenSilver.Simulator.LicensingServiceReference;
 //ams>could/shoud replace
 //using DotNetForHtml5.EmulatorWithoutJavascript.LicenseChecking;
-using OpenSilver.Compiler;
+using DotNetForHtml5.Compiler;
 using System.Threading;
 using System.Windows.Threading;
-
-
 using System.Windows.Media;
-using System.Threading.Tasks;
 using System.Net.NetworkInformation;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using DotNetForHtml5;
 
 namespace OpenSilver.Simulator
 {
@@ -787,7 +785,7 @@ Click OK to continue.";
                     Guid keyGuid;
                     DateTime currentVersionReleaseDate = VersionInformation.GetCurrentVersionReleaseDate();
 
-                    if (OpenSilver.ActivationHelpers.IsFeatureEnabled(featureId))
+                    if (DotNetForHtml5.ActivationHelpers.IsFeatureEnabled(featureId))
                     {
 
                         if (Guid.TryParse(RegistryHelpers.GetSetting("Feature_" + featureId, null), out keyGuid))

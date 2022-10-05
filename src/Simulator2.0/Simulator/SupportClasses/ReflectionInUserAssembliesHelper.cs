@@ -21,7 +21,7 @@ using System.Reflection;
 using System.Windows;
 using System.Linq;
 using System.Collections.Generic;
-using OpenSilver.Compiler;
+using DotNetForHtml5.Compiler;
 
 namespace OpenSilver.Simulator
 {
