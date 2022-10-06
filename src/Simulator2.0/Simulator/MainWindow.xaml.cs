@@ -18,7 +18,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.ServiceModel;
 using System.Windows;
 using System.Diagnostics;
 using MahApps.Metro.Controls;
@@ -34,7 +33,6 @@ using System.Windows.Media;
 using System.Net.NetworkInformation;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using DotNetForHtml5;
 
 namespace OpenSilver.Simulator
 {
@@ -95,11 +93,23 @@ namespace OpenSilver.Simulator
             //Note: The following line was an attempt to persist the Microsoft login cookies (for use by user applications that required AAD login), but it is no longer necessary because we changed the DotNetBrowser "StorageType" from "MEMORY" to "DISK", so cookies are now automatically persisted.
             //CookiesHelper.LoadMicrosoftCookies(MainWebBrowser, NAME_FOR_STORING_COOKIES);
 
-            TheSimBrowser = PrepareSimBrowser();
+            TheSimBrowser = SimBrowser.Instance;
+            TheSimBrowser.Width = 150;
+            TheSimBrowser.Height = 200;
+            TheSimBrowser.SizeChanged += MainWebBrowser_SizeChanged;
+
+            TheSimBrowser.OnInitialized = () =>
+            {
+                _openSilverRuntime = new OpenSilverRuntime(this, Dispatcher.CurrentDispatcher);
+                _openSilverRuntime.OnInitialized = () => Dispatcher.Invoke(() => simulatorLaunchParameters?.BrowserCreatedCallback?.Invoke(TheSimBrowser));
+                LoadIndexPage();
+            };
+
+            TheSimBrowser.OnNavigationCompleted = OnIndexPageLoaded;
+
             BrowserContainer.Child = TheSimBrowser;
 
             TheSimBrowser.Cookies = simulatorLaunchParameters?.CookiesData;
-            simulatorLaunchParameters?.BrowserCreatedCallback?.Invoke(TheSimBrowser);
 
             CheckBoxCORS.IsChecked = CrossDomainCallsHelper.IsBypassCORSErrors;
             CheckBoxCORS.Checked += CheckBoxCORS_Checked;
@@ -1157,23 +1167,11 @@ Click OK to continue.";
             File.WriteAllText(Path.Combine(debuggingFolder, fileName), Instance.getHtmlSnapshot(osRootOnly, htmlElementId, xamlElementName));
         }
 
-        private SimBrowser PrepareSimBrowser()
-        {
-            var simBrowser = SimBrowser.Instance;
-            simBrowser.Width = 150;
-            simBrowser.Height = 200;
-            simBrowser.SizeChanged += MainWebBrowser_SizeChanged;
+        //private SimBrowser PrepareSimBrowser()
+        //{
 
-            simBrowser.OnInitialized = () =>
-            {
-                _openSilverRuntime = new OpenSilverRuntime(this, Dispatcher.CurrentDispatcher);
-                LoadIndexPage();
-            };
-
-            simBrowser.OnNavigationCompleted = OnIndexPageLoaded;
-
-            return simBrowser;
-        }
+        //    return simBrowser;
+        //}
 
         private void ResizeWindowToScreenSize()
         {

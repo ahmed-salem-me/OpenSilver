@@ -14,7 +14,6 @@ namespace OpenSilver.Simulator
         private Dispatcher _OSDispatcher;
         private Action _ClientAppStartup;
         public static Assembly OSRuntimeAssembly { get; private set; }
-
         public JavaScriptExecutionHandler JavaScriptExecutionHandler { get; set; }
 
         public Action OnInitialized { get; set; }
@@ -42,6 +41,9 @@ namespace OpenSilver.Simulator
 
                     if (!Initialize())
                         return;
+
+                    if (OnInitialized != null)
+                        OnInitialized();
 
                     _ClientAppStartup();
 

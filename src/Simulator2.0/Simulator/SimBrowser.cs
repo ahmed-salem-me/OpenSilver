@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
@@ -17,7 +18,6 @@ namespace OpenSilver.Simulator
     {
         public IList<CookieData> Cookies;
         public string CacheFolderName { get { return "simulator-temp-cache"; } }
-
         public static SimBrowser Instance { get; }
         public Action OnNavigationCompleted { get; set; }
         public Action OnInitialized { get; set; }
@@ -130,15 +130,13 @@ namespace OpenSilver.Simulator
                     }
                     else
                     {
-                        MainWindow.Instance.Console.AddMessage(
-                            new ConsoleMessage(logMsg, ConsoleMessage.MessageLevel.Warning));
+                        MainWindow.Instance.Console.AddMessage(new ConsoleMessage(logMsg, ConsoleMessage.MessageLevel.Warning));
                     }
                     break;
                 case "error":
                     if (!string.IsNullOrEmpty(callFrame.Url))
                     {
-                        MainWindow.Instance.Console.AddMessage(
-                            new ConsoleMessage(logMsg, ConsoleMessage.MessageLevel.Error, fileSource));
+                        MainWindow.Instance.Console.AddMessage(new ConsoleMessage(logMsg, ConsoleMessage.MessageLevel.Error, fileSource));
                     }
                     else
                     {
@@ -150,12 +148,6 @@ namespace OpenSilver.Simulator
 
         private void CoreWebView_ContextMenuRequested(object sender, CoreWebView2ContextMenuRequestedEventArgs e)
         {
-            var validItems = new List<string> { "inspectElement" };
-
-            for (int i = e.MenuItems.Count - 1; i > -1; i--)
-                if (!validItems.Contains(e.MenuItems[i].Name))
-                    e.MenuItems.RemoveAt(i);
-
             CoreWebView2Deferral deferral = e.GetDeferral();
             e.Handled = true;
             ContextMenu cMenu = new ContextMenu();
@@ -179,9 +171,27 @@ namespace OpenSilver.Simulator
             string jsonString = null;
 
             if ((this as DispatcherObject).CheckAccess())
+            {
                 throw new NotSupportedException("Should not call ExecuteScript on the WebView2 thread");
+            }
             else
-                jsonString = Dispatcher.InvokeAsync(async () => await ExecuteScriptAsync(javaScript)).Result.Result;
+            {
+                var executeTask = Dispatcher.InvokeAsync(async () =>
+                {
+                    try
+                    {
+                        return await ExecuteScriptAsync(javaScript);
+                    }
+                    catch (TaskCanceledException)
+                    {
+                        return await Task.FromResult(null as string);
+                    }
+                }).Result;
+
+                jsonString = executeTask.Result;
+                if (jsonString == null)
+                    return null;
+            }
 
             var jsonDoc = JsonDocument.Parse(jsonString);
 

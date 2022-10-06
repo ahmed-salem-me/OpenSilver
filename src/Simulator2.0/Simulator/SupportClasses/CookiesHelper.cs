@@ -98,6 +98,5 @@ namespace OpenSilver.Simulator
                 //ams> the default of browserCookie.IsSession=true // how to make a cookie not a session cookie!
             }
         }
-
     }
 }
