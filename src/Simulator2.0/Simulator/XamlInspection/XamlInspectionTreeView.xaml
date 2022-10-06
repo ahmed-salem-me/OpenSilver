@@ -49,6 +49,6 @@
                 </xamlinspection:TreeNodeDataTemplateSelector>
             </TreeView.ItemTemplateSelector>
         </TreeView>
-        <TextBlock x:Name="NumberTreeViewElement" Grid.Row="2" TextWrapping="Wrap" Margin="10,5,10,5" Width="200" Foreground="LightGray" TextAlignment="Center" HorizontalAlignment="Center" Opacity="0.4">text</TextBlock>
+        <!--<TextBlock x:Name="NumberTreeViewElement" Grid.Row="2" TextWrapping="Wrap" Margin="10,5,10,5" Width="200" Foreground="LightGray" TextAlignment="Center" HorizontalAlignment="Center" Opacity="0.4">text</TextBlock>-->
     </Grid>
 </UserControl>
