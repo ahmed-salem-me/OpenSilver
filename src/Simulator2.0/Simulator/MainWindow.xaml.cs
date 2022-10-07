@@ -303,7 +303,6 @@ namespace OpenSilver.Simulator
             msgBox.Show();
         }
 
-        //ams> should delete unless wanted!
         private void ButtonDebugJavaScriptLog_Click(object sender, RoutedEventArgs e)
         {
 #if BRIDGE
@@ -668,7 +667,7 @@ Click OK to continue.";
 
         void ReloadAppAfterRedirect(string urlFragment)
         {
-            //ams understand what is redirect
+            //ams> understand what is redirect
             // Create the HTML DOM MANAGER proxy and pass it to the "Core" project:
             //JSValue htmlDocument = (JSObject)MainWebBrowser.Browser.ExecuteJavaScriptAndReturnValue("document");
             //InteropHelpers.InjectDOMDocument(MainWebBrowser.Browser.GetDocument(), _coreAssembly);

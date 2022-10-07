@@ -375,65 +375,6 @@ namespace OpenSilver.Simulator.XamlInspection
                 return null;
         }
 
-        public static void HighlightElement(object userUIElementThatWeWantToHighlight, Rectangle rectangleUsedToHighlight, WebView2 browser)
-        {
-            bool wasElementHighlighted = false;
-
-            if (userUIElementThatWeWantToHighlight != null)
-            {
-                try
-                {
-                    // Get the coordinates of the element in HTML:
-                    string uniqueIdentifier = ((dynamic)((dynamic)userUIElementThatWeWantToHighlight).INTERNAL_OuterDomElement).UniqueIdentifier.ToString();
-                    if (uniqueIdentifier != null)
-                    {
-                        //ams>fix
-                        string coordinates = browser.ExecuteScriptAsync(string.Format(
-                                                @"var div = document.getElementByIdSafe('{0}');
-                                                var rect = div.getBoundingClientRect();
-                                                var result = rect.top + ';' + rect.right + ';' + rect.bottom + ';' + rect.left;
-                                                result;
-                                                ", uniqueIdentifier)).Result.ToString();
-
-                        string[] coordinatesArray = coordinates.Replace(',', '.').Split(';');
-                        double top = double.Parse(coordinatesArray[0]);
-                        double right = double.Parse(coordinatesArray[1]);
-                        double bottom = double.Parse(coordinatesArray[2]);
-                        double left = double.Parse(coordinatesArray[3]);
-
-                        // Take into account the screen DPI:
-                        double dpiAwareTop = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(top, invert: false);
-                        double dpiAwareRight = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(right, invert: false);
-                        double dpiAwareBottom = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(bottom, invert: false);
-                        double dpiAwareLeft = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(left, invert: false);
-
-                        Canvas.SetLeft(rectangleUsedToHighlight, dpiAwareLeft);
-                        Canvas.SetTop(rectangleUsedToHighlight, dpiAwareTop);
-                        rectangleUsedToHighlight.Width = (dpiAwareRight > dpiAwareLeft ? (dpiAwareRight - dpiAwareLeft) : 0);
-                        rectangleUsedToHighlight.Height = (dpiAwareBottom > dpiAwareTop ? (dpiAwareBottom - dpiAwareTop) : 0);
-                        rectangleUsedToHighlight.Visibility = Visibility.Visible;
-
-                        // Remember the highlighted element reference:
-                        rectangleUsedToHighlight.Tag = userUIElementThatWeWantToHighlight;
-
-                        wasElementHighlighted = true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine(ex.ToString());
-                }
-            }
-
-            // Remove highlight if error or empty:
-            if (!wasElementHighlighted)
-            {
-                rectangleUsedToHighlight.Width = double.NaN;
-                rectangleUsedToHighlight.Height = double.NaN;
-                rectangleUsedToHighlight.Visibility = Visibility.Collapsed;
-            }
-        }
-
         public static void HighlightElementUsingJS(object uiElement, int highlightClr)
         {
             if (uiElement != null)

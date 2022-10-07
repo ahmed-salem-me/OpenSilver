@@ -95,7 +95,6 @@
     <Compile Include="DialogBoxes\MessageBoxScrollable.xaml.cs">
       <DependentUpon>MessageBoxScrollable.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interop\BrowserResultConverter.cs" />
     <Compile Include="Interop\ClipboardHandler.cs" />
     <Compile Include="Interop\OSDispatcherTimer.cs" />
     <Compile Include="Interop\SimulatorProxy.cs" />
