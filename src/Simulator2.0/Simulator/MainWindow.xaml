@@ -4,12 +4,12 @@
         xmlns:mahapps="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:xamlinspection="clr-namespace:OpenSilver.Simulator.XamlInspection"
         xmlns:console="clr-namespace:OpenSilver.Simulator.Console"
-        SizeToContent="WidthAndHeight"
+        SizeToContent="Manual"
         ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen"
         ShowIconOnTitleBar="True"
-        GlowBrush="{DynamicResource AccentColorBrush}"
-        Left="100" Top="5">
+        GlowBrush="{DynamicResource AccentColorBrush}">
+    
     <mahapps:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -24,6 +24,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </mahapps:MetroWindow.Resources>
+    
     <Grid>
         <Grid x:Name="GridForAudioMediaElements" Width="0" Height="0"/>
         <Border Background="#FF111112" x:Name="Root">
@@ -109,7 +110,6 @@
                                                     <MenuItem Header="Debug JS code executed by the Simulator so far..." Cursor="Hand" Click="ButtonDebugJavaScriptLog_Click" Visibility="Collapsed"/>
                                                     <MenuItem Header="View current HTML..." Cursor="Hand" Click="ButtonSeeHtml_Click"/>
                                                     <MenuItem Header="Save current HTML as File..." Cursor="Hand" Click="ButtonSaveHtml_Click"/>
-                                                    <MenuItem Header="Re-instantiate App.xaml.cs" Cursor="Hand" Click="ButtonRestart_Click"/>
                                                     <MenuItem Header="Display the number of DOM elements..." Cursor="Hand" Click="ButtonStats_Click"/>
                                                     <MenuItem Header="Clear cookies and cache" Cursor="Hand" Click="ButtonClearCookiesAndCache_Click"/>
                                                     <CheckBox x:Name="CheckBoxCORS" Content="Ignore and bypass cross-domain calls errors (CORS)"/>
@@ -168,12 +168,6 @@
                                 </Button>
                             </StackPanel>
                             <StackPanel Margin="10,0,0,0">
-                                <Button x:Name="ButtonDebuggingTips" Click="ButtonDebuggingTips_Click" Padding="10,3" Margin="0,0,0,0" Cursor="Hand" BorderThickness="0" Focusable="False" Background="Transparent" HorizontalAlignment="Left">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Path Stretch="Uniform" Fill="White" Width="16" Height="16" Margin="0,0,0,0" Data="M14.580002,23.394012L14.580002,26.235001 17.18399,26.235001 17.18399,23.394012z M16.117996,5.7660065C14.539993,5.7660065 13.278992,6.2390137 12.332993,7.1880035 10.991989,8.5250092 10.320999,10.223007 10.320999,12.27301L13.043991,12.27301C13.043991,10.695007 13.437988,9.5130005 14.22699,8.7230072 14.697998,8.25 15.289001,8.0130005 16,8.0130005 16.867996,8.0130005 17.537003,8.25 18.009995,8.7230072 18.561996,9.2750092 18.838989,10.106003 18.838989,11.207001 18.838989,12.077011 18.522995,12.827011 17.89299,13.455002 16.789001,14.561005 16.039001,15.429001 15.644989,16.061005 15.090988,16.92601 14.817001,18.228012 14.817001,19.964005L16.947998,19.964005C16.947998,18.545013 17.302002,17.478012 18.009995,16.767014 18.955994,15.824005 19.705994,15.074005 20.259995,14.522003 21.205002,13.574005 21.679001,12.432007 21.679001,11.090012 21.679001,9.5130005 21.166,8.2109985 20.14299,7.1880035 19.194992,6.2390137 17.853989,5.7660065 16.117996,5.7660065z M16,0C24.819992,0 32,7.178009 32,16.001007 32,24.822006 24.819992,32 16,32 7.1759949,32 0,24.822006 0,16.001007 0,7.178009 7.1759949,0 16,0z" />
-                                        <TextBlock Text="DEBUGGING TIPS" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Button>
                                 <Button x:Name="ButtonViewXamlTree" Click="ButtonViewXamlTree_Click" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="10,3" Cursor="Hand" BorderThickness="0" Focusable="False" Background="{DynamicResource AccentColorBrush}">
                                     <StackPanel Orientation="Horizontal">
                                         <Path Stretch="Uniform" Fill="White" Width="14" Height="14" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" Data="M40.110691,17.336001L43.787209,19.603006 47.739838,17.851579 46.722206,22.052104 49.609001,25.26417 45.300961,25.597356 43.13229,29.337 41.485435,25.338367 37.260998,24.432104 40.553104,21.631422z M30.316431,15.311499C30.737907,15.3207,31.141415,15.45716,31.470024,15.730532L33.818306,17.694105C34.694302,18.424594,34.7043,19.856977,33.841408,20.888161L6.1638265,54.03081C5.2956729,55.0699,3.888453,55.316195,3.0118785,54.583106L0.66258836,52.621932C-0.21271044,51.889041,-0.22314736,50.462062,0.64531529,49.424178L28.322847,16.281325C28.861591,15.634333,29.61397,15.296166,30.316431,15.311499z M17.982637,0.28100014L22.582518,3.1118908 27.524708,0.93214035 26.253859,6.1756935 29.865,10.203163 24.47509,10.621074 21.760185,15.288001 19.702805,10.298364 14.42,9.1577039 18.53216,5.6602993z M37.014431,0L40.23534,1.97754 43.692245,0.45019531 42.80167,4.1220703 45.327003,6.9426298 41.552406,7.2316895 39.658558,10.5 38.221096,7.0024395 34.521999,6.2094698 37.39922,3.7629395z"/>
@@ -297,11 +291,5 @@
                 </StackPanel>
             </Border>
         </StackPanel>
-        <Button Name="LaunchOptimizerButton" HorizontalAlignment="Right" VerticalAlignment="Bottom" BorderThickness="0" Click="LaunchOptimizerButton_Click" Visibility="Collapsed">
-            <TextBlock>
-                Launch optimizer
-            </TextBlock>
-        </Button>
-        <!--<TextBlock Text="POSITION" x:Name="Test" Foreground="Red" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>-->
     </Grid>
 </mahapps:MetroWindow>

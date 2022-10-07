@@ -94,14 +94,11 @@ namespace OpenSilver.Simulator
             //CookiesHelper.LoadMicrosoftCookies(MainWebBrowser, NAME_FOR_STORING_COOKIES);
 
             TheSimBrowser = SimBrowser.Instance;
-            TheSimBrowser.Width = 150;
-            TheSimBrowser.Height = 200;
-            TheSimBrowser.SizeChanged += MainWebBrowser_SizeChanged;
+            TheSimBrowser.SizeChanged += TheSimBrowser_SizeChanged;
 
             TheSimBrowser.OnInitialized = () =>
             {
                 _openSilverRuntime = new OpenSilverRuntime(this, Dispatcher.CurrentDispatcher);
-                _openSilverRuntime.OnInitialized = () => Dispatcher.Invoke(() => simulatorLaunchParameters?.BrowserCreatedCallback?.Invoke(TheSimBrowser));
                 LoadIndexPage();
             };
 
@@ -125,14 +122,13 @@ namespace OpenSilver.Simulator
             // Custom load handler to reload the app after redirection, for example in case of authentication scenarios (eg. Azure Active Directory login redirection):
             //NetworkChange.NetworkAvailabilityChanged += MainWindow_NetworkAvailabilityChanged;
 
-            this.Loaded += MainWindow_Loaded;
+            Loaded += MainWindow_Loaded;
             KeyDown += (s, e) => { if (e.Key == Key.F12) TheSimBrowser.CoreWebView2.OpenDevToolsWindow(); };
 
             ButtonRunInBrowser.Visibility = Visibility.Collapsed;
             CheckBoxUseHttpLocalhost.Visibility = Visibility.Collapsed;
             ButtonSeeOutputFolder.Visibility = Visibility.Collapsed;
             ButtonTestOnDevice.Visibility = Visibility.Collapsed;
-            ButtonDebuggingTips.Visibility = Visibility.Collapsed;
             MenuButtonViewCompilationLog.Visibility = Visibility.Collapsed;
             WelcomeTextBlock.Text = "The Simulator below lets you debug in C# using Visual Studio. To view the final web version instead, run the project that ends with .Browser in your solution.";
             WelcomeTextBlock.Visibility = Visibility.Visible;
@@ -214,19 +210,19 @@ namespace OpenSilver.Simulator
         async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             IsDevToolsOpened.IsChecked = Properties.Settings.Default.IsDevToolsOpened;
+
+            Width = ScreenCoordinatesHelper.ScreenWidth / 3 * 2;
+            Height = ScreenCoordinatesHelper.ScreenHeight / 3 * 2;
+            Left = (ScreenCoordinatesHelper.ScreenWidth / 2 - Width / 2) / 2;
+            Top = (ScreenCoordinatesHelper.ScreenHeight / 2 - Height / 2) / 2;
         }
 
-        async void MainWebBrowser_SizeChanged(object sender, SizeChangedEventArgs e)
+        async void TheSimBrowser_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (DisplaySize_Desktop.IsChecked == true
-                && _htmlHasBeenLoaded)
+            if (DisplaySize_Desktop.IsChecked == true && _htmlHasBeenLoaded)
             {
                 // Apply the size in pixels to the root <div> inside the html page:
                 ReflectBrowserSizeOnRootElementSize();
-
-                // Update the position of the highlight rectangle (the element picker) in case that the XAML inspector is open:
-                //ams> should remove
-                //await RepositionHighlightElementIfNecessary();
             }
         }
 
@@ -246,8 +242,8 @@ namespace OpenSilver.Simulator
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
-            Top = (Height / 2) - (Height / 2);
-            Left = (Width / 2) - (Width / 2);
+            Left = (ScreenCoordinatesHelper.ScreenWidth / 2 - Width / 2) / 2;
+            Top = (ScreenCoordinatesHelper.ScreenHeight / 2 - Height / 2) / 2;
         }
 
         private void ButtonStats_Click(object sender, RoutedEventArgs e)
@@ -294,13 +290,6 @@ namespace OpenSilver.Simulator
             SaveFileDialog saveFileDialog = new SaveFileDialog() { FileName = "index.html" };
             if (saveFileDialog.ShowDialog() == true)
                 File.WriteAllText(saveFileDialog.FileName, html);
-        }
-
-        private void ButtonRestart_Click(object sender, RoutedEventArgs e)
-        {
-            _htmlHasBeenLoaded = false;
-            _openSilverRuntime.Stop();
-            LoadIndexPage();
         }
 
         private void ButtonViewJavaScriptLog_Click(object sender, RoutedEventArgs e)
@@ -385,7 +374,7 @@ Click OK to continue.";
 
             if (runFromLocalhost)
             {
-                StartWebServer(useLocalhost: true);
+                //StartWebServer(useLocalhost: true);
             }
             else
             {
@@ -460,12 +449,7 @@ Click OK to continue.";
 
         void ButtonTestOnMobileDevices_Click(object sender, RoutedEventArgs e)
         {
-            StartWebServer(useLocalhost: false);
-        }
-
-        void ButtonDebuggingTips_Click(object sender, RoutedEventArgs e)
-        {
-            Process.Start("http://cshtml5.com/documentation/tips-for-debugging.aspx");
+            //StartWebServer(useLocalhost: false);
         }
 
         private void ButtonViewXamlTree_Click(object sender, RoutedEventArgs e)
@@ -561,11 +545,6 @@ Click OK to continue.";
         {
         }
 
-        private void LaunchOptimizerButton_Click(object sender, RoutedEventArgs e)
-        {
-            LaunchOptimizer();
-        }
-
         private void CheckBoxCORS_Checked(object sender, RoutedEventArgs e)
         {
             CrossDomainCallsHelper.IsBypassCORSErrors = true;
@@ -579,7 +558,7 @@ Click OK to continue.";
         private void DisplaySize_Click(object sender, RoutedEventArgs e)
         {
             SaveDisplaySize();
-            UpdateWebBrowserAndWebPageSizeBasedOnCurrentState();
+            //UpdateWebBrowserAndWebPageSizeBasedOnCurrentState();
         }
 
         private void LogInterop_Click(object sender, RoutedEventArgs e)
@@ -604,7 +583,7 @@ Click OK to continue.";
 
         private void ViewInteropLog_Click(object sender, RoutedEventArgs e)
         {
-            var logWin = new Window() { Title = "Interop Log", WindowStartupLocation = WindowStartupLocation.CenterScreen };
+            var logWin = new Window() { Title = "Interops Log", WindowStartupLocation = WindowStartupLocation.CenterScreen };
             logWin.Content = new TextBox() { Text = _openSilverRuntime.JavaScriptExecutionHandler.InteropLog, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
             logWin.Show();
         }
@@ -646,7 +625,7 @@ Click OK to continue.";
             if (!_htmlHasBeenLoaded)
             {
                 _htmlHasBeenLoaded = true;
-                UpdateWebBrowserAndWebPageSizeBasedOnCurrentState();
+                //UpdateWebBrowserAndWebPageSizeBasedOnCurrentState();
 
                 // Start the app:
                 ShowLoadingMessage();
@@ -660,7 +639,7 @@ Click OK to continue.";
                     _simulatorLaunchParameters?.AppStartedCallback?.Invoke();
                     HideLoadingMessage();
 
-                    UpdateWebBrowserAndWebPageSizeBasedOnCurrentState();
+                    //UpdateWebBrowserAndWebPageSizeBasedOnCurrentState();
                 }
             }
         }
@@ -725,38 +704,36 @@ Click OK to continue.";
             ContainerOfLoadingMessage.Visibility = Visibility.Collapsed;
         }
 
-        void SetWebBrowserSize(double width, double height)
-        {
-            try
-            {
-                // We take into account the "Font Size" (DPI) setting of Windows: //cf. http://answers.awesomium.com/questions/321/non-standard-dpi-rendering-is-broken-in-webcontrol.html
-                double correctedWidth = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(width);
-                double correctedHeight = ScreenCoordinatesHelper.ConvertHeightOrNaNToDpiAwareHeightOrNaN(height);
-                TheSimBrowser.Width = correctedWidth;
-                TheSimBrowser.Height = correctedHeight;
+        //void SetWebBrowserSize(double width, double height)
+        //{
+        //    try
+        //    {
+        //        // We take into account the "Font Size" (DPI) setting of Windows: //cf. http://answers.awesomium.com/questions/321/non-standard-dpi-rendering-is-broken-in-webcontrol.html
+        //        double correctedWidth = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(width);
+        //        double correctedHeight = ScreenCoordinatesHelper.ConvertHeightOrNaNToDpiAwareHeightOrNaN(height);
+        //        TheSimBrowser.Width = correctedWidth;
+        //        TheSimBrowser.Height = correctedHeight;
 
 
-                Dispatcher.BeginInvoke((Action)(() =>
-                    {
-                        ReflectBrowserSizeOnRootElementSize();
-                    }));
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
+        //        //ReflectBrowserSizeOnRootElementSize();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.ToString());
+        //    }
+        //}
 
         void ReflectBrowserSizeOnRootElementSize()
         {
+            return;
             try
             {
                 double width = double.IsNaN(TheSimBrowser.Width) ? TheSimBrowser.ActualWidth : TheSimBrowser.Width;
                 double height = double.IsNaN(TheSimBrowser.Height) ? TheSimBrowser.ActualHeight : TheSimBrowser.Height;
 
-                // Take into account screen DPI:
-                width = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(width, invert: true); // Supports "NaN"
-                height = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(height, invert: true); // Supports "NaN"
+                //Take into account screen DPI:
+                //width = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(width, invert: true); // Supports "NaN"
+                //height = ScreenCoordinatesHelper.ConvertWidthOrNaNToDpiAwareWidthOrNaN(height, invert: true); // Supports "NaN"
 
                 var widthStr = !double.IsNaN(width) ? width.ToString(CultureInfo.InvariantCulture) + "px" : "100%";
                 var heightStr = !double.IsNaN(height) ? height.ToString(CultureInfo.InvariantCulture) + "px" : "100%";
@@ -771,146 +748,85 @@ Click OK to continue.";
 
         string _lastExecutedJavaScript = "";
 
-        void StartWebServer(bool useLocalhost)
-        {
-            try
-            {
-                // First, verify that "index.html" was properly created:
-                string pathOfIndexFile = _rootPage.GetOutputIndexPath();
-                if (File.Exists(pathOfIndexFile))
-                {
-                    string fileNameForLocalServer = "CSharpXamlForHtml5.LocalServer.exe";
-                    string simulatorDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
-                    string fullPathToLocalServer;
-                    if (File.Exists(Path.Combine(simulatorDirectory, fileNameForLocalServer)))
-                    {
-                        //---------------------
-                        // When distributed by the MSI, the file is in the same directory as the simulator:
-                        //---------------------
-                        fullPathToLocalServer = Path.Combine(simulatorDirectory, fileNameForLocalServer);
-                    }
-                    else
-                    {
-                        //---------------------
-                        // When in the development solution, the file is in its own project folder:
-                        //---------------------
-                        fullPathToLocalServer = Path.Combine(simulatorDirectory, @"..\..\..\DotNetForHtml5.LocalServer\bin\Debug\CSharpXamlForHtml5.LocalServer.exe");
-                    }
-                    if (File.Exists(fullPathToLocalServer))
-                    {
-                        string outputPathAbsolute = _rootPage.GetOutputPathAbsoluteAndReadAssemblyAttributes();
-                        string arguments = (useLocalhost ? "uselocalhost" : "nolocalhost") + " " + "\"" + outputPathAbsolute + "\"";
-                        ProcessStartInfo psi = new ProcessStartInfo();
-                        psi.FileName = Path.GetFileName(fullPathToLocalServer);
-                        psi.WorkingDirectory = Path.GetDirectoryName(fullPathToLocalServer);
-                        psi.Arguments = arguments;
-                        try
-                        {
-                            Process.Start(psi);
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(ex.Message);
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("File not found: " + Path.Combine(Directory.GetCurrentDirectory(), fileNameForLocalServer));
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("There was an error generating HTML/JavaScript files." + "\r\n\r\n" + NoteWhenUnableToLaunchTheGeneratedHtml);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
+        //public void UpdateWebBrowserAndWebPageSizeBasedOnCurrentState()
+        //{
+        //    if (DisplaySize_Phone.IsChecked == true)
+        //    {
+        //        this.ResizeMode = ResizeMode.CanMinimize;
+        //        this.SizeToContent = SizeToContent.WidthAndHeight;
+        //        //this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight - 40; // Prevents the window from growing below the Windows task bar, cf. https://stackoverflow.com/questions/25790674/wpf-scrollbar-on-auto-and-sizetocontent-height-goes-under-windows7-toolbar
+        //        OptionsForDisplaySize_Phone.Visibility = Visibility.Visible;
+        //        OptionsForDisplaySize_Tablet.Visibility = Visibility.Collapsed;
+        //        PhoneDecoration1.Visibility = Visibility.Visible;
+        //        PhoneDecoration2.Visibility = Visibility.Visible;
+        //        MainBorder.Background = new SolidColorBrush(Color.FromArgb(255, 34, 34, 34));
+        //        MainBorder.HorizontalAlignment = HorizontalAlignment.Center;
+        //        MainBorder.VerticalAlignment = VerticalAlignment.Top;
+        //        MainScrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+        //        MainScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
 
-        public void UpdateWebBrowserAndWebPageSizeBasedOnCurrentState()
-        {
-            if (DisplaySize_Phone.IsChecked == true)
-            {
-                this.ResizeMode = ResizeMode.CanMinimize;
-                this.SizeToContent = SizeToContent.WidthAndHeight;
-                //this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight - 40; // Prevents the window from growing below the Windows task bar, cf. https://stackoverflow.com/questions/25790674/wpf-scrollbar-on-auto-and-sizetocontent-height-goes-under-windows7-toolbar
-                OptionsForDisplaySize_Phone.Visibility = Visibility.Visible;
-                OptionsForDisplaySize_Tablet.Visibility = Visibility.Collapsed;
-                PhoneDecoration1.Visibility = Visibility.Visible;
-                PhoneDecoration2.Visibility = Visibility.Visible;
-                MainBorder.Background = new SolidColorBrush(Color.FromArgb(255, 34, 34, 34));
-                MainBorder.HorizontalAlignment = HorizontalAlignment.Center;
-                MainBorder.VerticalAlignment = VerticalAlignment.Top;
-                MainScrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
-                MainScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+        //        if (DisplaySize_Phone_Landscape.IsChecked == true)
+        //        {
+        //            SetWebBrowserSize(480, 320);
+        //            ContainerForMainWebBrowserAndHighlightElement.Margin = new Thickness(60, 10, 60, 10);
+        //        }
+        //        else
+        //        {
+        //            SetWebBrowserSize(320, 480);
+        //            ContainerForMainWebBrowserAndHighlightElement.Margin = new Thickness(10, 60, 10, 60);
+        //        }
+        //    }
+        //    else if (DisplaySize_Tablet.IsChecked == true)
+        //    {
+        //        this.ResizeMode = ResizeMode.CanMinimize;
+        //        this.SizeToContent = SizeToContent.WidthAndHeight;
+        //        this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight - 40; // Prevents the window from growing below the Windows task bar, cf. https://stackoverflow.com/questions/25790674/wpf-scrollbar-on-auto-and-sizetocontent-height-goes-under-windows7-toolbar
+        //        OptionsForDisplaySize_Phone.Visibility = Visibility.Collapsed;
+        //        OptionsForDisplaySize_Tablet.Visibility = Visibility.Visible;
+        //        PhoneDecoration1.Visibility = Visibility.Visible;
+        //        PhoneDecoration2.Visibility = Visibility.Visible;
+        //        MainBorder.Background = new SolidColorBrush(Color.FromArgb(255, 34, 34, 34));
+        //        MainBorder.HorizontalAlignment = HorizontalAlignment.Center;
+        //        MainBorder.VerticalAlignment = VerticalAlignment.Top;
+        //        MainScrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+        //        MainScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
 
-                if (DisplaySize_Phone_Landscape.IsChecked == true)
-                {
-                    SetWebBrowserSize(480, 320);
-                    ContainerForMainWebBrowserAndHighlightElement.Margin = new Thickness(60, 10, 60, 10);
-                }
-                else
-                {
-                    SetWebBrowserSize(320, 480);
-                    ContainerForMainWebBrowserAndHighlightElement.Margin = new Thickness(10, 60, 10, 60);
-                }
-            }
-            else if (DisplaySize_Tablet.IsChecked == true)
-            {
-                this.ResizeMode = ResizeMode.CanMinimize;
-                this.SizeToContent = SizeToContent.WidthAndHeight;
-                this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight - 40; // Prevents the window from growing below the Windows task bar, cf. https://stackoverflow.com/questions/25790674/wpf-scrollbar-on-auto-and-sizetocontent-height-goes-under-windows7-toolbar
-                OptionsForDisplaySize_Phone.Visibility = Visibility.Collapsed;
-                OptionsForDisplaySize_Tablet.Visibility = Visibility.Visible;
-                PhoneDecoration1.Visibility = Visibility.Visible;
-                PhoneDecoration2.Visibility = Visibility.Visible;
-                MainBorder.Background = new SolidColorBrush(Color.FromArgb(255, 34, 34, 34));
-                MainBorder.HorizontalAlignment = HorizontalAlignment.Center;
-                MainBorder.VerticalAlignment = VerticalAlignment.Top;
-                MainScrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
-                MainScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+        //        if (DisplaySize_Tablet_Landscape.IsChecked == true)
+        //        {
+        //            SetWebBrowserSize(1024, 768);
+        //            ContainerForMainWebBrowserAndHighlightElement.Margin = new Thickness(60, 10, 60, 10);
+        //        }
+        //        else
+        //        {
+        //            SetWebBrowserSize(768, 1024);
+        //            ContainerForMainWebBrowserAndHighlightElement.Margin = new Thickness(10, 60, 10, 60);
+        //        }
+        //    }
+        //    else if (DisplaySize_Desktop.IsChecked == true)
+        //    {
+        //        this.ResizeMode = ResizeMode.CanResizeWithGrip;
+        //        this.SizeToContent = SizeToContent.Manual;
+        //        this.MaxHeight = double.PositiveInfinity;
+        //        OptionsForDisplaySize_Phone.Visibility = Visibility.Collapsed;
+        //        OptionsForDisplaySize_Tablet.Visibility = Visibility.Collapsed;
+        //        PhoneDecoration1.Visibility = Visibility.Collapsed;
+        //        PhoneDecoration2.Visibility = Visibility.Collapsed;
+        //        MainBorder.Background = new SolidColorBrush(Colors.Transparent);
+        //        MainBorder.HorizontalAlignment = HorizontalAlignment.Stretch;
+        //        MainBorder.VerticalAlignment = VerticalAlignment.Stretch;
+        //        MainScrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
+        //        MainScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
 
-                if (DisplaySize_Tablet_Landscape.IsChecked == true)
-                {
-                    SetWebBrowserSize(1024, 768);
-                    ContainerForMainWebBrowserAndHighlightElement.Margin = new Thickness(60, 10, 60, 10);
-                }
-                else
-                {
-                    SetWebBrowserSize(768, 1024);
-                    ContainerForMainWebBrowserAndHighlightElement.Margin = new Thickness(10, 60, 10, 60);
-                }
-            }
-            else if (DisplaySize_Desktop.IsChecked == true)
-            {
-                this.ResizeMode = ResizeMode.CanResizeWithGrip;
-                this.SizeToContent = SizeToContent.Manual;
-                this.MaxHeight = double.PositiveInfinity;
-                OptionsForDisplaySize_Phone.Visibility = Visibility.Collapsed;
-                OptionsForDisplaySize_Tablet.Visibility = Visibility.Collapsed;
-                PhoneDecoration1.Visibility = Visibility.Collapsed;
-                PhoneDecoration2.Visibility = Visibility.Collapsed;
-                MainBorder.Background = new SolidColorBrush(Colors.Transparent);
-                MainBorder.HorizontalAlignment = HorizontalAlignment.Stretch;
-                MainBorder.VerticalAlignment = VerticalAlignment.Stretch;
-                MainScrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
-                MainScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
-
-                SetWebBrowserSize(double.NaN, double.NaN);
-                ContainerForMainWebBrowserAndHighlightElement.Margin = new Thickness(0, 0, 0, 0);
-                Dispatcher.BeginInvoke((Action)(() =>
-                {
-                    this.Width = ScreenCoordinatesHelper.ScreenWidth;
-                    this.Height = ScreenCoordinatesHelper.ScreenHeight;
-                }));
-            }
-            else
-            {
-                MessageBox.Show("Error: no display size selected. Please report this error to the authors.");
-            }
-        }
+        //        SetWebBrowserSize(double.NaN, double.NaN);
+        //        ContainerForMainWebBrowserAndHighlightElement.Margin = new Thickness(0, 0, 0, 0);
+        //        this.Width = ScreenCoordinatesHelper.ScreenWidth;
+        //        this.Height = ScreenCoordinatesHelper.ScreenHeight;
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Error: no display size selected. Please report this error to the authors.");
+        //    }
+        //}
 
         void UpdateToolbarBasedOnCurrentCompilationState()
         {
@@ -1091,64 +1007,6 @@ Click OK to continue.";
             return NetworkInterface.GetIsNetworkAvailable();
         }
 
-        public void LaunchOptimizer()
-        {
-            try
-            {
-                // First, verify that "index.html" was properly created:
-                string pathOfIndexFile = _rootPage.GetOutputIndexPath();
-                if (File.Exists(pathOfIndexFile))
-                {
-                    string fileNameForOptimizer = "Cshtml5Optimizer.exe";
-                    string optimizerDirectory = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "..", "optimizer");
-                    string fullPathToOptimizer;
-                    if (File.Exists(Path.Combine(optimizerDirectory, fileNameForOptimizer)))
-                    {
-                        //---------------------
-                        // When distributed by the MSI, the file is in the same directory as the simulator:
-                        //---------------------
-                        fullPathToOptimizer = Path.Combine(optimizerDirectory, fileNameForOptimizer);
-                    }
-                    else
-                    {
-                        //---------------------
-                        // When in the development solution, the file is in its own project folder:
-                        //---------------------
-                        fullPathToOptimizer = Path.Combine(optimizerDirectory, @"..\..\..\\Cshtml5Optimizer\bin\Debug\Cshtml5Optimizer.exe");
-                    }
-                    if (File.Exists(fullPathToOptimizer))
-                    {
-                        string outputPathAbsolute = _rootPage.GetOutputPathAbsoluteAndReadAssemblyAttributes();
-                        string arguments = "\"" + Path.Combine(outputPathAbsolute, "index.min.html") + "\"";
-                        ProcessStartInfo psi = new ProcessStartInfo();
-                        psi.FileName = Path.GetFileName(fullPathToOptimizer);
-                        psi.WorkingDirectory = Path.GetDirectoryName(fullPathToOptimizer);
-                        psi.Arguments = arguments;
-                        try
-                        {
-                            Process.Start(psi);
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(ex.Message);
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("File not found: " + Path.Combine(Directory.GetCurrentDirectory(), fileNameForOptimizer));
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("There was an error generating HTML/JavaScript files." + "\r\n\r\n" + NoteWhenUnableToLaunchTheGeneratedHtml);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
         public static MainWindow Instance { get; set; }
 
         public static void SaveHtmlSnapshot(string fileName = null, bool osRootOnly = true, string htmlElementId = null, string xamlElementName = null)
@@ -1165,18 +1023,6 @@ Click OK to continue.";
                 Directory.CreateDirectory(debuggingFolder);
 
             File.WriteAllText(Path.Combine(debuggingFolder, fileName), Instance.getHtmlSnapshot(osRootOnly, htmlElementId, xamlElementName));
-        }
-
-        //private SimBrowser PrepareSimBrowser()
-        //{
-
-        //    return simBrowser;
-        //}
-
-        private void ResizeWindowToScreenSize()
-        {
-            //Width = scrWidth / 3 * 2 - scrWidth / 3 / 2;
-            //Height = scrHeight / 3 * 2 - scrHeight / 3 / 2;
         }
     }
 }

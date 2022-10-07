@@ -32,8 +32,8 @@ namespace OpenSilver.Simulator
             Matrix matrix = _presentationSource.CompositionTarget.TransformToDevice;
             _dbiX = matrix.M22;
             _dbiY = matrix.M11;
-            ScreenWidth = SystemParameters.PrimaryScreenWidth * matrix.M22 / 4 * 3;
-            ScreenHeight = SystemParameters.PrimaryScreenHeight * matrix.M11 / 4 * 3;
+            ScreenWidth = SystemParameters.PrimaryScreenWidth * _dbiX;
+            ScreenHeight = SystemParameters.PrimaryScreenHeight * _dbiY;
         }
         public static double ConvertWidthOrNaNToDpiAwareWidthOrNaN(double widthOrNaN, bool invert = false)
         {
