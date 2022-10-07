@@ -89,48 +89,39 @@ namespace CSHTML5.Types
         internal static object CastFromJsValue(object obj)
         {
 #if OPENSILVER
-            if (!Interop.IsRunningInTheSimulator_WorkAround || DotNetForHtml5.Core.INTERNAL_Simulator.SimulatorProxy.UseSimBrowser)
+            if (obj != null && (obj is string || obj.GetType().IsPrimitive))
             {
-                if (obj != null && (obj is string || obj.GetType().IsPrimitive))
-                {
-                    return obj;
-                }
+                return obj;
+            }
 
-                JsonElement jsonElement = (JsonElement)obj;
-                object res;
-                switch (jsonElement.ValueKind)
-                {
-                    case JsonValueKind.Object:
-                    case JsonValueKind.Array:
-                        res = obj;
-                        break;
-                    case JsonValueKind.String:
-                        res = jsonElement.GetString();
-                        break;
-                    case JsonValueKind.Number:
-                        res = jsonElement.GetSingle();
-                        break;
-                    case JsonValueKind.True:
-                    case JsonValueKind.False:
-                        res = jsonElement.GetBoolean();
-                        break;
-                    case JsonValueKind.Undefined:
-                    case JsonValueKind.Null:
-                        res = null;
-                        break;
-                    default:
-                        res = null;
-                        break;
-                }
-                return res;
-            }
-            else
-#endif
+            JsonElement jsonElement = (JsonElement)obj;
+            object res;
+            switch (jsonElement.ValueKind)
             {
-                //ams> Exception until I know if it will ever be needed with webview2
-                //return DotNetForHtml5.Core.INTERNAL_Simulator.ConvertBrowserResult(obj);
-                throw new NotSupportedException("JS value type unrecognized");
+                case JsonValueKind.Object:
+                case JsonValueKind.Array:
+                    res = obj;
+                    break;
+                case JsonValueKind.String:
+                    res = jsonElement.GetString();
+                    break;
+                case JsonValueKind.Number:
+                    res = jsonElement.GetSingle();
+                    break;
+                case JsonValueKind.True:
+                case JsonValueKind.False:
+                    res = jsonElement.GetBoolean();
+                    break;
+                case JsonValueKind.Undefined:
+                case JsonValueKind.Null:
+                    res = null;
+                    break;
+                default:
+                    res = null;
+                    break;
             }
+            return res;
+#endif
         }
 
 #if BRIDGE
@@ -195,10 +186,6 @@ namespace CSHTML5.Types
         {
             var actualValue = GetActualValue();
 #if CSHTML5NETSTANDARD
-            //ams> skip simulator check and do as in browser
-            //if (Interop.IsRunningInTheSimulator_WorkAround)
-            //    return (actualValue == null || actualValue.GetType().FullName == "DotNetBrowser.JSUndefined");
-            //else
             return actualValue == null || actualValue.ToString() == "[UNDEFINED]";
 #else
             if (actualValue ==  null || !(actualValue is JSValue))

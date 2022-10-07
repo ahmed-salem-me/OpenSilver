@@ -151,12 +151,6 @@ namespace Windows.UI.Core
             else
             {
 #endif
-                //Simulator only. We call the JavaScript "setTimeout" to queue the action on the thread, and then we call Dispatcher.BeginInvoke(...) to ensure that it runs in the UI thread.
-                //CSHTML5.Interop.ExecuteJavaScriptAsync("setTimeout($0, 1)",
-                //    (Action)(() =>
-                //    {
-                //ams> double check , with webView2 I don't want to use the simulator UI thread
-                //INTERNAL_Simulator.WebControlDispatcherBeginInvoke(method);
                 INTERNAL_Simulator.SimulatorProxy.OSInvokeAsync(method);
             //}));
 #if CSHTML5NETSTANDARD
@@ -273,9 +267,7 @@ namespace Windows.UI.Core
         public bool CheckAccess()
         {
 #if OPENSILVER
-            //ams> skip simulator check
             return true;
-            //return INTERNAL_Simulator.IsRunningInTheSimulator_WorkAround ? INTERNAL_Simulator.WebControlDispatcherCheckAccess() : true; 
 #else
             return CSHTML5.Interop.IsRunningInTheSimulator ? INTERNAL_Simulator.WebControlDispatcherCheckAccess() : true;
 #endif

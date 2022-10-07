@@ -56,13 +56,7 @@ namespace CSHTML5
 
             if (OpenSilver.Interop.IsRunningInTheSimulator)
             {
-                // Adding a property to the JavaScript "window" object:
-                //ams> re-write
-                if (!DotNetForHtml5.Core.INTERNAL_Simulator.SimulatorProxy.UseSimBrowser)
-                {
-                    dynamic jsWindow = INTERNAL_HtmlDomManager.ExecuteJavaScriptWithResult("window");
-                    jsWindow.SetProperty("onCallBack", OnCallbackSimulator.Instance);
-                }
+                //create the OnCallbackSimulator
                 _ = OnCallbackSimulator.Instance;
             }
 
@@ -151,28 +145,9 @@ namespace CSHTML5
                     var isVoid = jsCallback.GetCallback().Method.ReturnType == typeof(void);
 
                     // Change the JS code to point to that callback:
-                    //ams> skip simulator check and do as in browser
-                    if (OpenSilver.Interop.IsRunningInTheSimulator && DotNetForHtml5.Core.INTERNAL_Simulator.SimulatorProxy.UseSimBrowser)
-                        javascript = javascript.Replace("$" + i.ToString(), string.Format(
-                           @"(function() {{ return document.eventCallback({0}, {1}, {2});}})", callbackId,
-#if OPENSILVER
-                           "Array.prototype.slice.call(arguments)",
-#elif BRIDGE
-
-                                       "Array.prototype.slice.call(arguments)",
-#endif
-                           (!isVoid).ToString().ToLower()
-                           ));
-                    else
-                        javascript = javascript.Replace("$" + i.ToString(), string.Format(
-                                   @"(function() {{ return document.eventCallback({0}, {1}, {2});}})", callbackId,
-#if OPENSILVER
-                                   Interop.IsRunningInTheSimulator_WorkAround ? "arguments" : "Array.prototype.slice.call(arguments)",
-#elif BRIDGE
-                                       "Array.prototype.slice.call(arguments)",
-#endif
-                                   (!isVoid).ToString().ToLower()
-                                   ));
+                    javascript = javascript.Replace("$" + i.ToString(), string.Format(
+                       @"(function() {{ return document.eventCallback({0}, {1}, {2});}})", callbackId,
+                       "Array.prototype.slice.call(arguments)", (!isVoid).ToString().ToLower()));
 
                     // Note: generating the random number in JS rather than C# is important in order
                     // to be able to put this code inside a JavaScript "for" statement (cf.

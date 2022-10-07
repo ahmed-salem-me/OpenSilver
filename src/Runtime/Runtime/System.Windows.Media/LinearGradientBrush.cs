@@ -435,17 +435,7 @@ namespace Windows.UI.Xaml.Media
 
             double angle = alpha * 180 / Math.PI;
 
-            //ams> skip simulator check and do as in browser
-            //#if CSHTML5BLAZOR
-            //            if (!CSHTML5.Interop.IsRunningInTheSimulator_WorkAround)
-            //#else
-            //            if (!CSHTML5.Interop.IsRunningInTheSimulator)
-            //#endif
-            //            {
-            //                // In the browsers, the angle goes in the opposite direction of that of the Simulator,
-            //                // and 0 degrees is not in the same position so we fix it:
             angle = 360 - angle + 90;
-            //            }
 
             string gradientType = this.SpreadMethod == GradientSpreadMethod.Repeat ? "repeating-linear-gradient" : "linear-gradient";
             string baseString = gradientType + "(" + angle.ToInvariantString() + "deg, " + gradientStopsString + ")";

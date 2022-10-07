@@ -39,19 +39,14 @@ namespace CSHTML5.Internal
         {
             CheckIsRunningInTheSimulator();
 
-            if (INTERNAL_Simulator.SimulatorProxy.UseSimBrowser)
-            {
-                INTERNAL_Simulator.SimulatorProxy.AddHostObject("onCallBack", this);
-                INTERNAL_HtmlDomManager.ExecuteJavaScriptWithResult("window.onCallBack = chrome.webview.hostObjects.onCallBack;");
-            }
-
+            INTERNAL_Simulator.SimulatorProxy.AddHostObject("onCallBack", this);
+            INTERNAL_HtmlDomManager.ExecuteJavaScriptWithResult("window.onCallBack = chrome.webview.hostObjects.onCallBack;");
         }
 
         public void OnCallbackFromJavaScriptError(string idWhereCallbackArgsAreStored)
         {
             Action callBack = () => OnCallBackImpl.Instance.OnCallbackFromJavaScriptError(idWhereCallbackArgsAreStored);
             INTERNAL_Simulator.SimulatorProxy.OSInvokeAsync(callBack);
-
         }
 
         // This method can be removed later. Now it is used for easier migration from old cshtml5.js to new one
@@ -69,19 +64,10 @@ namespace CSHTML5.Internal
             object callbackArgsObject,
             bool returnValue)
         {
-            if (INTERNAL_Simulator.SimulatorProxy.UseSimBrowser)
-            {
-                if (INTERNAL_Simulator.SimulatorProxy.IsOSRuntimeRunning)
-                {
-                    Action callBack = () => OnCallBackImpl.Instance.OnCallbackFromJavaScript(callbackId, idWhereCallbackArgsAreStored, callbackArgsObject,
-                            MakeArgumentsForCallbackSimulator, true, false);
+            Action callBack = () => OnCallBackImpl.Instance.OnCallbackFromJavaScript(callbackId, idWhereCallbackArgsAreStored, callbackArgsObject,
+                    MakeArgumentsForCallbackSimulator, true, false);
 
-                    INTERNAL_Simulator.SimulatorProxy.OSInvokeAsync(callBack);
-                }
-            }
-            else
-                OnCallBackImpl.Instance.OnCallbackFromJavaScript(callbackId, idWhereCallbackArgsAreStored, callbackArgsObject,
-                    MakeArgumentsForCallbackSimulator, true, returnValue);
+            INTERNAL_Simulator.SimulatorProxy.OSInvokeAsync(callBack);
         }
 
         private static object[] MakeArgumentsForCallbackSimulator(
@@ -96,12 +82,6 @@ namespace CSHTML5.Internal
             for (int i = 0; i < count; i++)
             {
                 var arg = new INTERNAL_JSObjectReference(callbackArgs, idWhereCallbackArgsAreStored, i);
-                //if (Interop.IsRunningInTheSimulator)
-                //    if (DotNetForHtml5.Core.INTERNAL_Simulator.SimulatorProxy.UseSimBrowser)
-                //    {
-                //        result[i] = arg;
-                //        continue;
-                //    }
                 if (callbackGenericArgs != null
                     && i < callbackGenericArgs.Length
                     && callbackGenericArgs[i] != typeof(object)
