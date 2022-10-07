@@ -31,8 +31,6 @@ namespace OpenSilver.Simulator
         ConsoleControl _console;
         private Dispatcher _SimDispatcher;
         public static Dispatcher OSDispatcher;
-        public bool UseSimBrowser { get; set; } = true;
-        public bool IsOSRuntimeRunning { get; set; } = true;
 
         public SimulatorProxy(ConsoleControl console, Dispatcher simDispatcher, Dispatcher oSDispatcher)
         {
