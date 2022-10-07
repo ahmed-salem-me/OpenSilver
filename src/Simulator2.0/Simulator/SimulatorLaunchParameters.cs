@@ -13,11 +13,6 @@ namespace CSHTML5.Simulator
 {
     public class SimulatorLaunchParameters
     {
-
-        // Add stuff as needed, like cookies, etc.
-
-        public Action<WebView2> BrowserCreatedCallback { get; set; }
-
         /// <summary>
         /// Action to call when the provided app class is created successfully.
         /// </summary>

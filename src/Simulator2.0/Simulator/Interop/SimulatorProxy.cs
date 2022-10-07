@@ -22,13 +22,11 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Microsoft.Web.WebView2.Wpf;
-using OpenSilver.Simulator;
 
 namespace OpenSilver.Simulator
 {
     //Do not remove this class: called via reflection.
-    public class SimulatorProxy 
+    public class SimulatorProxy
     {
         ConsoleControl _console;
         private Dispatcher _SimDispatcher;
@@ -140,22 +138,6 @@ namespace OpenSilver.Simulator
             return Activator.CreateInstance(type.MakeGenericType(parameters));
         }
 
-        public object StartDispatcherTimer(Action action, long intervalInMilliseconds)
-        {
-            var dispatcherTimer = new DispatcherTimer()
-            {
-                Interval = new TimeSpan(0, 0, 0, 0, (int)intervalInMilliseconds) //todo: verify that it's ok to cast from long to int here.
-            };
-            dispatcherTimer.Tick += (s, e) => { if (action != null) action(); };
-            dispatcherTimer.Start();
-            return dispatcherTimer;
-        }
-
-        public void StopDispatcherTimer(object dispatcherTimer)
-        {
-            ((DispatcherTimer)dispatcherTimer).Stop();
-        }
-
         public void ReportJavaScriptError(string error, string where)
         {
             _console.AddMessage(new ConsoleMessage(
@@ -183,6 +165,24 @@ namespace OpenSilver.Simulator
         {
             var timer = OSDispatcher.Invoke(() => { return new OSDispatcherTimer(tickAction, interval); });
             return timer;
+        }
+
+        public void CreateCookie(string name, string value, string Domain, string Path)
+        {
+            _SimDispatcher.InvokeAsync(() =>
+            {
+                var cookie = SimBrowser.Instance.CoreWebView2.CookieManager.CreateCookie(name, value, Domain, Path);
+                SimBrowser.Instance.CoreWebView2.CookieManager.AddOrUpdateCookie(cookie);
+            });
+        }
+
+        public void DeleteCookie(string name, string Domain, string Path)
+        {
+            _SimDispatcher.InvokeAsync(() =>
+            {
+                var cookie = SimBrowser.Instance.CoreWebView2.CookieManager.CreateCookie(name, null, Domain, Path);
+                SimBrowser.Instance.CoreWebView2.CookieManager.DeleteCookie(cookie);
+            });
         }
     }
 }
