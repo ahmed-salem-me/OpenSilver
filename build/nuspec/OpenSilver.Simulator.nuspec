@@ -54,7 +54,7 @@
     <!-- OpenSilver JS and CSS files -->
     <file src="../src/Runtime/Scripts/opensilver.js" target="contentFiles/any/net48/js_css" />
     <file src="../src/Runtime/Scripts/cshtml5.css" target="contentFiles/any/net48/js_css" />
-    <file src="../src/Runtime/Scripts/cshtml5.js" target="contentFiles/any/net48/js_css" />
+    <file src="../src/Runtime/Scripts/Simulator/cshtml5.js" target="contentFiles/any/net48/js_css" />
     <file src="../src/Runtime/Scripts/fastclick.js" target="contentFiles/any/net48/js_css" />
     <file src="../src/Runtime/Scripts/flatpickr.css" target="contentFiles/any/net48/js_css" />
     <file src="../src/Runtime/Scripts/flatpickr.js" target="contentFiles/any/net48/js_css" />
