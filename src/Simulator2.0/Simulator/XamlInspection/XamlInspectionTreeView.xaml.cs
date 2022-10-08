@@ -68,7 +68,7 @@ namespace OpenSilver.Simulator.XamlInspection
 
         private void XamlInspectionTreeView_Loaded(object sender, RoutedEventArgs e)
         {
-            MaxWidth = ScreenCoordinatesHelper.ScreenWidth / 3;
+            MaxWidth = ScreenCoordinatesHelper.ScreenWidth / 4;
         }
 
         public bool TryRefresh(Assembly entryPointAssembly, XamlPropertiesPane xamlPropertiesPane)

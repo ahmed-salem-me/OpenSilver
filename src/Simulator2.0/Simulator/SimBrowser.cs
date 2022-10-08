@@ -69,6 +69,7 @@ namespace OpenSilver.Simulator
             await helper.Runtime.EnableAsync();
             helper.Runtime.ConsoleAPICalled += OnConsoleMessage;
 
+            coreWebView.Settings.AreBrowserAcceleratorKeysEnabled = false;
             if (Properties.Settings.Default.IsDevToolsOpened)
                 coreWebView.OpenDevToolsWindow();
 
