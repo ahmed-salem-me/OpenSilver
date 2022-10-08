@@ -51,7 +51,6 @@ namespace OpenSilver.Simulator
                 }));
 
                 osThread.SetApartmentState(ApartmentState.STA);
-                osThread.IsBackground = true;
                 osThread.Priority = ThreadPriority.Highest;
                 osThread.Start();
 

@@ -151,7 +151,13 @@ namespace OpenSilver.Simulator
 
         private void CleanResourcesAndComments()
         {
-            var xDoc = XDocument.Load(new MemoryStream(Encoding.UTF8.GetBytes(_rootPageHtml)));
+            // Note: this exclusion & inclusion of the script is safer for when the script have characters that disrupts the XDom like &&
+            var scriptStartIndex = _rootPageHtml.IndexOf("<script language=\"javascript\">");
+            var scriptEndIndex = _rootPageHtml.IndexOf("</script>", scriptStartIndex);
+            var scriptTagAndCode = _rootPageHtml.Substring(scriptStartIndex, scriptEndIndex + "</script>".Length - scriptStartIndex);
+            var pageHtml = _rootPageHtml.Remove(scriptStartIndex, scriptEndIndex + "</script>".Length - scriptStartIndex);
+
+            var xDoc = XDocument.Load(new MemoryStream(Encoding.UTF8.GetBytes(pageHtml)));
             xDoc.DocumentType.InternalSubset = null;
             var head = xDoc.Element("html").Element("head");
             var asmPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -173,6 +179,7 @@ namespace OpenSilver.Simulator
             head.Nodes().Where(node => node is XComment).Remove();
 
             _rootPageHtml = xDoc.ToString();
+            _rootPageHtml = _rootPageHtml.Insert(_rootPageHtml.IndexOf("</body>"), scriptTagAndCode);
         }
     }
 }
