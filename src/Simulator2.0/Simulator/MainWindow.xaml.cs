@@ -58,10 +58,7 @@ namespace OpenSilver.Simulator
         CompilationState _compilationState = CompilationState.Initializing;
         string _compilationLog;
         RootPage _rootPage;
-        bool _isFirstTimeJavaScriptCompilation = false;
         SimBrowser TheSimBrowser;
-        bool _pendingRefreshOfHighlight = false;
-        Assembly _openSilverRuntimeAssembly;
         OpenSilverRuntime _openSilverRuntime;
 
         const string NAME_FOR_STORING_COOKIES = "ms_cookies_for_user_application"; // This is an arbitrary name used to store the cookies in the registry
@@ -79,13 +76,10 @@ namespace OpenSilver.Simulator
             Icon = new BitmapImage(new Uri("pack://application:,,,/OpenSilver.Simulator;component/OpenSilverIcon.ico"));
 
             Title = "Simulator - OpenSilver";
-            MessageToDisplayDuringFirstTimeCompilation.Visibility = Visibility.Collapsed;
-            MessageToDisplayWhenCompilationIsSlow.Visibility = Visibility.Collapsed;
 
             WelcomeTextBlock.Visibility = Visibility.Collapsed; // In version 1.x, we do not display the welcome text because there is already a similar text while the JS generation is taking place.
             _clientAppStartup = entryAppCreator ?? throw new ArgumentNullException(nameof(entryAppCreator));
             _simulatorLaunchParameters = simulatorLaunchParameters;
-            ReflectionInUserAssembliesHelper.TryGetCoreAssembly(out _openSilverRuntimeAssembly);
             _clientAppAssembly = appAssembly;
             _pathOfAssemblyThatContainsEntryPoint = _clientAppAssembly.Location;
 
@@ -99,10 +93,10 @@ namespace OpenSilver.Simulator
             TheSimBrowser.OnInitialized = () =>
             {
                 _openSilverRuntime = new OpenSilverRuntime(this, Dispatcher.CurrentDispatcher);
-                LoadIndexPage();
+                LoadRootPage();
             };
 
-            TheSimBrowser.OnNavigationCompleted = OnIndexPageLoaded;
+            TheSimBrowser.OnNavigationCompleted = OnRootPageLoaded;
 
             BrowserContainer.Child = TheSimBrowser;
 
@@ -114,7 +108,6 @@ namespace OpenSilver.Simulator
 
             LoadDisplaySize();
             _compilationState = CompilationState.Initializing;
-            UpdateToolbarBasedOnCurrentCompilationState();
 
             AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
@@ -587,14 +580,6 @@ Click OK to continue.";
             logWin.Show();
         }
 
-        void TimerToInformTheUserIfTheCompilationIsTakingTooLong_Tick(object sender, EventArgs e)
-        {
-            if (this._compilationState == CompilationState.Compiling)
-            {
-                MessageToDisplayWhenCompilationIsSlow.Visibility = Visibility.Visible;
-            }
-        }
-
         private void IsDevToolsOpened_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.IsDevToolsOpened = (bool)IsDevToolsOpened.IsChecked;
@@ -609,7 +594,7 @@ Click OK to continue.";
 
         #endregion
 
-        void LoadIndexPage(string urlFragment = null)
+        void LoadRootPage(string urlFragment = null)
         {
             _rootPage = new RootPage(_clientAppAssembly);
             _rootPage.Create(_simulatorLaunchParameters);
@@ -619,7 +604,7 @@ Click OK to continue.";
             //MainWebBrowser.Browser.LoadHTML(new LoadHTMLParams(simulatorRootHtml, "UTF-8", "http://cshtml5-simulator/" + ARBITRARY_FILE_NAME_WHEN_RUNNING_FROM_SIMULATOR + urlFragment)); // Note: we set the URL so that the simulator browser can find the JS files.
         }
 
-        void OnIndexPageLoaded()
+        void OnRootPageLoaded()
         {
             if (!_htmlHasBeenLoaded)
             {
@@ -628,8 +613,6 @@ Click OK to continue.";
 
                 // Start the app:
                 ShowLoadingMessage();
-
-                GoToAppropriateCompilationState();
 
                 bool success = _openSilverRuntime.Start(_clientAppStartup);
 
@@ -826,41 +809,6 @@ Click OK to continue.";
         //        MessageBox.Show("Error: no display size selected. Please report this error to the authors.");
         //    }
         //}
-
-        void UpdateToolbarBasedOnCurrentCompilationState()
-        {
-            switch (_compilationState)
-            {
-                case CompilationState.Initializing:
-                    TopToolbar.Visibility = Visibility.Collapsed;
-                    ToolbarDuringJavaScriptCompilation.Visibility = Visibility.Collapsed;
-                    ToolbarWhenCompilationError.Visibility = Visibility.Collapsed;
-                    break;
-                case CompilationState.Compiling:
-                    TopToolbar.Visibility = Visibility.Collapsed;
-                    ToolbarDuringJavaScriptCompilation.Visibility = Visibility.Visible;
-                    ToolbarWhenCompilationError.Visibility = Visibility.Collapsed;
-                    break;
-                case CompilationState.AlreadyCompiled:
-                    TopToolbar.Visibility = Visibility.Visible;
-                    ToolbarDuringJavaScriptCompilation.Visibility = Visibility.Collapsed;
-                    ToolbarWhenCompilationError.Visibility = Visibility.Collapsed;
-                    break;
-                case CompilationState.CompilationError:
-                    TopToolbar.Visibility = Visibility.Collapsed;
-                    ToolbarDuringJavaScriptCompilation.Visibility = Visibility.Collapsed;
-                    ToolbarWhenCompilationError.Visibility = Visibility.Visible;
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        void GoToAppropriateCompilationState()
-        {
-            _compilationState = CompilationState.AlreadyCompiled;
-            UpdateToolbarBasedOnCurrentCompilationState();
-        }
 
         void SaveDisplaySize()
         {

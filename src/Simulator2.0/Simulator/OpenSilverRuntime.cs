@@ -1,5 +1,6 @@
 ﻿using OpenSilver.Simulator;
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
@@ -41,7 +42,6 @@ namespace OpenSilver.Simulator
 
                     if (!Initialize())
                         return;
-
                     if (OnInitialized != null)
                         OnInitialized();
 
@@ -60,7 +60,7 @@ namespace OpenSilver.Simulator
             catch (Exception ex)
             {
                 MessageBox.Show("Unable to start the application.\r\n\r\n" + ex.ToString());
-                //_simMainWindow.HideLoadingMessage();
+                _simMainWindow.HideLoadingMessage();
                 return false;
             }
 
@@ -71,10 +71,9 @@ namespace OpenSilver.Simulator
             // In OpenSilver we already have the user application type passed to the constructor, so we do not need to retrieve it here
             try
             {
-                // Create the JavaScriptExecutionHandler that will be called by the "Core" project to interact with the Emulator:
+                // Create the JavaScriptExecutionHandler that will be called by the "Core" project to interact with the Simulator:
                 JavaScriptExecutionHandler = new JavaScriptExecutionHandler();
 
-                //InteropHelpers.InjectConvertBrowserResult(BrowserResultConverter.CastFromJsValue, _OSRuntimeAssembly);
                 InteropHelpers.InjectJavaScriptExecutionHandler(JavaScriptExecutionHandler, OSRuntimeAssembly);
                 //InteropHelpers.InjectWpfMediaElementFactory(_OSRuntimeAssembly);
                 //InteropHelpers.InjectWebClientFactory(_OSRuntimeAssembly);
@@ -98,7 +97,7 @@ namespace OpenSilver.Simulator
             catch (Exception ex)
             {
                 MessageBox.Show("Error while loading the application: " + Environment.NewLine + Environment.NewLine + ex.Message);
-                //_simMainWindow.HideLoadingMessage();
+                _simMainWindow.HideLoadingMessage();
                 return false;
             }
         }
