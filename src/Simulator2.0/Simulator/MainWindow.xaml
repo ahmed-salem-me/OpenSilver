@@ -94,10 +94,10 @@
                                     <RadioButton x:Name="DisplaySize_Phone" Visibility="Collapsed" Content="Phone" Click="DisplaySize_Click" Cursor="Hand" BorderBrush="{x:Null}" Focusable="False" Padding="12,8" Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="35"/>
                                     <RadioButton x:Name="DisplaySize_Tablet" Visibility="Collapsed" Content="Tablet" Margin="5,0,0,0" Click="DisplaySize_Click" Cursor="Hand" BorderBrush="{x:Null}" Focusable="False" Padding="12,8" Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="35"/>
                                     <RadioButton x:Name="DisplaySize_Desktop" Visibility="Collapsed" Content="Desktop" IsChecked="True" Margin="5,0,0,0" Click="DisplaySize_Click" Cursor="Hand" BorderBrush="{x:Null}" Focusable="False" Padding="12,8" Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="35"/>
-                                    <ToggleButton x:Name="LogInterop" Content="Log Interop" IsChecked="False" Margin="50,0,0,0" Click="LogInterop_Click" Cursor="Hand" BorderBrush="{x:Null}" Focusable="False" Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="35" ToolTip="Logs interop while pushed"/>
+                                    <ToggleButton x:Name="LogInterop" Content="Log Interops" IsChecked="False" Margin="50,0,0,0" Click="LogInterop_Click" Cursor="Hand" BorderBrush="{x:Null}" Focusable="False" Style="{StaticResource {x:Type ToggleButton}}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="35" ToolTip="Logs interop while pushed"/>
                                     <Button x:Name="ViewInteropLog" Click="ViewInteropLog_Click" Margin="10,0,0,0" Cursor="Hand" BorderThickness="0" Focusable="False" HorizontalAlignment="Left"  Background="{DynamicResource AccentColorBrush}" Height="35">
                                         <Button.Content>
-                                            <TextBlock Text="View Interop Log"/>
+                                            <TextBlock Text="View Interops Log"/>
                                         </Button.Content>
                                     </Button>
                                     <CheckBox x:Name="IsDevToolsOpened" Content="DevTools Opened" Margin="10,0,0,0" Click="IsDevToolsOpened_Click" Cursor="Hand" ToolTip="Have DevTools Opened After Restart"/>
