@@ -102,6 +102,9 @@ namespace OpenSilver.Simulator
 
             TheSimBrowser.Cookies = simulatorLaunchParameters?.CookiesData;
 
+            if (simulatorLaunchParameters != null && simulatorLaunchParameters.SimulatorHostDomain != null)
+                RootPage.SimulatorHostName = simulatorLaunchParameters.SimulatorHostDomain;
+
             CheckBoxCORS.IsChecked = CrossDomainCallsHelper.IsBypassCORSErrors;
             CheckBoxCORS.Checked += CheckBoxCORS_Checked;
             CheckBoxCORS.Unchecked += CheckBoxCORS_Unchecked;
