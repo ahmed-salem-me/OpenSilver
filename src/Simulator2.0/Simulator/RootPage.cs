@@ -18,7 +18,7 @@ namespace OpenSilver.Simulator
         private const string RootPageName = "simulator_root.html";
         private const string TempRootPageName = "simulator_root.tmp.html";
 
-        public const string SimulatorHostName = "opensilver-simulator";
+        public static string SimulatorHostName { get; set; } = "opensilver-simulator";
 
         public RootPage(Assembly clientAppAssembly)
         {
