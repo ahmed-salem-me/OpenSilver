@@ -27,5 +27,7 @@ namespace CSHTML5.Simulator
         /// Sets the application init parameters
         /// </summary>
         public string InitParams { get; set; }
+
+        public string SimulatorHostDomain { get; set; }
     }
 }
