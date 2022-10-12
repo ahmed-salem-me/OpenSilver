@@ -19,6 +19,7 @@ using OpenSilver.Simulator.Console;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -165,11 +166,50 @@ namespace OpenSilver.Simulator
             return timer;
         }
 
-        public void CreateCookie(string name, string value, string Domain, string Path)
+        public void CreateCookie(string name, string value, string Domain, string Path, DateTime expirationTime = default, bool isSecure = false, string sameSite = "Lax")
         {
             _SimDispatcher.InvokeAsync(() =>
             {
                 var cookie = SimBrowser.Instance.CoreWebView2.CookieManager.CreateCookie(name, value, Domain, Path);
+                cookie.Expires = expirationTime;
+                cookie.IsSecure = isSecure;
+                switch (sameSite)
+                {
+                    case "None":
+                        cookie.SameSite = Microsoft.Web.WebView2.Core.CoreWebView2CookieSameSiteKind.None;
+                        cookie.IsSecure = true;
+                        break;
+                    case "Lax":
+                        cookie.SameSite = Microsoft.Web.WebView2.Core.CoreWebView2CookieSameSiteKind.Lax;
+                        break;
+                    case "Strict":
+                        cookie.SameSite = Microsoft.Web.WebView2.Core.CoreWebView2CookieSameSiteKind.Strict;
+                        break;
+
+                }
+                SimBrowser.Instance.CoreWebView2.CookieManager.AddOrUpdateCookie(cookie);
+            });
+        }
+
+        public void CreateCookieWithSystemNetCookie(Cookie netCookie, string sameSite = "Lax")
+        {
+            _SimDispatcher.InvokeAsync(() =>
+            {
+                var cookie = SimBrowser.Instance.CoreWebView2.CookieManager.CreateCookieWithSystemNetCookie(netCookie);
+                switch (sameSite)
+                {
+                    case "None":
+                        cookie.SameSite = Microsoft.Web.WebView2.Core.CoreWebView2CookieSameSiteKind.None;
+                        cookie.IsSecure = true;
+                        break;
+                    case "Lax":
+                        cookie.SameSite = Microsoft.Web.WebView2.Core.CoreWebView2CookieSameSiteKind.Lax;
+                        break;
+                    case "Strict":
+                        cookie.SameSite = Microsoft.Web.WebView2.Core.CoreWebView2CookieSameSiteKind.Strict;
+                        break;
+
+                }
                 SimBrowser.Instance.CoreWebView2.CookieManager.AddOrUpdateCookie(cookie);
             });
         }
