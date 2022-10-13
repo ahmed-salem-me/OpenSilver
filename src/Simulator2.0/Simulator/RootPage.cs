@@ -151,7 +151,7 @@ namespace OpenSilver.Simulator
 
         private void CleanResourcesAndComments()
         {
-            // Note: this exclusion & inclusion of the script is safer for when the script have characters that disrupts the XDom like &&
+            // Note: this exclusion & inclusion of the script is safer for when the script have characters that disrupts the XDoc like &&
             var scriptStartIndex = _rootPageHtml.IndexOf("<script language=\"javascript\">");
             var scriptEndIndex = _rootPageHtml.IndexOf("</script>", scriptStartIndex);
             var scriptTagAndCode = _rootPageHtml.Substring(scriptStartIndex, scriptEndIndex + "</script>".Length - scriptStartIndex);

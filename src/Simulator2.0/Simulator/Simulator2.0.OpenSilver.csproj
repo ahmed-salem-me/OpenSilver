@@ -117,11 +117,6 @@
     <Compile Include="SupportClasses\CookieData.cs" />
     <Compile Include="SupportClasses\CrossDomainCallsHelper.cs" />
     <Compile Include="SupportClasses\Serializer.cs" />
-    <Compile Include="Service References\LicensingServiceReference\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Interop\InteropHelpers.cs" />
     <Compile Include="DialogBoxes\InputBox.xaml.cs">
       <DependentUpon>InputBox.xaml</DependentUpon>
@@ -205,100 +200,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKeyResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivateKey_V2Response.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ActivityLog.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateKeyResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminCreateUserResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminDeactivateKeyResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditKeyResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminEditUserResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetActivityLogsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetKeysResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetListOfUsersResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminGetTransactionsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.AdminUpdatePasswordResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ArrayOfString.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ChangePasswordResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.CheckLicenseValidityResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.DeactivateKeyResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetCurrentUserInformationResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetKeysResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.GetTransactionsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.HandlePasswordForgottenResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.KeyActivationResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.KeyValidity.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LicenseKey.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogInResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.LogOutResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.ModifyCurrentUserInformationResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.Transaction.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\DotNetForHtml5.EmulatorWithoutJavascript.LicensingServiceReference.User.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\LicensingServiceReference\LicensingService.wsdl" />
-    <None Include="Service References\LicensingServiceReference\LicensingService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\LicensingServiceReference\LicensingService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Simulator.licenseheader" />
   </ItemGroup>
   <ItemGroup>
@@ -308,13 +209,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="OpenSilverIcon.ico" />
-    <None Include="Service References\LicensingServiceReference\LicensingService.disco" />
-    <None Include="Service References\LicensingServiceReference\configuration91.svcinfo" />
-    <None Include="Service References\LicensingServiceReference\configuration.svcinfo" />
-    <None Include="Service References\LicensingServiceReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Resource Include="Debugging\DevToolsScreencast.png" />
     <Resource Include="Expand-Icon-5.png" />
     <Content Include="interop_debug_root_opensilver.html">
@@ -326,9 +220,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\LicensingServiceReference\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="1.2.4" />

@@ -81,7 +81,7 @@
       }
     }
 
-    var evenCallbackFunctionHolder;
+    var evenCallbackFunctionHolder;   //why this: despite the SimOverlay being on top and capturing events, OS divs were still getting mouseEnter and mouseLeave, probably could be better solved by a css wizard!
 
     function startXamlInspection() {
       simOverlay.style.display = "";
